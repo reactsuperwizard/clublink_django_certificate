@@ -1,0 +1,15 @@
+Dear {{ user.first_name }},
+
+To reset your password, click the link below:
+{{ reset_url }}
+
+If you did not request a password reset, please ignore this email.
+
+Thank you,
+
+ClubLink Member Services
+15675 Dufferin Street
+King City, ON, L7B 1K5
+1-800-273-5113
+memberservices@clublink.ca
+www.clublink.ca

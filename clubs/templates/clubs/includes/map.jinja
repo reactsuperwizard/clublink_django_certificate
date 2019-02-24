@@ -1,0 +1,15 @@
+{% from 'clubs/includes/macros.jinja' import directions_search, usa_directions_search %}
+
+{% if request.club.has_address %}
+
+<div style="margin-top: -40px">
+<iframe
+  width="100%"
+  height="400"
+  frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAoOcM7OavAX-E_TfoiQf2qJ8Yko86BBzs
+    &q={{request.club.name}}+{{request.club.city}}+{{request.club.state}}" allowfullscreen>
+</iframe>
+</div>
+
+{% endif %}

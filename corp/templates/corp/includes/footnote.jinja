@@ -1,0 +1,10 @@
+<span class="locale-switch">
+    {% if request.site.id == 1 %}
+        <a href="https://www.clublink.com/" target="_blank">{{ _('U.S. Clubs') }}</a><!--
+        --><a href="?lang=en">EN</a>|<a href="?lang=fr">FR</a>
+    {% else %}
+        <a href="https://www.clublink.ca/" target="_blank">{{ _('Canadian Clubs') }}</a>
+    {% endif %}
+
+</span>
+{% include 'cms/includes/footer.jinja' %}

@@ -1,0 +1,76 @@
+{% extends 'clubs/my-account/base.jinja' %}
+
+{% block main %}
+  <div class="wrapper">
+    <h2>{{ _('Account Summary') }}</h2>
+
+    <h4>{{ summary.get('name') }}</h4>
+
+    <p class="centered">
+      <strong class="summary-title inline">{{ _('Account number:') }}</strong>
+      {{ summary.get('member_id') }}
+    </p>
+
+    <p class="centered">
+      <strong class="summary-title inline">{{ _('Membership category:') }}</strong>
+      {{ summary.get('category') }}
+    </p>
+  </div>
+
+  <div class="inverted-bar" id="summary-balances">
+    <div class="wrapper">
+      <h2>{{ _('Current Balance') }}</h2>
+      <div class="col-3 centered">
+        <div>
+          <div class="summary-title">{{ _('House') }}</div>
+          <strong>${{ '{:,.2f}'.format(summary.get('house_balance', 0)) }}</strong>
+        </div>
+        <div>
+          <div class="summary-title">{{ _('Annual Dues') }}</div>
+          <strong>${{ '{:,.2f}'.format(summary.get('annual_dues_balance', 0)) }}</strong>
+        </div>
+        <div>
+          <div class="summary-title">{{ _('Membership Fees') }}</div>
+          <strong>${{ '{:,.2f}'.format(summary.get('membership_fee_balance', 0)) }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrapper" id="summary-extra">
+    <div class="col-2 centered">
+      <div>
+        <div class="summary-title">{{ _('Unspent Food & Beverage Minimum') }}</div>
+        <strong>${{ '{:,.2f}'.format(summary.get('unspent_minimum_balance', 0)) }}</strong>
+      </div>
+      <div>
+        <div class="summary-title">{{ _('Membership Fee Value Reward') }}</div>
+        <strong>${{ '{:,.2f}'.format(summary.get('reward_balance', 0)) }}</strong>
+      </div>
+    </div>
+  </div>
+
+  {% if linked_members %}
+    <div id="linked-members">
+      <div class="wrapper">
+        <div class="centered summary-title">
+          <strong>{{ _('Linked Members') }}</strong>
+        </div>
+
+        <div class="col-3 centered linked-member-header">
+          <div class="summary-title">{{ _('Account Name') }}</div>
+          <div class="summary-title">{{ _('Account Number') }}</div>
+          <div class="summary-title">{{ _('Membership Category') }}</div>
+        </div>
+
+        {% for member in linked_members %}
+          <div class="col-3 centered linked-member">
+            <div>{{ member.get('name') }}</div>
+            <div>{{ member.get('member_id') }}</div>
+            <div>{{ member.get('category') }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

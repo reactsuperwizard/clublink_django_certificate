@@ -1,0 +1,38 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% set bundles = ('fancybox',) %}
+
+{% block main %}
+  <div class="wrapper">
+    {{ shorttext_snippet(page, 'heading_1', 'h2') }}
+
+    <ul class="page-nav">
+      {% for g in galleries %}
+        {% set gallery_url = url('events.weddings.gallery', slug=g.slug) %}
+        <li class="{% if g.pk == gallery.pk %}active{% endif %}">
+          <a href="{{ gallery_url }}">
+            {% if request.language_code == 'en' %}
+              {{ g.name_en }}
+            {% elif g.name_fr and request.language_code == 'fr' %}
+              {{ g.name_fr }}
+            {% else %}
+              {{ g.name }}
+            {% endif %}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
+
+{% block page_footer %}
+  {% if gallery %}
+    <div class="quarters photo-gallery">
+      {% for image in gallery.images.all() %}
+        <div style="background-image: url('{{ image }}');">
+          <a href="{{ image }}" data-fancybox="gallery"></a>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% from 'cms/includes/forms.jinja' import render_field %}
+
+{% macro render_user_form(form) %}
+  <div data-uk-grid>
+    <div class="uk-width-1-2">{{ render_field(form.username) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.password) }}</div>
+
+    <div class="uk-width-1-2">{{ render_field(form.first_name) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.middle_name) }}</div>
+
+    <div class="uk-width-1-2">{{ render_field(form.last_name) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.email) }}</div>
+
+    <div class="uk-width-1-2">{{ render_field(form.membership_number) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.employee_number) }}</div>
+
+    <div class="uk-width-1-2">{{ render_field(form.is_superuser) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.is_staff) }}</div>
+
+    <div class="uk-width-1-2">{{ render_field(form.status) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.preferred_language) }}</div>
+
+    <div class="uk-width-1-2">{{ render_field(form.type) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.category) }}</div>
+
+    <div class="uk-width-1-2">{{ render_field(form.clubcorp) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.clubcorp_number) }}</div>
+
+    <div class="uk-width-1-2">{{ render_field(form.home_club) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.option_club) }}</div>
+
+    <div class="uk-width-1-2">{{ render_field(form.home_club_alternate_1) }}</div>
+    <div class="uk-width-1-2">{{ render_field(form.home_club_alternate_2) }}</div>
+  </div>
+{% endmacro %}

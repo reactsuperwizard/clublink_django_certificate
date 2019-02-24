@@ -1,0 +1,53 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% block main %}
+  <h3>{{ _('Team Members') }}</h3>
+
+  <div class="uk-padding-small uk-background-muted">
+    <a class="uk-button uk-button-primary" href="{{ url('club-site.team-members-add', club_pk=club.pk) }}">
+      {{ _('Add New') }}
+    </a>
+    <a
+        class="uk-align-right uk-button uk-button-secondary"
+        href="{{ url('club-site.team-members-reorder', club_pk=club.pk) }}"
+    >
+      {{ _('Manage Order') }}
+    </a>
+  </div>
+
+  <table class="uk-table uk-table-small uk-table-hover">
+    <thead>
+      <tr>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Job Title') }}</th>
+        <th class="uk-text-right">{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for team_member in team_members.order_by('name') %}
+        {% set edit_url = url('club-site.team-members-edit', club_pk=club.pk, team_member_pk=team_member.pk) %}
+        <tr>
+          <td><a href="{{ edit_url }}">{{ team_member.name }}</a></td>
+          <td>{{ team_member.job_title }}</td>
+          <td class="uk-text-right">
+            <a
+                class="uk-margin-small-left"
+                data-uk-icon="icon: pencil"
+                href="{{ edit_url }}"
+            ></a>
+
+            <a
+                class="uk-margin-small-left"
+                data-uk-icon="icon: trash"
+                href="{{ url('club-site.team-members-delete', club_pk=club.pk, team_member_pk=team_member.pk) }}"
+            ></a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if team_members.count() == 0 %}
+    <p class="uk-text-center">{{ _('No team members exist.') }}</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'clubs/events/base.jinja' %}
+
+{% block after_main %}
+
+
+    <div class="wrapper">
+        <div class="righted">
+            <a href="{{ url('events.golf-tournaments.inquiry') }}" class="button">{{ _('Inquiry Form') }}</a>
+
+
+
+    {% if request.LANGUAGE_CODE == 'en' and request.club.golf_tournament_menu %} {% set menu_url = request.club.golf_tournament_menu.url %}
+    {% elif request.LANGUAGE_CODE == 'fr' and request.club.golf_tournament_menu_fr %} {% set menu_url = request.club.golf_tournament_menu_fr.url
+    %} {% endif %}
+
+     {% if menu_url %}
+    <p>
+        <a href="{{ menu_url }}" target="_blank" class="button">
+            {{ _('View Our Menu') }}
+        </a>
+    </p>
+    {% endif %}
+
+        </div>
+        </div>
+
+{% endblock %}

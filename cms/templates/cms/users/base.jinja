@@ -1,0 +1,32 @@
+{% extends 'cms/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_breadcrumbs %}
+
+{% block left_sidebar %}
+  <ul class="uk-nav uk-text-small">
+    <li class="uk-nav-header">{{ _('User Management') }}</li>
+    <li>
+      <a class="uk-link-muted" href="{{ url('users.my-account') }}">
+        {{ _('My Account') }}
+      </a>
+    </li>
+    {% if request.user.is_superuser %}
+      <li>
+        <a class="uk-link-muted" href="{{ url('users.accounts') }}">
+          {{ _('User Accounts') }}
+        </a>
+      </li>
+    {% endif %}
+    {% if request.user.permits('can_impersonate_user') %}
+      <li>
+        <a class="uk-link-muted" href="{{ url('users.impersonate') }}">
+          {{ _('Impersonate User') }}
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+{% endblock %}
+
+{% block main %}
+  {% block panel %}{% endblock %}
+{% endblock %}

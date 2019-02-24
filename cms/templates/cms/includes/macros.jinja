@@ -1,0 +1,58 @@
+{% macro render_breadcrumbs(crumbs) %}
+  <ul class="uk-breadcrumb">
+    <li><a href="{{ url('home') }}">{{ _('Dashboard') }}</a></li>
+    {% for crumb in crumbs[:-1] %}
+      <li><a href="{{ crumb[0] }}">{{ crumb[1] }}</a></li>
+    {% endfor %}
+    <li><span>{{ crumbs[-1][1] }}</span></li>
+  </ul>
+{% endmacro %}
+
+{% macro render_tile(label, icon, url) %}
+  <div class="uk-width-1-3@m uk-width-1-2@s">
+    <a href="{{ url }}" class="uk-card uk-card-small uk-card-primary uk-card-hover uk-text-center tm-full-card">
+      <div class="uk-card-body">
+        <span data-uk-icon="icon: {{ icon }}; ratio: 4"></span>
+      </div>
+      <div class="uk-card-footer">
+        {{ label }}
+      </div>
+    </a>
+  </div>
+{% endmacro %}
+
+{%macro pagenator_renderer(campaigners)%}
+  <div class="ui right floated pagination menu">
+    {% if campaigners.has_previous() %}
+      <a href="?pagenum={{ campaigners.previous_page_number() }}" class="icon item">
+        <i class="left chevron icon"></i>
+      </a>
+    {% endif %}
+    <a href="?pagenum=1" class="item {% if campaigners.number == 1 %}active{% endif %}">1</a>
+    {% if campaigners.number > 3 %}
+      <span class="item">&hellip;</span>
+    {% endif %}
+    {% if campaigners.number > 2 %}
+      <a href="?pagenum={{ campaigners.number - 1 }}" class="item">{{ campaigners.number - 1 }}</a>
+    {% endif %}
+    {% if campaigners.number > 1 and campaigners.number < campaigners.paginator.num_pages %}
+      <a href="?pagenum={{ campaigners.number }}" class="item active">{{ campaigners.number }}</a>
+    {% endif %}
+    {% if campaigners.number < campaigners.paginator.num_pages - 1 %}
+      <a href="?pagenum={{ campaigners.number + 1 }}" class="item">{{ campaigners.number + 1 }}</a>
+    {% endif %}
+    {% if campaigners.number < campaigners.paginator.num_pages - 2 %}
+      <span class="item">&hellip;</span>
+    {% endif %}
+    {% if campaigners.paginator.num_pages > 1 %}
+      <a href="?pagenum={{ campaigners.paginator.num_pages }}" class="item {% if campaigners.number == campaigners.paginator.num_pages %}active{% endif %}">
+        {{ campaigners.paginator.num_pages }}
+      </a>
+    {% endif %}
+    {% if campaigners.has_next() %}
+      <a href="?pagenum={{ campaigners.next_page_number() }}" class="icon item">
+        <i class="right chevron icon"></i>
+      </a>
+    {% endif %}
+  </div>
+{% endmacro %}

@@ -1,0 +1,53 @@
+A reservation has been made for the following event.
+
+{% if bywhom %}
+This reservation was made by {{bywhom.first_name}} {{bywhom.last_name}}
+{% endif %}
+
+EVENT INFORMATION:
+-----------------------------
+{%- if rsvp.user.membership_number %}
+Member: {{ rsvp.user.membership_numer }}
+{%- endif %}
+Event: {{ rsvp.event.name }}
+Date: {{ rsvp.event.date }}
+Member Name: {{ rsvp.user.get_full_name() }}
+Adults: {{ rsvp.number_of_adults }}
+
+{% if rsvp.guest_data or rsvp.children.exists() %}
+In addition, {{rsvp.user.first_name}} also registered for the following guests:
+{% if rsvp.guest_data %}
+Non-members:
+  {% for guest in rsvp.guest_data %}
+    {{guest.name}}
+  {% endfor %}
+{% endif %}
+{% if rsvp.children.exists() %}
+  Members - Members will each receive individual emails.
+  {% for child in rsvp.children.all() %}
+  {{child.user.first_name}} {{child.user.last_name}} ({{child.user.membership_number}})
+  {% endfor %}
+{% endif %}
+{% endif %}
+
+{%- if rsvp.event.custom_question_1 %}
+{{ rsvp.event.custom_question_1 }}: {{ rsvp.custom_answer_1 }}
+{%- endif %}
+{%- if rsvp.event.custom_question_2 %}
+{{ rsvp.event.custom_question_2 }}: {{ rsvp.custom_answer_2 }}
+{%- endif %}
+{%- if rsvp.event.custom_question_3 %}
+{{ rsvp.event.custom_question_3 }}: {{ rsvp.custom_answer_3 }}
+{%- endif %}
+{%- if rsvp.event.custom_question_4 %}
+{{ rsvp.event.custom_question_4 }}: {{ rsvp.custom_answer_4 }}
+{%- endif %}
+{%- if rsvp.event.custom_question_5 %}
+{{ rsvp.event.custom_question_5 }}: {{ rsvp.custom_answer_5 }}
+{%- endif %}
+{%- if rsvp.notes %}
+Notes: {{ rsvp.notes }}
+{%- endif %}
+
+
+Confirmation number: {{ rsvp.confirmation_number }}

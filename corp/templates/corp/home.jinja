@@ -1,0 +1,58 @@
+{% extends 'corp/base.jinja' %}
+
+{% set bundles = ('corp_home',) %}
+
+{% from 'cms/macros.jinja' import shorttext_snippet, image_selector with context %}
+
+{% block body_class %}home{% endblock %}
+
+{% block main %}
+  <div class="corporate-links">
+    <a href="{{ url('employment') }}">{{ _('Jobs') }}</a>
+    <a href="{{ url('news') }}">{{ _('News') }}</a>
+    {% if request.site.id == 1 %}
+      <a href="{{ url('shop') }}">{{ _('Shop') }}</a>
+    {% endif %}
+  </div>
+  
+  <div class="splash" style="{% if page.get_image('splash') %}background-image: url('{{ page.get_image('splash') }}');{% endif %};">
+    {{ image_selector(page, 'splash') }}
+    <a class="{% if request.LANGUAGE_CODE == 'fr' %}cl-logo-fr {% endif %} cl-logo iefix-bgcontain" href="{{ url('home') }}">ClubLink</a>
+    <div class="cta">
+      {{ shorttext_snippet(page, 'headline', 'div') }}
+
+        {% if page.get_snippet('clickthrough', fallback=False, locale=language) %}
+          {% set destinationurl = page.get_snippet('clickthrough', fallback=False, locale=language).content %}
+        {% elif request.site.id != 1 %}
+          {% set destinationurl = '/membership' %}
+        {% else %}
+          {% set destinationurl = 'https://giftcards.clublink.ca/' %}
+        {% endif %}      
+
+        {% if request.user.is_authenticated and (request.user.home_club.slug == 'playersclub') %}
+          <div style="clearfix: all; padding-bottom: 20px;">
+            <a class="button white" href="{{request.member.legacy_renewal_link}}" target="_blank">Renew Membership</a>
+          </div>
+        {% endif %}
+
+      {% if page.get_snippet('button', fallback=False, locale=language) %}
+        {{ shorttext_snippet(page, 'button', 'a', 'white button', destinationurl) }}
+      {% else %}
+        <a class="white button" href="destinationurl">
+          {{ _('Discover The Possibilities') }}
+        </a>
+      {% endif %}
+
+    </div>
+    <div class="scroll-text">
+      {{ _('Scroll Down') }}
+    </div>
+  </div>
+  <div class="quarters">
+    {% if request.site.id == 1 %}
+      {% include "corp/includes/can-quarters.jinja" %}
+    {% else %}
+      {% include "corp/includes/usa-quarters.jinja" %}
+    {% endif %}
+  </div>
+{% endblock %}

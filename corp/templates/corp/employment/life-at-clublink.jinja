@@ -1,0 +1,23 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% macro infopane(slug, title) %}
+  <div class="image-block infopane" style="{% if page.get_image('{}-bg'.format(slug)) %}background-image: url('{{ page.get_image('{}-bg'.format(slug)) }}');{% endif %}">
+    {{ image_selector(page, '{}-bg'.format(slug)) }}
+    <div class="title">{{ title }}</div>
+    <div class="panel">
+      <div class="wrapper">
+        {{ richtext_snippet(page, '{}-details'.format(slug)) }}
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+
+{% block page_footer %}
+  {{ infopane('golf-department', _('Golf Department')) }}
+  {{ infopane('turf-department', _('Turf Department')) }}
+  {{ infopane('hospitality', _('Hospitality and Culinary')) }}
+  {% if request.site.id == 1 %}
+  {{ infopane('resort-operations', _('Resort Operations')) }}
+  {% endif %}
+  {{ infopane('corporate', _('Corporate Office')) }}
+{% endblock %}

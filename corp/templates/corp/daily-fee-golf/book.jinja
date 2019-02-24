@@ -1,0 +1,61 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block main %}
+
+  <div class="wrapper">
+    {{ shorttext_snippet(page, 'heading_1', 'h2') }}
+    
+    {{ richtext_snippet(page, 'copy_1') }}
+
+    {{ shorttext_snippet(page, 'heading_2', 'h2') }}
+    {{ richtext_snippet(page, 'copy_2') }}
+
+    {{ shorttext_snippet(page, 'heading_3', 'h2') }}
+    {{ richtext_snippet(page, 'copy_3') }}
+  </div>
+
+  {% block after_main %}
+
+    <ul class="page-nav region-nav">
+      {% for region in request.site.regions.all() %}
+        <li class="region-li">
+          <a href="#{{region.slug}}" data-url="{{region.tee_time_url}}">
+            {{region.name}}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+
+  {% endblock %}
+
+  <div class="wrapper">
+    {% if request.site.id == 1 %}
+    <iframe class="daily-fee-iframe" id="booking-iframe" src="https://go.teeitup.com/18288"></iframe>
+    {% else %}
+
+    <iframe class="daily-fee-iframe" id="booking-iframe" src="https://go.teeitup.com/18953"></iframe>
+
+    {% endif %}
+  </div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+{{super()}}
+
+    {% if request.site.id == 2 %}
+    <script>
+      $( document ).ready(function() {
+          $('.region-nav a').click(function(e){
+
+            $('.region-li').removeClass('active');
+            $(e.target).parent('li').addClass('active');
+            
+            var newsrc = $(e.target).data('url')
+            $('#booking-iframe').attr('src', newsrc);
+          })
+      });
+    </script>
+    {% endif %}
+
+{% endblock %}

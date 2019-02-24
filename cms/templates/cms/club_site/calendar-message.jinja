@@ -1,0 +1,44 @@
+{% extends 'cms/club_site/base.jinja' %} {% from 'cms/includes/forms.jinja' import render_field %} {% block main %}
+
+<h3>{{ _('Calendar Event Messaging') }}</h3>
+<strong>{{event.name}}</strong>
+
+{% if event.rsvps.count() %}
+    <p>
+        There are {{event.rsvps.count()}} members registered for this event. 
+    </p>
+    <p>
+        By filling out the form below, you can communicate to all of these members via an email blast. Members will all be added as BCC's, which means that the email and identity of each member is protected.
+    </p>
+    <p>
+        <strong>If you provide a valid <i>reply-to</i> address, recipients can also reply to the email with further correspondence.</strong>  By default, a non-valid inbox is provided, which does not receive inbound message - <i>no-reply@clublink.ca</i>
+    </p>
+    <p>
+        The <i>from</i> name refers to what will be displayed at the header of the email.  This is what is seen on the 1-line, summary view of an email client, such as Outlook or Gmail.
+    </p>
+
+    <form method="post" enctype="multipart/form-data" action="" class="uk-form-stacked" novalidate id="calendar-message-form">
+        {{ csrf_input(csrf_token) }}
+
+            <div>
+                {{ render_field(form.from_name) }}
+            </div>
+            <div>
+                {{ render_field(form.reply_to) }}
+            </div>
+            <div>
+                {{ render_field(form.subject) }}
+            </div>
+            <div>
+                {{ render_field(form.message) }}
+            </div>
+
+        <input type="submit" class="uk-button uk-button-primary" value="{{ _('Save') }}" />
+    </form>
+{% else %}
+
+<h4>Currently, there are no RSVP's for this event.</h4>
+
+{% endif %}
+
+{% endblock %}

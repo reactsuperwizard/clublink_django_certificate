@@ -1,0 +1,40 @@
+<div class="wrapper">
+    <div class="address-bar">
+        <div class="visible-on-phone-only">
+            {% if request.club.address %}
+            <div class="uk-width-*@s">
+                {{ request.club.address }}
+            </div>
+            {% endif %}
+            <div class="uk-width-*@s">
+                {% if request.club.city %}{{ request.club.city }},{% endif %}
+                {% if request.club.state %}{{ request.club.state }},{% endif %}
+                {% if request.club.postal_code %}{{ request.club.postal_code }},{% endif %}
+                {% if request.club.country %}{{ request.club.country }}{% endif %}
+            </div>
+            {% if request.club.phone %}
+            <div class="uk-width-*@s">
+                <span><strong>T</strong> {{ request.club.phone }}</span>
+            </div>
+            {% endif %}
+            {% if request.club.fax %}
+            <div class="uk-width-*@s">
+                <span><strong>F</strong> {{ request.club.fax }}</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class="hidden-on-phone">
+            {% if request.club.address %}{{ request.club.address }}{% endif %}
+            {% if request.club.city %}{{ request.club.city }},{% endif %}
+            {% if request.club.state %}{{ request.club.state }},{% endif %}
+            {% if request.club.postal_code %}{{ request.club.postal_code }},{% endif %}
+            {% if request.club.country %}{{ request.club.country }}{% endif %}
+            {% if request.club.phone %}
+                <span><strong>T</strong> {{ request.club.phone }}</span>
+            {% endif %}
+            {% if request.club.fax %}
+                <span><strong>F</strong> {{ request.club.fax }}</span>
+            {% endif %}
+        </div>
+    </div>
+</div>

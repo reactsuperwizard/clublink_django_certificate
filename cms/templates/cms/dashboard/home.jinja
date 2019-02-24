@@ -1,0 +1,20 @@
+{% extends 'cms/dashboard/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_tile %}
+
+{% block main %}
+  <h2>{{ _('Welcome to ClubLink Central!') }}</h2>
+
+  <div data-uk-grid class="uk-padding-small uk-padding-remove-left uk-padding-remove-right">
+    {% if request.user.is_superuser or request.user.clubs.count() %}
+      {{ render_tile(_('Club Site Manager'), 'home', url('club-site.home')) }}
+    {% endif %}
+    {% if request.user.is_superuser %}
+      {{ render_tile(_('Corporate Site Manager'), 'world', url('corp-site.home')) }}
+    {% endif %}
+    {{ render_tile(_('Asset Manager'), 'cloud-upload', url('assets.home')) }}
+    {{ render_tile(_('User Management'), 'users', url('users.home')) }}
+    {{ render_tile(_('Gift Certificate Portal'), 'album', gc_url('home')) }}
+     {{ render_tile(_('Inventory Lookup'), 'search', url('inventory-lookup')) }}
+  </div>
+{% endblock %}

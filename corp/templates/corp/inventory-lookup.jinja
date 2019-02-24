@@ -1,0 +1,69 @@
+{% extends 'corp/base.jinja' %}
+
+{% block main %}
+    <div style="height: 25vh; padding-top: 100px; background: black; color: white;" class="noprint">
+        <h1 style="font-size: 60px; position: static; top: 0;">Inventory Lookup</h1>
+    </div>
+    <div style="padding: 0 10%; min-height: 75vh; background-color: white;" class="print-full-width">
+        <form method="get" action="" class="noprint">
+            <input type="text" min-length="5" name="query" placeholder="Search by inventory ID or term..." style="width: 75%; padding: 10px;" {% if query %}value="{{query}}"{% endif %}>
+        </form>
+
+        {% if query or groups %}
+            <h3>Results {% if query %}for "{{query}}"{% endif %}</h3>
+        {% endif %}
+
+        <div style="padding-bottom: 20px" class="noprint">
+            {% if messages %} {% for message in messages %}
+            <em style="background: lightgrey; padding: 10px;">
+                {{message}}
+            </em>
+            <br>
+            {% endfor %} 
+            {% endif %}
+            {% if query or groups %}
+            <div style="display: inline-block; margin-top: 20px">
+                <button class="button" onclick="window.print();return false;" />Print</button>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if groups %}
+        {% for name, items in groups %}
+
+        <div style="border: 1px solid grey; padding: 20px;" class="print-body">
+            <h3>{{name}}</h3>
+            <div style="max-height: 400px; overflow: scroll; overflow-y:scroll; padding: 0 20px 20px 20px;" class="fullprint">
+                <table style="line-height: 2.3; width: 100%;">
+                    <thead>
+                        <tr style="text-align: left">
+                            <th style="width: 15%;" class="printonly">Club</th>
+                            <th style="width: 20%">Item #</th>
+                            <th style="width: 35%">Name</th>
+                            <th style="width: 15%">Quantity</th>
+                            <th style="width: 15%; text-align: right;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td class="printonly">{{name}}</td>
+                            <td>{{item.ItemNumber}}</td>
+                            <td>{{item.ItemName}}</td>
+                            <td>{{item.OnHandQuantity}}</td>
+                            <td style="text-align: right" >${{item.ItemPrice}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            <br> 
+
+        {% endfor %} 
+        {% endif %}
+        
+    </div>
+
+
+{% endblock %}

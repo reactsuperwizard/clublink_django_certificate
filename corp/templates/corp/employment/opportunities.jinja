@@ -1,0 +1,27 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block after_main %}
+  <div class="wrapper">
+    {% if request.LANGUAGE_CODE == 'fr' %}
+      <iframe
+          id="careers_site_iframe"
+          src="//hire.simplicant.com/?company_id=3734&referer=jobboard_widget&group_id=1"
+          scrolling="no"
+          height="100%"
+          frameborder="0"
+          width="100%"
+      ></iframe>
+    {% else %}
+      <iframe
+          id="careers_site_iframe"
+          src="//hire.simplicant.com/?company_id=3734&referer=jobboard_widget&group_id=2"
+          scrolling="no"
+          height="100%"
+          frameborder="0"
+          width="100%"
+      ></iframe>
+    {% endif %}
+    <script src="//hire.simplicant.com/iframeResizer.min.js"></script>
+    <script>iFrameResize({checkOrigin:false});function getOffsetTop(e){e||(e=this);for(var r=e.offsetTop;e=e.offsetParent;)r+=e.offsetTop;return r}var careersSiteIframe=document.getElementById("careers_site_iframe");window.scrollTo(0,getOffsetTop(careersSiteIframe));var params=location.search;if(params.length){params='&amp;'+params.substring(1);careersSiteIframe.src+=params;}</script>
+  </div>
+{% endblock %}

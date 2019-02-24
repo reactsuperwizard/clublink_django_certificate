@@ -1,0 +1,86 @@
+{% extends 'cms/users/base.jinja' %}
+
+{% block main %}
+  <h3>{{ _('User Accounts') }}</h3>
+
+  <div class="uk-padding-small uk-background-muted">
+    <div class="uk-align-right">
+      <form method="get" action="" data-autosubmit>
+        {{ filter_form.show_only }}
+      </form>
+    </div>
+    <a class="uk-button uk-button-primary" href="{{ url('users.accounts-add') }}">
+      {{ _('Add New') }}
+    </a>
+  </div>
+
+  <form class="uk-margin" method="post" action="">
+    {{ csrf_input(csrf_token) }}
+    <h4 class="uk-margin-remove-bottom">{{ _('Search') }}</h4>
+
+    <div class="uk-inline">
+      <div class="uk-inline">
+        <span class="uk-form-icon" data-uk-icon="icon: search"></span>
+        <input type="text" name="query" value="{{ request.POST.get('query', '') }}" class="uk-input uk-width-large" placeholder="{{ _('Enter a phrase to search for...') }}" />
+      </div>
+      <input class="uk-button uk-button-primary" type="submit" value="{{ _('Search') }}" />
+    </div>
+  </form>
+
+  <h4>{{ _('Listing') }}</h4>
+
+  <table class="uk-table uk-table-small uk-table-hover">
+    <thead>
+      <tr>
+        <th>{{ _('Username') }}</th>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Membership Number') }}</th>
+        <th class="uk-text-right">{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        {% set edit_url = url('users.accounts-edit', user_pk=user.pk) %}
+        <tr>
+          <td><a href="{{ edit_url }}">{{ user.username }}</a></td>
+          <td>{{ user.get_full_name() }}</td>
+          <td>{{ user.membership_number or '' }}</td>
+          <td class="uk-text-right">
+            <a
+                class="uk-margin-small-left"
+                data-uk-icon="icon: pencil"
+                href="{{ edit_url }}"
+            ></a>
+
+            <a
+                class="uk-margin-small-left"
+                data-uk-icon="icon: trash"
+                href="{{ url('users.accounts-delete', user_pk=user.pk) }}"
+            ></a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if users.has_other_pages() %}
+    <ul class="uk-pagination">
+      {% if users.has_previous() %}
+        <li>
+          <a href="{{ curr_url(request, page=users.previous_page_number()) }}">
+            <span class="uk-margin-small-right" data-uk-pagination-previous></span>
+            {{ _('Previous') }}
+
+          </a>
+        </li>
+      {% endif %}
+      {% if users.has_next() %}
+        <li class="uk-margin-auto-left">
+          <a href="{{ curr_url(request, page=users.next_page_number()) }}">
+            {{ _('Next') }}
+            <span class="uk-margin-small-left" data-uk-pagination-next></span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  {% endif %}
+{% endblock %}

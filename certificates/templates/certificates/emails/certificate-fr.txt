@@ -1,0 +1,13 @@
+Bonjour {{name}},
+
+Ceci est votre confirmation de réception de bon(s)-cadeau(x), que vous pouvez télécharger ici:
+{{download_url}}
+
+Veuillez imprimer le fichier PDF ci-joint et l’apporter au club pour l’échanger contre sa valeur.
+
+Le mode d’emploi, y compris les conditions d’utilisation, est imprimé sur chaque bon-cadeau. Les bons-cadeaux ont une grande valeur, veuillez les protéger en conséquence.
+
+Si vous avez des questions à ce sujet, veuillez communiquer avec nous au numéro ci-dessous.
+
+Au plaisir!
+{{signature.plaintext_fr}}

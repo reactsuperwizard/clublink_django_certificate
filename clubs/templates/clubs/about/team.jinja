@@ -1,0 +1,21 @@
+{% extends 'clubs/about/base.jinja' %}
+
+{% block after_main %}
+  <div class="wrapper">
+    <div class="team-members">
+      {% for member in team_members %}
+        <div class="team-member">
+          <span class="photo" style="{% if member.photo %}background-image: url('{{ member.photo.url }}');{% endif %}"></span>
+          <div class="title">{{ member.job_title }}</div>
+          <div class="name">{{ member.name }}</div>
+          <div class="meta">
+            <div>{{ member.phone }}</div>
+            {% if member.email %}
+              <div><a href="mailto:{{ member.email }}">{{ member.email }}</a></div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% if club %}
+  <p>
+    <strong>Club Website:</strong>
+    {{ club.name }}
+  </p>
+{% endif %}
+
+<p>
+  <strong>Name:</strong>
+  {{ data['first_name'] }} {{ data['last_name'] }}
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <a href="mailto:{{ data['email'] }}">{{ data['email'] }}</a>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  {{ data['phone'] }}
+</p>
+
+<p>
+  <strong>Location</strong>
+  {{ data['location'] }}
+</p>
+
+<p>
+  <strong>Preferred Date</strong>
+  {{ data['preferred_date'] }}
+</p>
+
+<p>
+  <strong>Type of Event</strong>
+  {{ data['type_of_event'] }}
+</p>
+
+<p>
+  <strong>Number of Guests</strong>
+  {{ data['number_of_guests'] }}
+</p>
+
+<p>
+  <strong>Comments/Questions:</strong>
+  <div>{{ data['additional_info'] }}</div>
+</p>

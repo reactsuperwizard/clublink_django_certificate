@@ -1,0 +1,18 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% from 'cms/includes/forms.jinja' import render_field %}
+
+{% block main %}
+
+  <h3>{{ _('Delete Calendar Event') }}</h3>
+
+  <form method="post" enctype="multipart/form-data" action="" class="uk-form-stacked" novalidate>
+    {{ csrf_input(csrf_token) }}
+
+    <div class="uk-background-muted uk-margin uk-padding">
+        {{ render_field(form.delete_options) }}
+    </div>
+
+    <input type="submit" class="uk-button uk-button-primary" value="{{ _('Confirm') }}" />
+  </form>
+{% endblock %}

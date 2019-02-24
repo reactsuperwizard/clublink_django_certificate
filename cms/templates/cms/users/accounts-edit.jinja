@@ -1,0 +1,125 @@
+{% extends 'cms/users/base.jinja' %}
+
+{% from 'cms/includes/forms.jinja' import render_field %}
+{% from 'cms/users/includes/user-form.jinja' import render_user_form %}
+
+{% block main %}
+  <h3>{{ _('Edit User Account') }}</h3>
+
+  <ul data-uk-tab>
+    <li><a href="#">{{ _('Details') }}</a></li>
+    {% if request.user.is_staff %}
+      <li {% if 'edit-departments' in request.GET %}class="uk-active"{% endif %}>
+        <a href="#">{{ _('Departments') }}</a>
+      </li>
+      <li {% if 'edit-clubs' in request.GET %}class="uk-active"{% endif %}>
+        <a href="#">{{ _('Clubs') }}</a>
+      </li>
+      <li {% if 'edit-permissions' in request.GET %}class="uk-active"{% endif %}>
+        <a href="#">{{ _('Permissions') }}</a>
+      </li>
+    {% endif %}
+  </ul>
+
+  <ul class="uk-switcher uk-margin">
+    <li>
+      <form method="post" action="" class="uk-form-stacked" novalidate>
+        {{ csrf_input(csrf_token) }}
+
+        {{ render_user_form(user_form) }}
+
+        <div class="uk-margin-medium-top">
+          <input type="submit" name="edit" class="uk-button uk-button-primary" value="{{ _('Save') }}" />
+        </div>
+      </form>
+    </li>
+    {% if user.is_staff %}
+      <li>
+        <form method="post" data-autosubmit>
+          <div class="uk-form-stacked uk-padding-small uk-background-muted">
+            {{ csrf_input(csrf_token) }}
+            <input type="hidden" name="departments" value="">
+
+            <div>
+              <label class="uk-form-label">{{ _('Assign Department') }}</label>
+              <div class="uk-form-controls">
+                <select class="uk-select" name="add">
+                  <option value=""></option>
+                  {% for d in unassigned_departments %}
+                    <option value="{{ d.pk }}">{{ d.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <h4>{{ _('Assigned departments:') }}</h4>
+
+          {% for d in assigned_departments %}
+            <div class="uk-margin">
+              <div class="uk-card-small uk-card-default uk-card-body uk-clearfix">
+                <button name="delete" value="{{ d.pk }}" type="submit" class="uk-align-right uk-button-small uk-button uk-button-link">
+                  <span data-uk-icon="icon: close"></span>
+                </button>
+                {{ d.name }}
+              </div>
+            </div>
+          {% endfor %}
+
+          {% if not assigned_departments.count() %}
+            <p class="uk-text-center">{{ _('No departments assigned.') }}</p>
+          {% endif %}
+        </form>
+      </li>
+
+      <li>
+        <form method="post" data-autosubmit>
+          <div class="uk-form-stacked uk-padding-small uk-background-muted">
+            {{ csrf_input(csrf_token) }}
+            <input type="hidden" name="clubs" value="">
+
+            <div>
+              <label class="uk-form-label">{{ _('Assign Club') }}</label>
+              <div class="uk-form-controls">
+                <select class="uk-select" name="add">
+                  <option value=""></option>
+                  {% for d in unassigned_clubs %}
+                    <option value="{{ d.pk }}">{{ d.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <h4>{{ _('Assigned clubs:') }}</h4>
+
+          {% for d in assigned_clubs %}
+            <div class="uk-margin">
+              <div class="uk-card-small uk-card-default uk-card-body uk-clearfix">
+                <button name="delete" value="{{ d.pk }}" type="submit" class="uk-align-right uk-button-small uk-button uk-button-link">
+                  <span data-uk-icon="icon: close"></span>
+                </button>
+                {{ d.name }}
+              </div>
+            </div>
+          {% endfor %}
+
+          {% if not assigned_clubs.count() %}
+            <p class="uk-text-center">{{ _('No clubs assigned.') }}</p>
+          {% endif %}
+        </form>
+      </li>
+
+      <li>
+        <form method="post" action="?edit-permissions" class="uk-form-stacked" novalidate>
+          {{ csrf_input(csrf_token) }}
+
+          {{ render_field(permissions_form.can_access_cms) }}
+          {{ render_field(permissions_form.can_impersonate_user) }}
+
+          <input type="submit" name="permissions" class="uk-button uk-button-primary" value="{{ _('Save') }}" />
+        </form>
+      </li>
+    {% endif %}
+  </ul>
+{% endblock %}

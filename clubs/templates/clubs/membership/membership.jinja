@@ -1,0 +1,22 @@
+{% extends 'clubs/membership/base.jinja' %}
+
+{% block after_main %}
+  <div class="wrapper">
+    <div class="righted">
+      {% if request.club.slug == 'playersclub' %}
+        <a href="https://clublinkplayersclub.ca/" class="button" target="_blank">{{ _('Buy Now') }}</a>
+      {% elif request.club.slug == 'golfconcierge' %}
+        <a href="{{ url('membership.inquiry') }}" class="button">{{ _('Inquiry Form') }}</a>
+      {% else %}
+        <a href="{{ url('membership.inquiry') }}" class="button">{{ _('Membership Inquiry') }}</a>
+      {% endif %}
+      {% if request.club.membership_brochure %}
+        <p>
+          <a href="{{ request.club.membership_brochure.url }}" target="_blank" class="button">
+            {{ _('Membership Brochure') }}
+          </a>
+        </p>
+      {% endif %}      
+    </div>
+  </div>
+{% endblock %}

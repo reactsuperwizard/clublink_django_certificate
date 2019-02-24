@@ -1,0 +1,87 @@
+<p>
+  Dear {{ rsvp.user.first_name }},
+</p>
+
+<p>
+  A reservation for you has been made online{%if bywhom %} by {{bywhom.first_name}} {{bywhom.last_name}}{% endif %}.
+</p>
+
+<p>
+  As a reminder your confirmation number is:
+  <strong>{{ rsvp.confirmation_number }}</strong>
+</p>
+
+<p>
+  <span style="text-decoration: underline">EVENT INFORMATION:</span>
+
+  {% if rsvp.user.membership_number %}
+  <br />Member:
+  <strong>{{ rsvp.user.membership_number }}</strong>
+  {% endif %}
+  <br />Event:
+  <strong>{{ rsvp.event.name }}</strong>
+  <br />Date:
+  <strong>{{ rsvp.event.date }}</strong>
+  <br />Adults:
+  <strong>{{ rsvp.number_of_adults }}</strong>
+  <br />Children:
+  <strong>{{ rsvp.number_of_children }}</strong>
+</p>
+
+{% if rsvp.guest_data or rsvp.children.exists() %}
+
+<p>
+  In addition, the following guests have been registered:
+</p>
+
+{% if rsvp.guest_data %}
+<p>
+  <strong>Non-members</strong>
+  {% for guest in rsvp.guest_data %}
+  <div>{{guest.name}}</div>
+  {% endfor %}
+</p>
+{% endif %} 
+
+{% if rsvp.children.exists() %}
+<p>
+  <strong>Members</strong>
+  <div>Members will each receive individual emails.</div>
+  {% for child in rsvp.children.all() %}
+  <div>{{child.user.first_name}} {{child.user.last_name}} ({{child.user.membership_number}})</div>
+  {% endfor %}
+</p>
+
+{% endif %}
+
+{% endif %}
+
+<p>
+  {% if rsvp.event.custom_question_1 %}
+  <br />{{ rsvp.event.custom_question_1 }}:
+  <strong>{{ rsvp.custom_answer_1 }}</strong>
+  {% endif %} {% if rsvp.event.custom_question_2 %}
+  <br />{{ rsvp.event.custom_question_2 }}:
+  <strong>{{ rsvp.custom_answer_2 }}</strong>
+  {% endif %} {% if rsvp.event.custom_question_3 %}
+  <br />{{ rsvp.event.custom_question_3 }}:
+  <strong>{{ rsvp.custom_answer_3 }}</strong>
+  {% endif %} {% if rsvp.event.custom_question_4 %}
+  <br />{{ rsvp.event.custom_question_4 }}:
+  <strong>{{ rsvp.custom_answer_4 }}</strong>
+  {% endif %} {% if rsvp.event.custom_question_5 %}
+  <br />{{ rsvp.event.custom_question_5 }}:
+  <strong>{{ rsvp.custom_answer_5 }}</strong>
+  {% endif %}
+</p>
+
+<p>
+   {% if rsvp.notes %}Notes: 
+  <strong>{{ rsvp.notes }}</strong>
+  {% endif %}
+</p>
+
+<p>
+  We look forward to seeing you,
+  <br />{{ rsvp.event.club.name }} Staff
+</p>

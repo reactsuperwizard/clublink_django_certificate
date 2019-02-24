@@ -1,0 +1,82 @@
+{% extends 'base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_breadcrumbs %}
+
+{% block head %}
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;subset=latin-ext" rel="stylesheet">
+  {{ render_bundle('admin', 'css') }}
+{% endblock %}
+
+{% block body_class %}minimal pushable{% endblock %}
+
+{% block content %}
+  <div data-uk-sticky class="uk-navbar-container tm-navbar-container uk-sticky-fixed" {% if settings.AWS_STORAGE_BUCKET_NAME == 'production-club' %}style="background: black"{% endif %}>
+    <div class="uk-container uk-container-expand">
+      <div class="uk-navbar">
+        <div class="uk-navbar-left">
+          <a href="{{ url('home') }}" class="uk-navbar-item uk-logo tm-logo">
+            <span data-uk-icon="icon: nut; ratio: 2"></span> ClubLink Central
+          </a>
+        </div>
+        <div class="uk-navbar-right">
+          {% block navbar_right %}
+            <ul class="uk-navbar-nav">
+              {% if request.user.permits('can_impersonate_user') %}
+                <li>
+                  <a href="{{ url('users.impersonate') }}">{{ _('Impersonate User') }}</a>
+                </li>
+              {% endif %}
+              <li>
+                <a href="{{ url('users.my-account') }}">{{ _('My Account') }}</a>
+              </li>
+            </ul>
+            <div class="uk-navbar-item">
+              <a href="{{ url('logout') }}" class="uk-button uk-button-default">{{ _('Sign Out') }}</a>
+            </div>
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% block document%}
+    <div class="tm-sidebar-left uk-background-muted">
+      {% block left_sidebar %}{% endblock %}
+    </div>
+
+    <div class="tm-main uk-section uk-section-default">
+      <div class="uk-container tm-container-small main-container">
+        {% block breadcrumbs %}
+          {% if breadcrumbs %}
+            {{ render_breadcrumbs(breadcrumbs) }}
+          {% endif %}
+        {% endblock %}
+
+        {% if messages %}
+          {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+              {% set message_class = 'uk-alert-success' %}
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+              {% set message_class = 'uk-alert-warning' %}
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+              {% set message_class = 'uk-alert-primary' %}
+            {% else %}
+              {% set message_class = 'uk-alert-warning' %}
+            {% endif %}
+            <div class="{{ message_class }}" data-uk-alert>
+              <a class="uk-alert-close" data-uk-close></a>
+              <p>{{ message }}</p>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        {% block main %}{% endblock%}
+      </div>
+    </div>
+  {% endblock %}
+{% endblock %}
+
+{% block after_content %}
+  {{ render_bundle('admin', 'js') }}
+  {% block extra_scripts %}{% endblock %}
+{% endblock %}

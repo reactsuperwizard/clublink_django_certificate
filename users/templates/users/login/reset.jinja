@@ -1,0 +1,44 @@
+{% extends base_template %}
+
+{% block header %}
+  {% if registering %}
+    {{ page_header(image=static('generic-header.jpg'), headline=_('Registration')) }}
+  {% else %}
+    {{ page_header(image=static('generic-header.jpg'), headline=_('Reset Password')) }}
+  {% endif %}
+{% endblock %}
+
+{% block main %}
+  <div class="wrapper">
+    <h2></h2>
+
+    {% if registering %}
+      <p class="centered">
+        {% trans %}
+          You must create a password to access the member portal.
+        {% endtrans %}
+      </p>
+    {% endif %}
+    <p class="centered">
+      {% trans %}
+        Passwords must be at least 8 characters long and contain a mix of lowercase characters,
+        uppercase characters and at least one number.
+      {% endtrans %}
+    </p>
+    <form action="" method="post" novalidate>
+      {{ form.non_field_errors() }}
+      {{ csrf_input(csrf_token) }}
+
+      {% if registering %}
+        {{ form_field(form.email) }}
+      {% endif %}
+
+      {{ form_field(form.password) }}
+      {{ form_field(form.password_confirm) }}
+      <input type="submit" value="{{ _('Submit') }}" />
+    </form>
+    <div class="centered">
+      <a href="{{ url('login') }}">← {{ _('Back to Login') }}</a>
+    </div>
+  </div>
+{% endblock %}

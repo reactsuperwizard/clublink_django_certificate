@@ -1,0 +1,15 @@
+{% extends 'clubs/events/base.jinja' %}
+
+{% from 'cms/macros.jinja' import image_selector with context %}
+
+{% block after_main %}
+  <div class="quarters">
+  {% if request.site.id == 1 %}
+    {% include "clubs/includes/cad-events-buckets.jinja" %}
+  {% else %}
+    {% include "clubs/includes/usa-events-buckets.jinja" %}
+  {% endif %}
+
+
+  </div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'cms/corp_site/base.jinja' %} {% from 'cms/includes/forms.jinja' import render_field %} {% macro render_snippets_form(form)
+%} {% for field in form %} {{ render_field(field) }} {% endfor %} {% endmacro %} {% macro render_images_form(form, page)
+%} {% for field in form %} {% if page.get_image(field.name, locale='en', fallback=False) %} {{ render_field(field, page.get_image(field.name,
+locale='en', fallback=False).image) }} {% else %} {{ render_field(field) }} {% endif %} {% endfor %} {% endmacro %} {% block
+left_sidebar %} {{super ()}} {% if page.site %}
+<h6>
+  <img {% if page.site.id==1 %} src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg" {% else %} src="https://lipis.github.io/flag-icon-css/flags/4x3/us.svg"
+    {% endif %} style="width: 30px; margin-right: 10px;"> {{page.site.domain}}
+</h6>
+{% endif %} {% endblock %} {% block main %}
+<h3>{{ _('Edit Page') }} {% if page.site %}-
+  <img {% if page.site.id==1 %} src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"
+    {% else %} src="https://lipis.github.io/flag-icon-css/flags/4x3/us.svg" {% endif %} style="width: 30px;"> {{page.site.domain}}{% endif %}</h3>
+
+<ul data-uk-tab>
+  <li>
+    <a href="#">{{ _('Settings') }}</a>
+  </li>
+  <li {% if 'edit-snippets' in request.GET %}class="uk-active" {% endif %}>
+    <a href="#">{{ _('Snippets') }}</a>
+  </li>
+  <li {% if 'edit-images' in request.GET %}class="uk-active" {% endif %}>
+    <a href="#">{{ _('Images') }}</a>
+  </li>
+</ul>
+
+<ul class="uk-switcher uk-margin">
+  <li>
+    <form method="post" action="" class="uk-form-stacked" novalidate>
+      {{ csrf_input(csrf_token) }} {{ render_field(page_form.name_en) }} {{ render_field(page_form.name_fr) }} {% if not page.is_locked
+      %} {{ render_field(page_form.parent) }} {{ render_field(page_form.slug) }} {% endif %} {{ render_field(page_form.should_redirect)
+      }} {{ render_field(page_form.internal_redirect) }} {{ render_field(page_form.external_redirect) }} {{ render_field(page_form.show_in_main_menu)
+      }} {{ render_field(page_form.list_in_main_menu_subnav) }} {{ render_field(page_form.name_in_main_menu_subnav_en) }}
+      {{ render_field(page_form.name_in_main_menu_subnav_fr) }} {{ render_field(page_form.show_page_nav) }} {{ render_field(page_form.list_in_child_page_nav)
+      }} {{ render_field(page_form.name_in_child_page_nav_en) }} {{ render_field(page_form.name_in_child_page_nav_fr) }}
+      {{ render_field(page_form.opens_in_new_window) }} {{ render_field(page_form.site_id) }} {{ render_field(page_form.facebook_pixel_id)
+      }}
+
+      <input type="submit" name="settings" class="uk-button uk-button-primary" value="{{ _('Save') }}" />
+    </form>
+  </li>
+
+  <li>
+    <ul class="uk-subnav uk-subnav-pill" data-uk-switcher>
+      <li>
+        <a href="#">{{ _('English') }}</a>
+      </li>
+      <li {% if request.GET.get( 'locale')=='fr' %}class="uk-active" {% endif %}>
+        <a href="#">{{ _('French') }}</a>
+      </li>
+    </ul>
+
+    <ul class="uk-switcher uk-margin">
+      <li>
+        <form method="post" action="" class="uk-form-stacked" novalidate>
+          {{ csrf_input(csrf_token) }} {{ render_snippets_form(snippets_form_en) }}
+          <input type="submit" name="snippets_en" class="uk-button uk-button-primary" value="{{ _('Save') }}" />
+        </form>
+      </li>
+      <li>
+        <form method="post" action="" class="uk-form-stacked" novalidate>
+          {{ csrf_input(csrf_token) }} {{ render_snippets_form(snippets_form_fr) }}
+          <input type="submit" name="snippets_fr" class="uk-button uk-button-primary" value="{{ _('Save') }}" />
+        </form>
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <form method="post" action="" class="uk-form-stacked" enctype="multipart/form-data" novalidate>
+      {{ csrf_input(csrf_token) }} {{ render_images_form(images_form, page) }}
+      <input type="submit" name="images" class="uk-button uk-button-primary" value="{{ _('Save') }}" />
+    </form>
+  </li>
+</ul>
+{% endblock %}

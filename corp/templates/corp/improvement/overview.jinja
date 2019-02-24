@@ -1,0 +1,7 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block page_footer %}
+  <div class="image-block" style="{% if page.get_image('cta') %}background-image: url('{{ page.get_image('cta') }}');{% endif %}">
+    {{ image_selector(page, 'cta') }}
+  </div>
+{% endblock %}

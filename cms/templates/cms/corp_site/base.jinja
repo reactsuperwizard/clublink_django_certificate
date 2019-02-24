@@ -1,0 +1,33 @@
+{% extends 'cms/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_breadcrumbs %}
+
+{% block left_sidebar %}
+  <ul class="uk-nav uk-text-small">
+    <li class="uk-nav-header">{{ _('Corporate Site Manager') }}</li>
+    <li>
+      <a class="uk-link-muted" href="{{ url('corp-site.pages') }}">
+        {{ _('Pages') }}
+      </a>
+    </li>
+    <li>
+      <a class="uk-link-muted" href="{{ url('corp-site.news') }}">
+        {{ _('News') }}
+      </a>
+    </li>
+    <li>
+      <a class="uk-link-muted" href="{{ url('corp-site.events-gallery') }}">
+        {{ _('Events Galleries') }}
+      </a>
+    </li>
+    <li>
+      <a class="uk-link-muted" href="{{ url('corp-site.golfforlife') }}">
+        {{ _('Events Galleries') }}
+      </a>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block main %}
+  {% block panel %}{% endblock %}
+{% endblock %}

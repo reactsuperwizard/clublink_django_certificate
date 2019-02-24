@@ -1,0 +1,22 @@
+{% from 'cms/macros.jinja' import shorttext_snippet_inhereted, image_selector with context %}
+
+{% macro page_header(page, image=None, headline=None) %}
+  {% if image %}
+    {% set header_image = image %}
+  {% else %}
+    {% set header_image = page.get_image('header', inhereted=True) %}
+  {% endif %}
+  <header style="{% if header_image %}background-image: url('{{ header_image }}');{% endif %}">
+    {% if not image %}
+      {{ image_selector(page, 'header') }}
+    {% endif %}
+
+    <a href="{{ url('home') }}" class="{% if request.LANGUAGE_CODE == 'fr' %}cl-logo-fr {% endif %} cl-logo iefix-bgcontain">ClubLink</a>
+
+    {% if headline %}
+      <h1>{{ headline }}</h1>
+    {% else %}
+      {{ shorttext_snippet_inhereted(page, 'headline', 'h1') }}
+    {% endif %}
+  </header>
+{% endmacro %}

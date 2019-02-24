@@ -1,0 +1,53 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% block main %}
+  <h3>{{ _('Club Galleries') }}</h3>
+
+  <div class="uk-padding-small uk-background-muted">
+    <a class="uk-button uk-button-primary" href="{{ url('club-site.gallery-add', club_pk=club.pk) }}">
+      {{ _('Add New') }}
+    </a>
+    <a
+        class="uk-align-right uk-button uk-button-secondary"
+        href="{{ url('club-site.gallery-reorder', club_pk=club.pk) }}"
+    >
+      {{ _('Manage Order') }}
+    </a>
+  </div>
+
+  <table class="uk-table uk-table-small uk-table-hover">
+    <thead>
+      <tr>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Slug') }}</th>
+        <th class="uk-text-right">{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for gallery in galleries %}
+        {% set edit_url = url('club-site.gallery-edit', club_pk=club.pk, gallery_pk=gallery.pk) %}
+        <tr>
+          <td><a href="{{ edit_url }}">{{ gallery.name }}</a></td>
+          <td>{{ gallery.slug }}</td>
+          <td class="uk-text-right">
+            <a
+                class="uk-margin-small-left"
+                data-uk-icon="icon: pencil"
+                href="{{ edit_url }}"
+            ></a>
+
+            <a
+                class="uk-margin-small-left"
+                data-uk-icon="icon: trash"
+                href="{{ url('club-site.gallery-delete', club_pk=club.pk, gallery_pk=gallery.pk) }}"
+            ></a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if galleries.count() == 0 %}
+    <p class="uk-text-center">{{ _('No galleries exist.') }}</p>
+  {% endif %}
+{% endblock %}

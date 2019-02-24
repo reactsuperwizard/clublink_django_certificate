@@ -1,0 +1,31 @@
+            <tr>
+              <td><a href="{{ edit_url }}">{{ page.name }}</a></td>
+              <td><a href="{{ edit_url }}">{{ page.full_path }}/</a></td>
+              <td>
+                {% if page.is_locked %}
+                  <span data-uk-icon="icon: check"></span>
+                {% else %}
+                  <span data-uk-icon="icon: close"></span>
+                {% endif %}
+              </td>
+              <td class="uk-text-right">
+                <a
+                    class="uk-margin-small-left"
+                    data-uk-icon="icon: pencil"
+                    href="{{ edit_url }}"
+                ></a>
+
+                <a
+                    class="uk-margin-small-left"
+                    data-uk-icon="icon: link"
+                    href="{{ preview_url }}"
+                    target="_blank"
+                ></a>
+
+                <a
+                    class="uk-margin-small-left"
+                    data-uk-icon="icon: trash"
+                    href="{{ url('corp-site.pages-delete', page_pk=page.pk) }}"
+                ></a>
+              </td>
+            </tr>

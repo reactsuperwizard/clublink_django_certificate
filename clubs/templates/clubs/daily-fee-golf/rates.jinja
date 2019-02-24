@@ -1,0 +1,27 @@
+{% extends 'clubs/daily-fee-golf/base.jinja' %}
+
+{% block before_main %}
+
+  {% if request.site.id == 1 %}
+  <div class="wrapper">
+    <a class="cpc-banner" href="https://playersclub.clublink.ca/" target="_blank"></a>
+  </div>
+  {% endif %}
+
+  <div class="wrapper">
+  
+    <form class="filter-form">
+      <div class="field">
+        <select data-goto-url>
+          <option value="?">{{ request.club.name }}</option>
+          {% for club in all_clubs.filter(daily_fee_location=True, site=request.site).exclude(pk=request.club.pk) %}
+              <option value="?filter_club={{ club.pk }}" {% if request.GET.get('filter_club') == '{}'.format(club.pk) %}selected{% endif %}>
+                {{ club.name }}
+              </option>
+          {% endfor %}
+        </select>
+        <label>{{ _('Filter by Club') }}</label>
+      </div>
+    </form>
+  </div>
+{% endblock %}

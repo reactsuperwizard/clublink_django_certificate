@@ -1,0 +1,31 @@
+{% extends 'cms/base.jinja' %}
+
+{% block left_sidebar %}
+  <ul class="uk-nav uk-text-small">
+    <li class="uk-nav-header">{{ _('Tools') }}</li>
+    {% if request.user.is_superuser or request.user.clubs.count() %}
+      <li>
+        <a class="uk-link-muted" href="{{ url('club-site.home') }}">
+          {{ _('Club Site Manager') }}
+        </a>
+      </li>
+    {% endif %}
+    {% if request.user.is_superuser %}
+      <li>
+        <a class="uk-link-muted" href="{{ url('corp-site.home') }}">
+          {{ _('Corporate Site Manager') }}
+        </a>
+      </li>
+    {% endif %}
+    <li>
+      <a class="uk-link-muted" href="{{ url('users.home') }}">
+        {{ _('User Management') }}
+      </a>
+    </li>
+    <li>
+      <a class="uk-link-muted" href="{{ gc_url('home') }}">
+        {{ _('Gift Certificate Portal') }}
+      </a>
+    </li>
+  </ul>
+{% endblock %}

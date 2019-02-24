@@ -1,0 +1,116 @@
+{% if request.member_portal %}
+  {% if request.club.code == '7100' %}
+    <div style="{% if page.get_image('mp-news-bg') %}background-image: url('{{ page.get_image('mp-news-bg') }}');{% endif %}">
+      <a href="{{ url('linkline') }}">
+        <span>{{ _('LinkLine Online') }}</span>
+      </a>
+      {{ image_selector(page, 'mp-news-bg') }}
+    </div>
+  {% else %}
+    <div style="{% if page.get_image('mp-news-bg') %}background-image: url('{{ page.get_image('mp-news-bg') }}');{% endif %}">
+      <a href="{{ url('news') }}">
+        <span>{{ _('My News') }}</span>
+      </a>
+      {{ image_selector(page, 'mp-news-bg') }}
+    </div>
+  {% endif %}
+
+  {% if request.club.code == '7200' %}
+    <div style="{% if page.get_image('mp-club-bg') %}background-image: url('{{ page.get_image('mp-club-bg') }}');{% endif %}">
+      <a href="{{ url('linkline') }}">
+        <span>{{ _('LinkLink Online') }}</span>
+      </a>
+      {{ image_selector(page, 'mp-club-bg') }}
+    </div>
+  {% elif request.club.code == '7100' %}
+    <div style="{% if page.get_image('mp-club-bg') %}background-image: url('{{ page.get_image('mp-club-bg') }}');{% endif %}">
+      <a href="{{ corp_url('about.our-clubs') }}">
+        <span>{{ _('Our Clubs') }}</span>
+      </a>
+      {{ image_selector(page, 'mp-club-bg') }}
+    </div>
+  {% else %}
+    <div style="{% if page.get_image('mp-club-bg') %}background-image: url('{{ page.get_image('mp-club-bg') }}');{% endif %}">
+      <a href="{{ url('my-club') }}">
+        <span>{{ _('My Club') }}</span>
+      </a>
+      {{ image_selector(page, 'mp-club-bg') }}
+    </div>
+  {% endif %}
+
+  <div style="{% if page.get_image('mp-account-bg') %}background-image: url('{{ page.get_image('mp-account-bg') }}');{% endif %}">
+    <a href="{{ url('my-account') }}">
+      <span>{{ _('My Account') }}</span>
+    </a>
+    {{ image_selector(page, 'mp-account-bg') }}
+  </div>
+
+  <div style="{% if page.get_image('mp-host-event-bg') %}background-image: url('{{ page.get_image('mp-host-event-bg') }}');{% endif %}">
+    <a href="{{ url('events') }}">
+      <span>{{ _('Host My Event') }}</span>
+    </a>
+    {{ image_selector(page, 'mp-host-event-bg') }}
+  </div>
+{% else %}
+  {% if request.club.code == '7100' %}
+    <div style="{% if page.get_image('about-bg') %}background-image: url('{{ page.get_image('about-bg') }}');{% endif %}">
+      <a href="{{ corp_url('about.our-clubs') }}">
+        <span>{{ _('Our Clubs') }}</span>
+      </a>
+      {{ image_selector(page, 'about-bg') }}
+    </div>
+  {% elif request.club.code == '7200' %}
+    <div style="{% if page.get_image('about-bg') %}background-image: url('{{ page.get_image('about-bg') }}');{% endif %}">
+      <a href="{{ url('membership') }}">
+        <span>{{ _('Players Club Ultimate') }}</span>
+      </a>
+      {{ image_selector(page, 'about-bg') }}
+    </div>
+  {% else %}
+    <div style="{% if page.get_image('about-bg') %}background-image: url('{{ page.get_image('about-bg') }}');{% endif %}">
+      <a href="{{ url('about') }}">
+        <span>{{ _('About the Club') }}</span>
+      </a>
+      {{ image_selector(page, 'about-bg') }}
+    </div>
+  {% endif %}
+
+  {% if request.club.code == '7200' %}
+    <div style="{% if page.get_image('membership-bg') %}background-image: url('{{ page.get_image('membership-bg') }}');{% endif %}">
+      <a href="{{ corp_url('daily-fee-golf') }}">
+        <span>{{ _('Our Clubs') }}</span>
+      </a>
+      {{ image_selector(page, 'membership-bg') }}
+    </div>
+  {% else %}
+    <div style="{% if page.get_image('membership-bg') %}background-image: url('{{ page.get_image('membership-bg') }}');{% endif %}">
+      <a href="{{ url('membership') }}">
+        <span>{{ _('Membership') }}</span>
+      </a>
+      {{ image_selector(page, 'membership-bg') }}
+    </div>
+  {% endif %}
+
+  <div style="{% if page.get_image('events-bg') %}background-image: url('{{ page.get_image('events-bg') }}');{% endif %}">
+    <a href="{{ url('events') }}">
+      <span>{{ _('Events') }}</span>
+    </a>
+    {{ image_selector(page, 'events-bg') }}
+  </div>
+
+  {% if request.club.daily_fee_location %}
+    <div style="{% if page.get_image('daily-fee-bg') %}background-image: url('{{ page.get_image('daily-fee-bg') }}');{% endif %}">
+      <a href="{{ url('daily-fee-golf.book') }}">
+        {{ image_selector(page, 'daily-fee-bg') }}
+        <span>{{ _('Daily Fee Golf') }}</span>
+      </a>
+    </div>
+  {% else %}
+    <div style="{% if page.get_image('game-improvement-bg') %}background-image: url('{{ page.get_image('game-improvement-bg') }}');{% endif %}">
+      <a href="{{ url('game-improvement') }}">
+        {{ image_selector(page, 'game-improvement-bg') }}
+        <span>{{ _('Game Improvement') }}</span>
+      </a>
+    </div>
+  {% endif %}
+{% endif %}

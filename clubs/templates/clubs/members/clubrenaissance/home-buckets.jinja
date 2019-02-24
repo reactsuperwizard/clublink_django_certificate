@@ -1,0 +1,11 @@
+{% extends 'clubs/members/base-home-buckets.jinja' %}
+
+
+{% block fourth_bucket %}
+  <div style="{% if page.get_image('mp-wellness-spa-bg') %}background-image: url('{{ page.get_image('mp-wellness-spa-bg') }}');{% endif %}">
+    <a href="/wellness-spa">
+      <span>{{ _('Wellness & Spa') }}</span>
+    </a>
+    {{ image_selector(page, 'mp-wellness-spa-bg') }}
+  </div>
+{% endblock %}

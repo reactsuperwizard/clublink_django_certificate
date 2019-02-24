@@ -1,0 +1,18 @@
+{% extends 'cms/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_breadcrumbs %}
+
+{% block left_sidebar %}
+  <ul class="uk-nav uk-text-small">
+    <li class="uk-nav-header">{{ _('Assets Manager') }}</li>
+    <li>
+      <a class="uk-link-muted" href="{{ url('assets.browser') }}">
+        {{ _('File Browser') }}
+      </a>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block main %}
+  {% block panel %}{% endblock %}
+{% endblock %}

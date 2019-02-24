@@ -1,0 +1,131 @@
+{% extends 'base.jinja' %}
+
+{% block head %}
+  {{ render_bundle('clubs', 'css') }}
+  {% if bundles %}
+    {% for bundle in bundles %}
+      {{ render_bundle(bundle, 'css') }}
+    {% endfor %}
+  {% endif %}
+  {% if settings.DEBUG %}
+    {{ render_bundle('dev', 'css') }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <span class="menu-toggler" data-toggle="show-menu" data-toggle-target="body">
+    {{ _('Toggle Menu') }}
+  </span>
+
+  {% if request.club.bcg_style %}
+    <div class="cta desktop-only">
+      <a class="bcg-signin white button bcg-login" href="{{ url('login') }}" style="padding: 0 12px;">{{ _('Sign In') }}</a>
+    </div>
+  {% endif %}
+
+  {% block left_nav %}
+    {% if request.member_portal %}
+      <div class="user-message">
+        {% if request.member.first_name %}
+          {{ _('Welcome, {name}').format(name=request.member.first_name) }}
+        {% else %}
+          {{ _('Welcome') }}
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  {% include 'clubs/includes/spoof.jinja' %}
+
+  {% block right_nav %}
+    {% if request.member_portal %}
+      <div class="right-nav">
+        <a class="small white button" href="{{ url('my-account') }}">{{ _('My Account') }}</a>
+        <a class="small white flat-button" href="{{ url('logout') }}">{{ _('Sign Out') }}</a>
+      </div>
+    {% else %}
+      {% include 'clubs/includes/social-bar.jinja' %}
+    {% endif %}
+  {% endblock %}
+
+  <!-- Menu include start -->
+  {% include 'clubs/includes/menu.jinja' %}
+
+  <div class="page {% if request.club.bcg_style %}bcg-page{% endif %}">
+    {% block header %}{% endblock %}
+
+    <div class="main">
+      {% block main %}{% endblock %}
+    </div>
+
+    {% block page_footer %}{% endblock %}
+
+    <footer>
+      <div class="wrapper">
+        <section class=
+        "noprint">
+          <a href="{{ corp_url('home') }}" class="full-logo {{ request.LANGUAGE_CODE }}"></a>
+          {% if request.user.is_authenticated %}
+            <div>
+            {% if request.user.home_club %}
+              <a href="{{ url('my-account').replace(request.site.domain, request.user.home_club.site.domain) }}" class="white button">{{ _('My Account') }}</a>
+            {% endif %}
+            </div>
+            <a href="{{ url('logout') }}" class="white flat-button">{{ _('Sign Out') }}</a>
+          {% else %}
+            <div>
+              <a href="{{ url('membership.inquiry') }}" class="white button">{{ _('Become a Member') }}</a>
+            </div>
+            <a href="{{ url('login') }}" class="white flat-button">{{ _('Sign In') }}</a>
+          {% endif %}
+          {% include 'clubs/includes/social-bar.jinja' %}
+        </section>
+        <section>
+          <ul class="nav">
+            {% for p in request.club.pages.exclude(slug='').filter(parent=None) %}
+              {% if p.is_visible(request) %}
+                <li>
+                  <a href="{{ p.url }}" {% if p.redirects_externally %}target="_blank"{% endif %}>
+                    {{ p.name }}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+
+            <li><a href="{{ corp_url('employment') }}">{{ _('Employment') }}</a></li>
+            <li><a href="http://www.twcenterprises.ca/" target="_blank">{{ _('Investor Relations') }}</a></li>
+            <li><a href="https://www.lemaitre.ca/" target="_blank">{{ _('Real Estate') }}</a></li>
+            {% if request.site.id == 1 %}
+            <li><a href="{{ corp_url('shop') }}">{{ _('Shop') }}</a></li>
+            {% endif %}
+            <li><a href="{{ corp_url('privacy-policy') }}">{{ _('Privacy Policy') }}</a></li>
+            <li><a href="{{ corp_url('accessibility') }}">{{ _('Accessibility') }}</a></li>
+          </ul>
+        </section>
+        <section>
+          <ul class="footer-sponsors" data-slideshow="8000">
+            {% for advertisement in request.club.advertisements.filter(language__iexact=request.LANGUAGE_CODE) %}
+              <li>
+                <a class="thumbnail" style="background-image: url('{{ advertisement.get_thumbnail() }}');" href="{{ advertisement.url }}" target="_blank"></a>
+                <a class="full-image" style="background-image: url('{{ advertisement.get_image() }}');" href="{{ advertisement.url }}" target="_blank"></a>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+        <section>
+          {% include 'clubs/includes/footnote.jinja' %}
+        </section>
+      </div>
+    </footer>
+  </div>
+{% endblock %}
+
+{% block after_content %}
+  {{ render_bundle('clubs', 'js') }}
+  {% if bundles %}
+    {% for bundle in bundles %}
+      {{ render_bundle(bundle, 'js') }}
+    {% endfor %}
+  {% endif %}
+  {% block extra_scripts %}{% endblock %}
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'clubs/daily-fee-golf/base.jinja' %}
+
+{% block after_main %}
+  <div class="wrapper">
+    <iframe class="daily-fee-iframe" src="{{request.club.teeitup}}"></iframe>
+  </div>
+{% endblock %}

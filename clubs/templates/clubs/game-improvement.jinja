@@ -1,0 +1,15 @@
+{% extends 'clubs/generic/default.jinja' %}
+
+{% block main %}
+  <div class="wrapper">
+    {{ shorttext_snippet(page, 'heading_1', 'h2') }}
+    <div class="academy-logo" {% if request.club.academy_logo %}style="background-image: url('{{ request.club.academy_logo.url }}');{% endif %}"></div>
+    {{ richtext_snippet(page, 'copy_1') }}
+
+    {{ shorttext_snippet(page, 'heading_2', 'h2') }}
+    {{ richtext_snippet(page, 'copy_2') }}
+
+    {{ shorttext_snippet(page, 'heading_3', 'h2') }}
+    {{ richtext_snippet(page, 'copy_3') }}
+  </div>
+{% endblock %}

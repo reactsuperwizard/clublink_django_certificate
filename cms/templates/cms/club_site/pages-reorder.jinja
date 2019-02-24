@@ -1,0 +1,33 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% block main %}
+  <h3>{% if parent %}{{parent.name}}: {% endif %}{{ _('Re-order pages') }}</h3>
+
+  {% if parent %}
+    {% if parent.parent %}
+      {% set return_url = '?parent_id={}'.format(parent.parent.pk) %}
+    {% else %}
+      {% set return_url = '?' %}
+    {% endif %}
+    <a href="{{ return_url }}">← Back to Parent</a>
+  {% endif %}
+
+  <form class="uk-padding-small uk-padding-left uk-padding-right" method="post" action="">
+    {{ csrf_input(csrf_token) }}
+    <div data-uk-sortable="handle: .uk-sortable-handle">
+      {% for page in pages %}
+        <div class="uk-card-small uk-card-default uk-card-body">
+          <span class="uk-sortable-handle uk-margin-small-right" data-uk-icon="icon: table"></span>
+          {{ page.name }}
+          {% if page.children.count() %}
+            <a class="uk-float-right" href="?parent_id={{ page.pk }}">Re-order children</a>
+          {% endif %}
+          <input type="hidden" name="pk" value="{{ page.pk }}" />
+        </div>
+      {% endfor %}
+    </div>
+    <div class="uk-margin-medium uk-text-center">
+      <input type="submit" class="uk-button uk-button-primary" value="{{ _('Save Order') }}" />
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,70 @@
+<div class="menu">
+  <div class="container">
+    <div class="header">
+      {% if request.member_portal %}
+        <a href="{{ url('my-account') }}" class="white button">{{ _('My Account') }}</a>
+      {% elif request.member and request.member.home_club %}
+        <a href="{{ club_url(request.member.home_club, 'my-account') }}" class="white button">{{ _('My Account') }}</a>
+      {% else %}
+        <a href="{{ url('membership.inquiry') }}" class="white button">{{ _('Become a Member') }}</a>
+      {% endif %}
+      <div>
+        {% if request.user.is_authenticated %}
+          <a href="{{ url('logout') }}" class="white flat-button">{{ _('Sign Out') }}</a>
+        {% else %}
+          <a href="{{ url('login') }}" class="white flat-button">{{ _('Sign In') }}</a>
+        {% endif %}
+      </div>
+      {% if request.club.logo or request.club.dark_logo %}
+        {% set logo_url = request.club.dark_logo.url if request.club.dark_logo else request.club.logo.url %}
+        <div class="logo" style="background-image: url('{{ logo_url }}');"></div>
+      {% endif %}
+    </div>
+
+    <ul class="nav">
+      {% for p in request.club.pages.filter(parent=None) %}
+        {% if p.is_visible(request) %}
+          <li>
+            <a href="{{ p.url }}" {% if p.target %}target="{{ p.target }}"{% endif %}>
+              {{ p.name }}
+            </a>
+            <ul>
+              {% if p.list_in_main_menu_subnav %}
+                <li>
+                  <a href="{{ p.url }}" {% if p.target %}target="{{ p.target }}"{% endif %}>
+                    {{ p.name_in_main_menu_subnav }}
+                  </a>
+                </li>
+              {% endif %}
+              {% for c in p.children.all() %}
+                {% if c.is_visible(request) %}
+                  <li>
+                    <a href="{{ c.url }}" {% if c.target %}target="{{ c.target }}"{% endif %}>
+                      {{ c.name }}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <div class="footer">
+      <a href="{{ corp_url('home') }}" class="{% if request.LANGUAGE_CODE == 'fr' %}cl-logo-fr {% endif %} cl-logo iefix-bgcontain">ClubLink</a>
+      <div class="club-switcher">
+        {{ _('View another club:') }}
+        <select class="not-selectize" data-goto-url>
+          <option>{{ _('Select a club') }}</option>
+          {% for club in all_clubs.filter(is_resort=False) %}
+              <option value="{{ club_url(club, 'home') }}">
+                {{ club.name }}
+              </option>
+          {% endfor %}
+        </select>
+      </div>
+      {% include 'clubs/includes/footnote.jinja' %}
+    </div>
+  </div>
+</div>

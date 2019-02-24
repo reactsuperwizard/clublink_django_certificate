@@ -1,0 +1,47 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% block main %}
+  <h3>{{ _('Switch Club') }}</h3>
+
+  <ul uk-tab>
+    {% for site in sites %}
+      <li class="{% if site == current_site %}active{% endif %}"><a href="#">{{ site.name }} ({{site.domain}})</a></li>
+    {% endfor %}
+  </ul>
+
+<ul class="uk-switcher uk-margin">
+
+{% for site in sites %}
+  <li class="{% if site == current_site %}active{% endif %}">
+    <div data-uk-grid>
+      {% for club in site.clubs.all() %}
+
+        <div class="uk-width-1-4">
+          <div class="uk-card uk-card-small uk-card-default tm-full-card">
+            <div class="uk-card-body" id="{{club.name}}">
+              {% if club.logo %}
+                <div class="tm-square-image-contained" style="background-image: url('{{ club.logo_url }}')"></div>
+              {% else %}
+                <div>{{ club.name }}</div>
+              {% endif %}
+            </div>
+            <div class="uk-card-footer uk-text-center">
+              <form method="post" action="">
+                {{ csrf_input(csrf_token) }}
+                <input type="hidden" name="pk" value="{{ club.pk }}" />
+                <button type="submit" class="uk-button uk-button-default">
+                  {{ _('Select') }}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </li>
+
+{% endfor %}
+
+</ul>  
+
+{% endblock %}

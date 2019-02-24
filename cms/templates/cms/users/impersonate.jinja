@@ -1,0 +1,102 @@
+{% extends 'cms/users/base.jinja' %}
+
+{% from 'cms/includes/forms.jinja' import render_field %}
+
+{% macro user_details(user) %}
+  <dl class="uk-description-list uk-description-list-divider">
+    <dt>{{ _('Name') }}</dt>
+    <dd class="uk-text-truncate">{{ user.get_full_name() or _('(empty)') }}</dd>
+
+    <dt>{{ _('Membership Number') }}</dt>
+    <dd class="uk-text-truncate">{{ user.membership_number }}</dd>
+
+    <dt>{{ _('Home Club') }}</dt>
+    <dd class="uk-text-truncate">{{ user.home_club.name }}</dd>    
+  </dl>
+{% endmacro %}
+
+{% block panel %}
+  <h3>{{ _('Impersonate User') }}</h3>
+  {% if request.is_user_spoofed %}
+    <p>
+      {% trans %}
+        You are currently impersonating the following user:
+      {% endtrans %}
+    </p>
+    <div class="uk-width-1-2@m uk-width-1-1@s">
+      <div class="uk-card-default uk-card-small uk-card-body">
+        {{ user_details(request.member) }}
+        <div class="uk-text-center">
+          {% if request.member.option_club %}
+            {% set member_club = request.member.option_club %}
+          {% else %}
+            {% set member_club = request.member.home_club %}
+          {% endif %}
+          {% if member_club and request.member.home_club.slug %}
+            <a class="uk-button uk-button-secondary" target="_blank" href="{{ club_url(member_club, 'home', request=request, currentsite=request.site, destinationsite=member_club.site) }}">
+              {{ _('Member Portal') }}
+            </a>
+          {% endif %}
+          <a class="uk-button uk-button-primary" href="?nospoof">
+            {{ _('Cancel') }}
+          </a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <p>
+      {% trans %}
+        Using this feature will allow you to view club sites as a different user.
+      {% endtrans %}
+    </p>
+
+    <form method="post" action="" class="uk-padding uk-background-muted uk-form-stacked">
+      {{ csrf_input(csrf_token) }}
+
+      <div>
+        {{ render_field(form.query) }}
+      </div>
+
+      <div class="uk-margin-top">
+        <button class="uk-button uk-button-secondary" type="submit">{{ _('Search') }}</button>
+      </div>
+    </form>
+
+    {% if request.method == 'POST' %}
+      <hr />
+
+      {% if not results %}
+        <div class="uk-padding uk-text-center">
+          {{ _('No results found.') }}
+        </div>
+      {% else %}
+        <div data-uk-grid>
+          {% for result in results %}
+            <div class="uk-width-1-2@m uk-width-1-1@s">
+              <div class="uk-card-small uk-card-body uk-card-default">
+                {{ user_details(result) }}
+                <div class="uk-text-center">
+                  <a class="uk-button {% if result.status == 'A' %}uk-button-primary{% else %}uk-button-danger{% endif %} uk-margin-top" 
+                  
+                  {% if result.status == 'A' %}
+                  href="?spoof={{ result.id }}"
+                  {% endif %}
+                  >
+                    {% if result.status == 'A' %}
+                    {{ _('Impersonate') }}
+                    {% else %}
+                    {{ _('User is Inactive') }}
+                    {% endif %}
+
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    {% endif %}
+
+  {% endif %}
+{% endblock %}

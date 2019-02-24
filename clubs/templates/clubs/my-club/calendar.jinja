@@ -1,0 +1,175 @@
+{% extends 'clubs/my-club/base.jinja' %}
+
+{% block main %}
+  <div class="wrapper">
+    <h2>{{ _('Calendar') }}</h2>
+
+    <div class="calendar-wrapper">
+      <form class="filter-form no-padding">
+        <div class="field">
+          <select data-goto-url>
+            <option value="{{ curr_url(request, filter_club=None) }}">{{ request.club.name }}</option>
+            {% for club in all_clubs.exclude(pk=request.club.pk) %}
+                <option value="{{ curr_url(request, filter_club=club.pk) }}" {% if request.GET.get('filter_club') == '{}'.format(club.pk) %}selected{% endif %}>
+                  {{ club.name }}
+                </option>
+            {% endfor %}
+          </select>
+          <label>{{ _('Filter by Club') }}</label>
+        </div>
+      </form>
+
+      <div class="calendar">
+        <div class="calendar-header">
+          <a class="prev-month" href="{{ curr_url(request, calendar_month=previous_calendar_month.strftime('%-m'), calendar_year=previous_calendar_month.strftime('%Y')) }}">
+            ◀
+          </a>
+          <span>{{ calendar_month.strftime('%B %Y') }}</span>
+          <a class="next-month" href="{{ curr_url(request, calendar_month=next_calendar_month.strftime('%-m'), calendar_year=next_calendar_month.strftime('%Y')) }}">
+            ▶
+          </a>
+        </div>
+        <div class="calendar-weekdays"><!--
+          --><span>{{ _('Sun') }}</span><!--
+          --><span>{{ _('Mon') }}</span><!--
+          --><span>{{ _('Tue') }}</span><!--
+          --><span>{{ _('Wed') }}</span><!--
+          --><span>{{ _('Thu') }}</span><!--
+          --><span>{{ _('Fri') }}</span><!--
+          --><span>{{ _('Sat') }}</span><!--
+        --></div>
+        {% for week in calendar %}
+          <div class="week"><!--
+            {% for day in week %}
+              {% if day %}
+                {% set week_date = '{}-{}-{}'.format(day['year'], day['month'], day['day']) %}
+                --><a class="day calendar-day {% if selected_date.strftime('%Y-%-m-%-d') == week_date %}selected{% endif %}" href="{{ curr_url(request, date=week_date) }}">
+                  {{ day['day'] }}
+                  <span class="markers"><!--
+                    {% if day['member_events'] %}
+                      --><span class="member-event"></span><!--
+                    {% endif %}
+                    {% if day['notices'] %}
+                      --><span class="notice"></span><!--
+                    {% endif %}
+                    {% if day['outside_events'] %}
+                      --><span class="outside-event"></span><!--
+                    {% endif %}
+                  --></span>
+                </a><!--
+              {% else %}
+                --><span class="day"></span><!--
+              {% endif %}
+            {% endfor %}
+          --></div>
+        {% endfor %}
+      </div>
+
+      <ul class="legend">
+        <li class="member-event">{{ _('Member Event') }}</li>
+        <li class="notice">{{ _('Notice') }}</li>
+        <li class="outside-event">{{ _('Outside Event') }}</li>
+      </ul>
+
+      <p class="centered">
+        <a class="button" href="{{ url('linkline.book-a-tee-time') }}" target="_blank">
+          {{ _('Book a Tee Time') }}
+        </a>
+      </p>
+
+      {% if request.LANGUAGE_CODE == 'en' and current_club.bistro_menu %} {% set menu_url = current_club.bistro_menu.url %}
+      {% elif request.LANGUAGE_CODE == 'fr' %} 
+        {% if current_club.bistro_menu_fr %}
+          {% set menu_url = request.club.bistro_menu_fr.url %}
+        {% elif current_club.bistro_menu %}
+          {% set menu_url = request.club.bistro_menu.url %}
+        {% endif %}
+      {% endif %} 
+      
+      {% if menu_url %}
+      <p class="centered">
+      <a href="{{ menu_url }}" target="_blank" class="button">
+        {{ _('Bistro Menu') }}
+      </a>
+      </p>
+      {% endif %}
+
+
+    </div>
+
+    <div class="event-listing">
+      <div class="cf">
+        <span class="week-selector">
+          <a href="{{ curr_url(request, date=previous_week_date.strftime('%Y-%-m-%-d')) }}">‹</a>
+          {{ selected_date.strftime('%B %-d') }} &mdash; {{ end_date.strftime('%B %-d') }}
+          <a href="{{ curr_url(request, date=next_week_date.strftime('%Y-%-m-%-d')) }}">›</a>
+        </span>
+      </div>
+
+      {% for day_events in events %}
+        <div class="date-headline">{{ day_events[0].start_date.strftime('%B %-d') }}</div>
+        <ul class="event-list">
+          {% for event in day_events %}
+            <li>
+              <div style="{% if event.photo %}background-image: url('{{ event.photo.url }}');{% endif %}" class="photo"></div>
+              <div class="details">
+                <div class="title">{{ event.name }}</div>
+                <div class="meta">
+                  {% if event.all_day %}
+                    {{ _('All day') }}
+                  {% else %}
+                    {{ event.start_time.strftime('%-I:%M%p') }}
+                    {% if not event.instant and event.end_time %}
+                      - {{ event.end_time.strftime('%-I:%M%p') }}
+                    {% endif %}
+                  {% endif %}
+
+                  {% if event.type == event.MEMBER_EVENT %}
+                    <span class="marker member-event"></span>
+                  {% elif event.type == event.NOTICE %}
+                    <span class="marker notice"></span>
+                  {% elif event.type == event.OUTSIDE_EVENT %}
+                    <span class="marker outside-event"></span>
+                  {% endif %}
+                </div>
+                {% if event.type == event.MEMBER_EVENT and event.is_registration_open %}
+                  <div class="rsvp">
+                    <a href="{{ url('my-club.calendar-item', pk=event.pk) }}#rsvp" class="small button">
+                      {% if event.is_rsvped(request.member) %}
+                        {{ _('Attending') }}
+                      {% else %}
+                        {{ _('RSVP') }}
+                      {% endif %}
+                    </a>
+                    <span>
+                      {{ _('{count} particpant(s) are attending.').format(count=event.total_guests) }}
+                    </span>
+                    {% if event.max_attendees %}
+                      <span>
+                        {{ _('Limit: {limit}.').format(limit=event.max_attendees) }}
+                      </span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+                <div class="description">
+                  {{ event.description|safe }}
+                </div>
+                <div class="event-details-btn">
+                  <a href="{{ url('my-club.calendar-item', pk=event.pk) }}" class="small button">
+                    {{ _('See full event details') }}
+                  </a>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+
+      {% if not events %}
+        <div class="no-events-message">
+          {{ _('There are no events for your selected dates.') }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

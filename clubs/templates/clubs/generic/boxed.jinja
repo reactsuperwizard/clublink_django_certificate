@@ -1,0 +1,16 @@
+{% extends 'clubs/generic/default.jinja' %}
+
+{% from 'cms/macros.jinja' import richtext_snippet, shorttext_snippet, image_selector with context %}
+
+{% block main_main %}
+  <div class="wrapper">
+    {{ shorttext_snippet(page, 'heading_1', 'h2') }}
+    {{ richtext_snippet(page, 'copy_1') }}
+
+    {{ shorttext_snippet(page, 'heading_2', 'h2') }}
+    {{ richtext_snippet(page, 'copy_2', 'div', 'boxed') }}
+
+    {{ shorttext_snippet(page, 'heading_3', 'h2') }}
+    {{ richtext_snippet(page, 'copy_3') }}
+  </div>
+{% endblock %}

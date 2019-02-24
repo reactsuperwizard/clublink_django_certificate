@@ -1,0 +1,65 @@
+{% extends 'base.jinja' %}
+
+{% block head %}
+    {{ render_bundle('corp', 'css') }}
+    {% if bundles %}
+        {% for bundle in bundles %}
+            {{ render_bundle(bundle, 'css') }}
+        {% endfor %}
+    {% endif %}
+    {% if settings.DEBUG %}
+        {{ render_bundle('dev', 'css') }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% include 'corp/includes/social-bar.jinja' %}
+
+    <div class="page">
+        <header style="background-image: url('{{ static('gift_cards/header.jpg') }}');">
+            <div class="sign-out-button">
+              <a href="?lang=en">EN</a> |
+              <a href="?lang=fr">FR</a>
+            </div>
+            <a href="https://clublink.ca/" class="{% if request.LANGUAGE_CODE == 'fr' %}cl-logo-fr {% endif %} cl-logo">ClubLink</a>
+            <h1>{{ _('ClubLink eGift Cards') }}</h1>
+        </header>
+        <div class="main">
+          <div class="wrapper centered uppercased">
+            <h2>
+              {{ _('Give the gift of golf<br/>or anything clublink<br/>has to offer')|safe }}
+            </h2>
+            <p>
+              {% trans %}
+                ClubLink gift cards can be redeemed for merchandise, membership,
+                <br />golf lessons, dining, green fees at our daily fee clubs
+                <br />or Muskoka Resort stays.
+              {% endtrans %}
+            </p>
+            <p>
+              {% trans %}
+                Whatever the occasion, choose your design and
+                <br />value of your gift card and you’re all set.
+              {% endtrans %}
+            </p>
+            <iframe
+                style="border-top: 1px solid #ccc; margin: 50px auto; width: 100%;"
+                height="800"
+                frameborder="0"
+                src="https://vgdelivery.com//VirtualGiftCard?programId=22074&currentCulture={% if request.LANGUAGE_CODE == 'fr' %}1{% else %}0{% endif %}"
+            ></iframe>
+          </div>
+        </div>
+        {% block page_footer %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block after_content %}
+    {{ render_bundle('corp', 'js') }}
+    {% if bundles %}
+        {% for bundle in bundles %}
+            {{ render_bundle(bundle, 'js') }}
+        {% endfor %}
+    {% endif %}
+    {% block extra_scripts %}{% endblock %}
+{% endblock %}

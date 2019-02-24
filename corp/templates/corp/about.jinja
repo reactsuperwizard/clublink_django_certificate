@@ -1,0 +1,30 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block page_footer %}
+  <div class="quarters">
+    <div style="{% if page.get_image('our-story-bg') %}background-image: url('{{ page.get_image('our-story-bg') }}');{% endif %}">
+      <a href="{{ url('about.our-story') }}">
+        <span>{{ _('Our Story') }}</span>
+      </a>
+      {{ image_selector(page, 'our-story-bg') }}
+    </div>
+    <div style="{% if page.get_image('our-clubs-bg') %}background-image: url('{{ page.get_image('our-clubs-bg') }}');{% endif %}">
+      <a href="{{ url('membership.clubs') }}">
+        <span>{{ _('Our Clubs') }}</span>
+      </a>
+      {{ image_selector(page, 'our-clubs-bg') }}
+    </div>
+    <div style="{% if page.get_image('news-bg') %}background-image: url('{{ page.get_image('news-bg') }}');{% endif %}">
+      <a href="{{ url('news') }}">
+        <span>{{ _('ClubLink News') }}</span>
+      </a>
+      {{ image_selector(page, 'news-bg') }}
+    </div>
+    <div style="{% if page.get_image('employment-bg') %}background-image: url('{{ page.get_image('employment-bg') }}');{% endif %}">
+      <a href="{{ url('employment') }}">
+        {{ image_selector(page, 'employment-bg') }}
+        <span>{{ _('Employment') }}</span>
+      </a>
+    </div>
+  </div>
+{% endblock %}

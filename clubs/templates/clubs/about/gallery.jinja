@@ -1,0 +1,32 @@
+{% extends 'clubs/about/base.jinja' %}
+
+{% set bundles = ('fancybox',) %}
+
+{% block main %}
+  <div class="wrapper">
+    <h2>{{ _('Gallery') }}</h2>
+
+    <ul class="page-nav"><!--
+      {% for g in request.club.galleries.all() %}
+        {% set gallery_url = url(view_name, slug=g.slug) %}
+        --><li class="{% if g.pk == gallery.pk %}active{% endif %}">
+          <a href="{{ gallery_url }}">
+            {{ g.name }}
+          </a>
+        </li><!--
+      {% endfor %}
+    --></ul>
+  </div>
+{% endblock %}
+
+{% block page_footer %}
+  {% if gallery %}
+    <div class="quarters photo-gallery">
+      {% for image in gallery.images.all() %}
+        <div style="background-image: url('{{ image }}');">
+          <a href="{{ image }}" data-fancybox="gallery"></a>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'cms/base.jinja' %}
+
+{% block main %}
+  <div class="wrapper">
+    {% if title %}
+      <h2 class="ui header">{{ title }}</h2>
+    {% endif %}
+    <table class="itemlist ui table">
+      <thead>
+        <tr>
+          <th>
+            <input type="checkbox" />
+          </th>
+          {% if list_fields %}
+            {% for field in list_fields %}
+              <th>{{ field[1] }}</th>
+            {% endfor %}
+          {% else %}
+            <th>{{ _('Item') }}</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+          <tr>
+            <td>
+              <input type="checkbox" name="items[]" value="{{ item.pk }}" />
+            </td>
+            {% if list_fields %}
+              {% for field in list_fields %}
+                <td>{{ item|model_attr(field[0]) }}</td>
+              {% endfor %}
+            {% else %}
+              <td>{{ item }}</td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="{% if list_fields %}{{ len(list_fields) + 1 }}{% else %}2{% endif %}">
+            <div class="ui right floated pagination menu">
+              {% if items.has_previous() %}
+                <a href="?page={{ items.previous_page_number() }}" class="icon item">
+                  <i class="left chevron icon"></i>
+                </a>
+              {% endif %}
+              <a href="?page=1" class="item {% if items.number == 1 %}active{% endif %}">1</a>
+              {% if items.number > 3 %}
+                <span class="item">&hellip;</span>
+              {% endif %}
+              {% if items.number > 2 %}
+                <a href="?page={{ items.number - 1 }}" class="item">{{ items.number - 1 }}</a>
+              {% endif %}
+              {% if items.number > 1 and items.number < items.paginator.num_pages %}
+                <a href="?page={{ items.number }}" class="item active">{{ items.number }}</a>
+              {% endif %}
+              {% if items.number < items.paginator.num_pages - 1 %}
+                <a href="?page={{ items.number + 1 }}" class="item">{{ items.number + 1 }}</a>
+              {% endif %}
+              {% if items.number < items.paginator.num_pages - 2 %}
+                <span class="item">&hellip;</span>
+              {% endif %}
+              {% if items.paginator.num_pages > 1 %}
+                <a href="?page={{ items.paginator.num_pages }}" class="item {% if items.number == items.paginator.num_pages %}active{% endif %}">
+                  {{ items.paginator.num_pages }}
+                </a>
+              {% endif %}
+              {% if items.has_next() %}
+                <a href="?page={{ items.next_page_number() }}" class="icon item">
+                  <i class="right chevron icon"></i>
+                </a>
+              {% endif %}
+            </div>
+          </th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+{% endblock %}

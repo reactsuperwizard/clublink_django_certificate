@@ -1,0 +1,36 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block page_footer %}
+  <div class="image-block link-banner" style="{% if page.get_image('cta_bg') %}background-image: url('{{ page.get_image('cta_bg') }}');{% endif %}">
+    {{ image_selector(page, 'cta_bg') }}
+    <a href="{{ url('clublink-life') }}">
+      {{ _('ClubLink Life Explained') }}
+    </a>
+  </div>
+  <div class="quarters">
+    <div style="{% if page.get_image('our-clubs-bg') %}background-image: url('{{ page.get_image('our-clubs-bg') }}');{% endif %}">
+      <a href="{{ url('membership.clubs') }}">
+        <span>{{ _('Our Clubs') }}</span>
+      </a>
+      {{ image_selector(page, 'our-clubs-bg') }}
+    </div>
+    <div style="{% if page.get_image('promotions-bg') %}background-image: url('{{ page.get_image('promotions-bg') }}');{% endif %}">
+      <a href="{{ url('membership.rules') }}">
+        <span>{{ _('Policies') }}</span>
+      </a>
+      {{ image_selector(page, 'promotions-bg') }}
+    </div>
+    <div style="{% if page.get_image('membership-faq-bg') %}background-image: url('{{ page.get_image('membership-faq-bg') }}');{% endif %}">
+      <a href="{{ url('membership.faq') }}">
+        <span>{{ _('Membership FAQ') }}</span>
+      </a>
+      {{ image_selector(page, 'membership-faq-bg') }}
+    </div>
+    <div style="{% if page.get_image('request-info-bg') %}background-image: url('{{ page.get_image('request-info-bg') }}');{% endif %}">
+      <a href="{{ url('membership.inquiry') }}">
+        {{ image_selector(page, 'request-info-bg') }}
+        <span>{{ _('Request Information') }}</span>
+      </a>
+    </div>
+  </div>
+{% endblock %}

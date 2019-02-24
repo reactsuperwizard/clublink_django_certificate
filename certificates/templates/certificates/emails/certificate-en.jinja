@@ -1,0 +1,28 @@
+{% extends 'email/base.jinja' %}
+
+{% block body %}
+    <p>
+        Hi {{ name }},
+    </p>
+    <p>
+        This is your ClubLink certificate(s) confirmation. Your certificate(s) are available to
+        download here:
+        <br /><a href="{{ download_url }}">{{ download_url }}</a>
+    </p>
+    <p>
+        <strong>
+            Please print the PDF file attachment and bring it with you at the time of redemption.
+        </strong>
+    </p>
+    <p>
+        The specific booking instructions and terms and conditions are on each certificate. The
+        certificate(s) should be treated like cash and safeguarded accordingly.
+    </p>
+    <p>
+        If you have any questions please contact us at the number below.
+    </p>
+    <p>
+        Thank you,
+        <br/>{{ signature.text|safe }}
+    </p>
+{% endblock %}

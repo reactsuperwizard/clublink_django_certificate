@@ -1,0 +1,59 @@
+<div class="uk-card uk-card-default uk-card-small uk-text-center">
+  <div class="uk-card-body" id="{{club.name}}">
+      <img class="flag" 
+      {% if club.site.id  == 1 %}   
+        src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"
+      {% else %}
+        src="https://lipis.github.io/flag-icon-css/flags/4x3/us.svg"
+      {% endif %}
+         style="
+          position: absolute;
+          width: 50px;
+          right: 5px;
+          top: 5px;
+      ">
+      
+      {% if club.logo %}
+        <div class="{{ club.name }}-logo tm-square-image-contained" style="background-image: url('{{ club.logo_url }}')"></div>
+      {% else %}
+        <div>{{ club.name }}</div>
+      {% endif %}
+      
+  </div>
+  {% if clubs.count() > 1 %}
+    <div class="uk-card-footer uk-background-muted">
+      <a href="{{ url('club-site.switch-club') }}" class="uk-button uk-button-secondary">
+        {{ _('Switch club') }}
+      </a>
+    </div>
+  {% endif %}
+</div>
+
+<ul class="uk-nav uk-text-small uk-padding uk-padding-remove-left uk-padding-remove-right">
+  <li class="uk-nav-header">{{ _('Club Site') }}</li>
+  <li>
+    <a class="uk-link-muted" href="{{ url('club-site.pages', club_pk=club.pk) }}">
+      {{ _('Pages') }}
+    </a>
+  </li>
+  <li>
+    <a class="uk-link-muted" href="{{ url('club-site.gallery', club_pk=club.pk) }}">
+      {{ _('Gallery') }}
+    </a>
+  </li>
+  <li>
+    <a class="uk-link-muted" href="{{ url('club-site.team-members', club_pk=club.pk) }}">
+      {{ _('Team Members') }}
+    </a>
+  </li>
+  <li>
+    <a class="uk-link-muted" href="{{ url('club-site.news', club_pk=club.pk) }}">
+      {{ _('News') }}
+    </a>
+  </li>
+  <li>
+    <a class="uk-link-muted" href="{{ url('club-site.calendar', club_pk=club.pk) }}">
+      {{ _('Calendar') }}
+    </a>
+  </li>
+</ul>

@@ -1,0 +1,82 @@
+{% extends 'certificates/base.jinja' %}
+
+{% from 'certificates/macros.jinja' import form_field %}
+
+{% block main %}
+    {% if groups.count() %}
+      <div class="template-group-list">
+        {% if 'template_group' in request.session %}
+          {{ request.session['template_group'] }}
+        {% else %}
+          {{ _('Template Groups') }}
+        {% endif %}
+        <ul>
+          {% for group in groups %}
+            <li>
+              <form method="post" action="" novalidate>
+                {{ csrf_input(csrf_token) }}
+                <button type="submit" value="{{ group.pk }}" name="group">
+                  {{ group.name }}
+                </button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    <ul class="step-indicator">
+        <li><a class="button" href="{{ url('step1') }}">{{ _('Step 1') }}</a></li>
+        <li><a class="button active" href="#">{{ _('Step 2') }}</a></li>
+    </ul>
+    <form method="post" action="" novalidate>
+        <div style="display: none;">
+          <input type="submit" value="{{ _('Submit') }}" />
+        </div>
+        {% if messages %}
+            <ul class="messagelist">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {{ csrf_input(csrf_token) }}
+        {% for key in forms %}
+            {% set form = forms[key] %}
+            <h2 id="gc-{{ key }}">{{ form.title }}</h2>
+            <div class="two-column certificate">
+                {{ form_field(form.type, 'certificate-type') }}
+                {{ form_field(form.expiry_date) }}
+                {{ form_field(form.club) }}
+                {{ form_field(form.note) }}
+                <div class="field-group">
+                    {{ form_field(form.club_secondary) }}
+                    {{ form_field(form.quantity) }}
+                    {{ form_field(form.power_cart) }}
+                </div>
+                {{ form_field(form.message) }}
+                <div style="display: none;">
+                  <button type="submit" name="reload" value="{{ key }}"></button>
+                </div>
+            </div>
+            <div class="step2-buttons">
+                <button class="add" name="add" value="{{ key }}" type="submit">
+                    <div>{{ _('Add') }}</div>
+                </button>
+                <button class="delete" name="delete" value="{{ key }}" type="submit">
+                    <div>{{ _('Delete') }}</div>
+                </button>
+                <span class="duplication">
+                  <button class="duplicate" name="duplicate" value="{{ key }}" type="submit">
+                      <div>{{ _('Duplicate') }}</div>
+                  </button>
+
+                  <span data-min="1" data-number-selector>
+                    <input name="duplicate-count-{{ key }}" type="text" value="1" />
+                  </span>
+                </span>
+            </div>
+        {% endfor %}
+        <input type="submit" name="reset" value="{{ _('Reset') }}" />
+        <input type="submit" value="{{ _('Submit') }}" />
+    </form>
+{% endblock %}

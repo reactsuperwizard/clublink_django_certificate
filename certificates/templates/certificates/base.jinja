@@ -1,0 +1,30 @@
+{% extends 'base.jinja' %}
+
+{% block title %}ClubLink: Gift Certificate Portal{% endblock %}
+
+{% block head %}
+    {{ render_bundle('gc', 'css') }}
+{% endblock %}
+
+{% block content %}
+    <header>
+        <div class="wrapper">
+            <span class="logo">ClubLink</span>
+            {% block auth_button %}
+              {% if user.is_authenticated %}
+                  <a class="button white" href="{{ url('logout') }}">{{ _('Logout') }}</a>
+              {% else %}
+                  <a class="button white" href="{{ url('login') }}">{{ _('Login') }}</a>
+              {% endif %}
+            {% endblock %}
+            <span class="title">{{ _('Gift Certificate Portal') }}</span>
+        </div>
+    </header>
+    <div class="wrapper">
+        {% block main %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block after_content %}
+    {{ render_bundle('gc', 'js') }}
+{% endblock %}

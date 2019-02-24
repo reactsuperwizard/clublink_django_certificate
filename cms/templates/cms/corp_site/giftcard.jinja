@@ -1,0 +1,88 @@
+{% extends 'cms/corp_site/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import checkbox, form_field, textarea, pagenator_renderer %}
+
+{% block main %}
+  <h3>{{ _('Golf For Life Contest') }}</h3>
+
+  <ul class="uk-margin">
+
+      <div class="uk-padding-small uk-background-muted">
+        <a class="uk-button uk-button-primary" href="">
+          {{ _('Add New') }}
+        </a>
+      </div>
+      <div class="uk-padding-small uk-background-muted">        
+        <form action="" method="post" id="uploadForm" enctype="multipart/form-data" novalidate>
+          <div class="uk-padding-small uk-background-muted">  
+            <div id="inputfile">
+              {% csrf_token %}
+              <input type="hidden" name="upload" />
+              <input type="file" name="fileinput" id="fileinput" class="inputfile" onchange="onFileInputChange()" accept=".csv" />
+              {# <label name="upload" class="uk-button uk-button-primary" for="fileinput" > 
+                <span>IMPORT FROM CSV</span></label>#}
+            </div>
+          </div>
+        </form>
+      </div>           
+      <div class="uk-padding-small uk-background-muted">
+        <form action="" method="post" novalidate>
+          {% csrf_token %}        
+          <input type="submit" class="uk-button uk-button-primary" value="{{ _('Export To CSV') }}"/>
+          <input type="hidden" name="filename" value="filename"/>
+          <input type="hidden" name="download" value="download"/>
+        </form>
+        </a>
+      </div>
+      <div> {{pagenator_renderer(campaigners)}} </div>
+      <table class="uk-table uk-table-small">
+        <thead>
+          <tr>
+            <th>{{ _('PIN CODE') }}</th>
+          <th>{{ _('FIRST NAME') }}</th>
+            <th>{{ _('LAST NAME') }}</th>
+            <th>{{ _('EMAILS') }}</th>
+            <th>{{ _('DATE STAMP') }}</th>
+            <th>{{ _('AGREE') }}</th>
+            <th>{{ _('SEND GIFTCARD STAUS') }}</th>            
+          </tr>
+        </thead>
+        <tbody>          
+          {% for campaigner in campaigners%}
+            <tr>
+              <td>{{ campaigner.pin_code }}</td>
+              {% if campaigner.first_name   != None %}   <td> {{ campaigner.first_name  }} </td> {% else %} <td></td> {%endif%}
+              {% if campaigner.last_name    != None %}   <td> {{ campaigner.last_name   }} </td> {% else %} <td></td> {%endif%}
+              {% if campaigner.user_id      != None %}   <td> {{ campaigner.user_id     }} </td> {% else %} <td></td> {%endif%}
+              {% if campaigner.reg_time     != None %}   <td> {{ campaigner.reg_time    }} </td> {% else %} <td></td> {%endif%}
+              {% if campaigner.opt_flag     == 1    %}   <td> True                         </td> {% else %} <td>False</td> {%endif%}
+            </tr>
+          {% endfor%}          
+        </tbody>
+        <tfoot>
+          <tr><td> {{pagenator_renderer(campaigners)}}</td></tr>
+        </tfoot>
+      </table>
+    </li>
+
+  {# {% endfor %} #}
+
+  </ul>  
+  <style type="text/css">
+          .inputfile {
+            /*width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;*/
+          }          
+        </style>
+        <script type="text/javascript">                    
+          function onFileInputChange() {
+            // if(window.confirm("Do you want to import this file?")){
+              document.getElementById("uploadForm").submit()
+            // }
+          }
+  </script>
+{% endblock %}

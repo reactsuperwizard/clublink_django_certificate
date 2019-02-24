@@ -1,0 +1,17 @@
+{% extends 'cms/base.jinja' %}
+
+{% from 'cms/includes/forms.jinja' import render_field %}
+
+{% block navbar_right %}{% endblock %}
+
+{% block document %}
+  <h1 class="uk-align-center uk-width-large uk-text-center">{{ _('Login') }}</h1>
+  <form method="post" action="" class="uk-form-stacked uk-align-center uk-width-large uk-background-muted uk-card-default uk-card-body">
+    {{ render_field(form.username) }}
+    {{ render_field(form.password) }}
+    {{ csrf_input(csrf_token) }}
+    <div class="uk-text-center">
+      <input type="submit" class="uk-button uk-button-primary" />
+    </div>
+  </form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% set bundles = ('corp_clubs',) %}
+
+{% block page_footer %}
+  {% for club in clubs %}
+    <a href="{{ club.resort_url }}" class="image-block club-listing" style="{% if club.listing_image %}background-image: url('{{ club.listing_image.url }}');{% endif %}">
+      <div class="name">{{ club.name }}</div>
+      <div class="location">{{ club.city }}, {{ club.state }}</div>
+      <div class="hover-text">{{ _('Go to resort') }}</div>
+    </a>
+  {% endfor %}
+{% endblock %}

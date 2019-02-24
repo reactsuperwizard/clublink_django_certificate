@@ -1,0 +1,15 @@
+Cher {{ user.first_name }},
+
+Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous:
+{{ reset_url }}
+
+Si vous n’avez pas demandé de modifier votre mot de passe, veuillez ignorer ce message.
+
+Merci,
+
+Services aux membres ClubLink
+15675 Dufferin Street
+King City, ON, L7B 1K5
+1-800-273-5113
+memberservices@clublink.ca
+www.clublink.ca

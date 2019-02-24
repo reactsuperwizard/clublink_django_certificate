@@ -1,0 +1,47 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% block main %}
+  <h3>{{ _('News') }}</h3>
+
+  <div class="uk-padding-small uk-background-muted">
+    <a class="uk-button uk-button-primary" href="{{ url('club-site.news-add', club_pk=club.pk) }}">
+      {{ _('Add New') }}
+    </a>
+  </div>
+
+  <table class="uk-table uk-table-small uk-table-hover">
+    <thead>
+      <tr>
+        <th>{{ _('Publish Date') }}</th>
+        <th>{{ _('Headline') }}</th>
+        <th class="uk-text-right">{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for news_item in news.order_by('-publish_date') %}
+        {% set edit_url = url('club-site.news-edit', club_pk=club.pk, news_item_pk=news_item.pk) %}
+        <tr>
+          <td><a href="{{ edit_url }}">{{ news_item.publish_date }}</a></td>
+          <td>{{ news_item.headline}}</td>
+          <td class="uk-text-right">
+            <a
+                class="uk-margin-small-left"
+                data-uk-icon="icon: pencil"
+                href="{{ edit_url }}"
+            ></a>
+
+            <a
+                class="uk-margin-small-left"
+                data-uk-icon="icon: trash"
+                href="{{ url('club-site.news-delete', club_pk=club.pk, news_item_pk=news_item.pk) }}"
+            ></a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if news.count() == 0 %}
+    <p class="uk-text-center">{{ _('No news items exist.') }}</p>
+  {% endif %}
+{% endblock %}

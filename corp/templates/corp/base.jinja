@@ -1,0 +1,122 @@
+{% extends 'base.jinja' %}
+
+{% block head %}
+  {{ render_bundle('corp', 'css') }}
+  {% if bundles %}
+    {% for bundle in bundles %}
+      {{ render_bundle(bundle, 'css') }}
+    {% endfor %}
+  {% endif %}
+  {% if settings.DEBUG %}
+    {{ render_bundle('dev', 'css') }}
+  {% endif %}
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-WN2KD8K');</script>
+  <!-- End Google Tag Manager -->
+{% endblock %}
+
+{% block content %}
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WN2KD8K"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <span class="menu-toggler noprint" data-toggle="show-menu" data-toggle-target="body">
+    {{ _('Toggle Menu') }}
+  </span>
+
+  {% block left_nav %}
+    {% if not request.user.is_authenticated %}
+      <div class="user-message noprint">
+        <a class="small white button" href="{{ url('login') }}">
+          {{ _('Sign In') }}
+        </a>
+      </div>
+    {% endif %}
+  {% endblock %}
+      
+  {% include 'corp/includes/social-bar.jinja' %}
+  {% include 'corp/includes/spoof.jinja' %}
+  <!-- Menu -->
+  {% include 'corp/includes/menu.jinja' %}
+
+  <div class="page">
+    {% block header %}{% endblock %}
+    <div class="main">
+      {% block main %}{% endblock %}
+    </div>
+    {% block page_footer %}{% endblock %}
+
+    <footer class="noprint">
+      <div class="wrapper">
+        <section>
+          <a href="{{ corp_url('home') }}" class="full-logo {{ request.LANGUAGE_CODE }}"></a>
+          <a href="{{ url('membership.inquiry') }}" class="white button">{{ _('Become a Member') }}</a>
+          {% if request.user.is_authenticated %}
+            <a href="{{ url('logout') }}" class="white flat-button">{{ _('Sign Out') }}</a>
+          {% else %}
+            <a href="{{ url('login') }}" class="white flat-button">{{ _('Sign In') }}</a>
+          {% endif %}
+          {% include 'corp/includes/social-bar.jinja' %}
+        </section>
+        <section>
+          <ul class="nav">
+            <li><a href="{{ url('home') }}">{{ _('Home') }}</a></li>
+            <li><a href="{{ url('about') }}">{{ _('About Us') }}</a></li>
+            <li><a href="{{ url('membership') }}">{{ _('Membership') }}</a></li>
+            <li><a href="{{ url('daily-fee-golf') }}">{{ _('Daily Fee Golf') }}</a></li>
+            <li><a href="{{ url('events') }}">{{ _('Events') }}</a></li>
+            <li><a href="{{ url('improvement') }}">{{ _('Game Improvement') }}</a></li>
+            <li><a href="{{ url('contact') }}">{{ _('Contact Us') }}</a></li>
+
+
+            <li><a href="{{ url('employment') }}">{{ _('Employment') }}</a></li>
+            <li><a href="{{ url('resorts') }}">{{ _('Resorts') }}</a></li>
+            <li><a href="http://www.twcenterprises.ca/" target="_blank">{{ _('Investor Relations') }}</a></li>
+
+            {% if request.site.id == 1 %}
+              <li><a href="https://www.lemaitre.ca/" target="_blank">{{ _('Real Estate') }}</a></li>
+            {% else %}
+              <li><a href="/real-estate">{{ _('Real Estate') }}</a></li>
+            {% endif %}
+
+            {% if request.site.id == 1 %}
+            <li><a href="{{ url('shop') }}">{{ _('Shop') }}</a></li>
+            {% endif %}
+
+            <li><a href="{{ url('privacy-policy') }}">{{ _('Privacy Policy') }}</a></li>
+            <li><a href="{{ url('accessibility') }}">{{ _('Accessibility') }}</a></li>
+          </ul>
+        </section>
+        <section>
+          <ul class="footer-sponsors" data-slideshow="8000">
+            {% for advertisement in corp_advertisements %}
+              <li>
+                <a class="thumbnail" style="background-image: url('{{ advertisement.get_thumbnail() }}');" href="{{ advertisement.url }}" target="_blank"></a>
+                <a class="full-image" style="background-image: url('{{ advertisement.get_image() }}');" href="{{ advertisement.url }}" target="_blank"></a>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+        <section>
+          {% include 'corp/includes/footnote.jinja' %}
+        </section>
+      </div>
+    </footer>
+  </div>
+{% endblock %}
+
+{% block after_content %}
+  {{ render_bundle('corp', 'js') }}
+  {% if bundles %}
+    {% for bundle in bundles %}
+      {{ render_bundle(bundle, 'js') }}
+    {% endfor %}
+  {% endif %}
+  {% block extra_scripts %}{% endblock %}
+{% endblock %}

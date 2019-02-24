@@ -1,0 +1,115 @@
+{% extends 'clubs/my-account/base.jinja' %}
+
+{% from 'clubs/includes/macros.jinja' import checkbox, form_field %}
+
+{% block body_class %}my-profile{% endblock %}
+
+{% block main %}
+  <form action="" method="post" novalidate class="update-profile">
+    {{ csrf_input(csrf_token) }}
+
+    <div class="wrapper">
+      <h2>{{ _('My Profile') }}</h2>
+
+    {% for message in messages %}
+      <div class="message">{{ message }}</div>
+    {% endfor %}
+
+      <ul class="page-nav"><!--
+        {% for item in submenu %}
+          --><li class="{% if item[0] == request.path %}active{% endif %}">
+            <a href="{{ item[0] }}" {% if item[2] %}target="_blank"{% endif %}>
+              {{ item[1] }}
+            </a>
+          </li><!--
+        {% endfor %}
+      --></ul>
+    </div>
+
+    {% block main_form %}
+      <div class="wrapper">
+        <h4>{{ _('Update Profile') }}</h4>
+        <div class="two-columns padded-top">
+          {{ form_field(user_form.first_name) }}
+          {{ form_field(user_form.last_name) }}
+
+          {{ form_field(profile_form.title) }}
+          {{ form_field(profile_form.dob) }}
+
+          {{ form_field(user_form.email) }}
+          {{ form_field(user_form.preferred_language) }}
+
+          {{ form_field(profile_form.employer) }}
+          {{ form_field(profile_form.position) }}
+
+          {{ form_field(preference_form.mailing_address) }}
+          {{ form_field(preference_form.billing_address) }}
+
+          <div style="width: 100%; text-align: center;">
+            <span style="display: inline-block;">
+              {{ checkbox(profile_form.show_in_roster) }}
+            </span>
+
+            <span>
+              {% if profile_form.show_in_roster.value() %}
+                {% set phone_class = 'show-phone' %}
+              {% else %}
+               {% set phone_class = 'show-phone hidden' %}
+              {% endif %}
+
+               {{ form_field(profile_form.show_phone, phone_class) }}
+            </span>
+
+            <span>
+              {% if profile_form.show_in_roster.value() %} {% set cell_class = 'show-cell' %} {% else %} {% set cell_class = 'show-cell hidden' %} {% endif %} {{ form_field(profile_form.show_cell, cell_class) }}
+            </span>
+
+            <span>
+               {% if profile_form.show_in_roster.value() %} {% set email_class = 'show-email' %} {% else %} {% set email_class = 'show-email hidden' %} {% endif
+              %}
+
+              {{ form_field(profile_form.show_email, email_class) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="wrapper">
+        <h4>{{ _('Change My Password') }}</h4>
+        <p>{{ _('To leave your password unchanged simply leave these fields blank.') }}</p>
+        <div class="two-columns margined">
+          {{ form_field(user_form.password) }}
+          {{ form_field(user_form.password_confirm) }}
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <input type="submit" value="{{ _('Save') }}" />
+      </div>
+    {% endblock %}
+  </form>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+{{super()}}
+  <script>
+    $(document).ready(function () {
+      $('#id_show_in_roster').on('change', function (e) {
+        if ($(e.target).is(':checked')) {
+
+          $('.show-email, .show-phone, .show-cell').removeClass('hidden').hide();
+          $('.show-email, .show-phone, .show-cell').fadeIn();
+        }
+        else {
+          $('.show-email, .show-phone, .show-cell').fadeOut();
+        }
+      })
+    })
+  </script>
+
+
+{% endblock %}

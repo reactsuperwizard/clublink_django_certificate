@@ -1,0 +1,39 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% from 'clubs/includes/macros.jinja' import checkbox, form_field, textarea %}
+
+{% block before_main %}
+  <div class="wrapper">
+    {% for message in messages %}
+      <div class="message">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block after_main %}
+  <div class="wrapper">
+    <form action="" method="post" novalidate>
+      <div class="two-columns">
+        {{ form.non_field_errors() }}
+        {{ csrf_input(csrf_token) }}
+        {{ form_field(form.first_name) }}
+        {{ form_field(form.last_name) }}
+        {{ form_field(form.email) }}
+        {{ form_field(form.phone) }}
+        {{ form_field(form.date_of_birth) }}
+        {{ form_field(form.company) }}
+        {{ form_field(form.region) }}
+        {{ textarea(form.additional_info) }}
+        <div style="width: 100%; text-align: center;">
+          <span style="display: inline-block">
+            {{ checkbox(form.subscribe) }}
+          </span>
+        </div>
+        <div class="field">
+          {{ form.captcha }}
+        </div>
+      </div>
+      <input type="submit" value="{{ _('Submit') }}" />
+    </form>
+  </div>
+{% endblock %}

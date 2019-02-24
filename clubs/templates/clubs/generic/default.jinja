@@ -1,0 +1,52 @@
+{% extends 'clubs/base.jinja' %}
+
+
+{% from 'clubs/includes/header.jinja' import page_header with context %}
+{% from 'cms/macros.jinja' import richtext_snippet, shorttext_snippet, image_selector with context %}
+
+{% block head %}
+{{super()}}
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{page.title}}" />
+{% endblock head %}
+
+
+{% block header %}
+  {% block main_header %}
+    {{ page_header(page) }}
+  {% endblock %}
+  {% block page_nav %}
+    {% include 'clubs/includes/page_nav.jinja' %}
+  {% endblock %}
+{% endblock %}
+
+{% block main %}
+  {% block before_main %}{% endblock %}
+
+  {% block main_main %}
+    <div class="wrapper">
+      {{ shorttext_snippet(page, 'heading_1', 'h2') }}
+      {{ richtext_snippet(page, 'copy_1') }}
+
+      {{ shorttext_snippet(page, 'heading_2', 'h2') }}
+      {{ richtext_snippet(page, 'copy_2') }}
+
+      {{ shorttext_snippet(page, 'heading_3', 'h2') }}
+      {{ richtext_snippet(page, 'copy_3') }}
+    </div>
+  {% endblock %}
+
+  {% block after_main %}{% endblock %}
+{% endblock %}
+
+{% block page_footer %}
+  {% if page.show_address_bar %}
+    {% include 'clubs/includes/address-bar.jinja' %}
+  {% endif %}
+
+  {% if page.get_image('footer-image') or (request.user.is_authenticated and request.member.is_staff) %}
+    <div class="image-block" style="{% if page.get_image('footer-image') %}background-image: url('{{ page.get_image('footer-image') }}');{% endif %}">
+      {{ image_selector(page, 'footer-image') }}
+    </div>
+  {% endif %}
+{% endblock %}

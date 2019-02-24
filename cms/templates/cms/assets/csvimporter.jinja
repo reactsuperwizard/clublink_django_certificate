@@ -1,0 +1,101 @@
+{% extends 'cms/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_breadcrumbs %}
+
+{% block left_sidebar %}
+  <ul class="uk-nav uk-text-small">
+    <li class="uk-nav-header">{{ _('Assets Manager') }}</li>
+    <li>
+      <a class="uk-link-muted" href="{{ url('assets.browser') }}">
+        {{ _('File Browser') }}
+      </a>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block main %}
+  <h3>{{ _('Gift Cards Manager') }}</h3>
+
+   <div class="uk-padding-small uk-background-muted">
+    <a class="uk-button uk-button-primary" href="">
+      {{ _('Add New') }}
+    </a>
+
+        <div class="uk-inline uk-width-1-2 uk-float-right">
+          <form method="GET">
+            <span class="uk-form-icon" uk-icon="icon: search"></span>
+            <input class="uk-input" type="text" type="submit" name="qs" placeholder="Search for events containing... ">
+          </form>
+        </div>    
+
+        <div class="uk-inline uk-float-right">
+          <form method="GET">
+            <input value="reset" type="submit" class="uk-button uk-button-default">
+          </form>        
+        </div>
+
+  </div>
+
+  <table class="uk-table uk-table-small uk-table-hover">
+    <thead>
+      <tr>
+        <th>{{_('No')}}
+        <th>{{ _('Email') }}</th>
+        <th>{{ _('Gift Card ID') }}</th>
+        <th>{{ _('Reg Time') }}</th>
+        <th>{{ _('Used') }}</th>
+        <th></th>
+        <th class="uk-text-right" style="min-width: 150px;">{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    {#<tbody>
+      {% for event in events.order_by('-start_date', '-start_time') %}
+        {% set edit_url = url('club-site.calendar-edit', club_pk=club.pk, event_pk=event.pk) %}
+        <tr>
+          <td>{{ event.start_datetime.year }}</td>        
+          <td><a href="{{ edit_url }}">{{ event.start_datetime.strftime('%B %-d, %-I:%M%p') }}</a></td>
+          <td><a href="{{ edit_url }}">{{ event.end_datetime.strftime('%B %-d, %-I:%M%p') }}</a></td>
+          <td><a href="{{ edit_url }}">{{ event.name }}</a></td>
+          <td>
+              {{event.total_guests}}/{{event.max_attendees}}
+          </td>
+          <td>
+            {% if event.type == 0 %}
+            <a class="uk-button uk-button-small uk-button-primary" href="{{url('club-site.calendar-register', club_pk=club.pk, event_pk=event.pk)}}">
+              Register
+            </a>
+            {% endif %}
+          </td>
+          <td class="uk-text-right">
+            {% if event.rsvps.count() %}
+              <a
+                  class="uk-margin-small-left"
+                  data-uk-icon="icon: download"
+                  href="{{ url('club-site.calendar-export', club_pk=club.pk, event_pk=event.pk) }}"
+              ></a>
+            {% endif %}
+
+            <a class="uk-margin-small-left" data-uk-icon="icon: mail"
+            href="{{ url('club-site.calendar-message', club_pk=club.pk, event_pk=event.pk) }}"></a>
+            {% if event.start_date > now %}
+                <a class="uk-margin-small-left" data-uk-icon="icon: pencil" href="{{ edit_url }}" ></a>
+            {% else %}
+                <p class="uk-margin-small-left" data-uk-icon="icon: minus" ></p>
+            {% endif %}
+            <a
+                class="uk-margin-small-left"
+                data-uk-icon="icon: trash"
+                href="{{ url('club-site.calendar-delete', club_pk=club.pk, event_pk=event.pk) }}"
+            ></a>
+          </td>
+
+
+        </tr>
+      {% endfor %}
+    </tbody>#}
+  </table>
+
+  {# {% if events.count() == 0 %}
+    <p class="uk-text-center">{{ _('No calendar events exist.') }}</p>
+  {% endif %}  #}
+{% endblock %}

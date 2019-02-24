@@ -1,0 +1,29 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block main %}
+  <div class="wrapper">
+    {{ shorttext_snippet(page, 'heading_1', 'h2') }}
+    {{ richtext_snippet(page, 'copy_1') }}
+
+    {{ shorttext_snippet(page, 'heading_2', 'h2') }}
+    {{ richtext_snippet(page, 'copy_2') }}
+
+    {{ shorttext_snippet(page, 'heading_3', 'h2') }}
+    <div class="float-left">
+      {{ richtext_snippet(page, 'copy_3') }}
+    </div>
+
+    <div class="righted">
+      <a href="{{ url('events.golf-tournaments.inquiry') }}" class="button">
+        {{ _('Inquiry Form') }}
+      </a>
+      {% if request.site.id == 1 %}
+        <p>
+          <a href="{{ url('events.golf-tournaments') }}additional-services/" class="button">
+          {{ _('Additional Services') }}
+          </a>
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

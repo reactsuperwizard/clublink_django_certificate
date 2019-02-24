@@ -1,0 +1,27 @@
+Good morning {{ user.first_name }},
+
+We are pleased to announce the launch of the new {{ club.name }} and ClubLink website.
+
+The new sites have been built on a fully responsive platform that is easy to navigate. All the familiar tools for managing your account, booking tee times, accessing the club roster, reading Club news or viewing the calendar are very accessible and most importantly, mobile friendly.
+
+As this is a completely new system, you will need to create a new password to to access the member portal.  To do so, please click the link below:
+
+{{ reset_url }}
+
+Once you're able to log in successfully, please familiarize yourself with the new website. We've organized things to be more user friendly based upon feedback over the years with our previous site.
+
+If you encounter any issues, please email Member Services at memberservices@clublink.ca. If you need to speak to a Member Services representative, please call 1-800-273-5113.
+
+Member Services Call Center Hours of Operation
+Weekdays  8 a.m. – 5:30 p.m.
+Weekends  8 a.m. – 2 p.m.
+
+We look forward to receiving your feedback.
+
+Regards,
+ClubLink Member Services
+15675 Dufferin Street
+King City, ON, L7B 1K5
+1-800-273-5113
+memberservices@clublink.ca
+www.clublink.ca

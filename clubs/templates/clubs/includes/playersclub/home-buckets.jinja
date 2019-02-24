@@ -1,0 +1,27 @@
+<div style="{% if page.get_image('about-bg') %}background-image: url('{{ page.get_image('about-bg') }}');{% endif %}">
+<a href="{{ url('membership') }}">
+<span>{{ _('Membership Options') }}</span>
+</a>
+{{ image_selector(page, 'about-bg') }}
+</div>
+
+<div style="{% if page.get_image('events-bg') %}background-image: url('{{ page.get_image('events-bg') }}');{% endif %}">
+<a href="{{ url('events') }}">
+<span>{{ _('Events') }}</span>
+</a>
+{{ image_selector(page, 'events-bg') }}
+</div>
+
+<div style="{% if page.get_image('membership-bg') %}background-image: url('{{ page.get_image('membership-bg') }}');{% endif %}">
+<a href="{{ corp_url('daily-fee-golf') }}" target="_blank">
+<span>{{ _('Our Clubs') }}</span>
+</a>
+{{ image_selector(page, 'membership-bg') }}
+</div>    
+
+<div style="{% if page.get_image('game-improvement-bg') %}background-image: url('{{ page.get_image('game-improvement-bg') }}');{% endif %}">
+<a href="{{ url('game-improvement') }}">
+{{ image_selector(page, 'game-improvement-bg') }}
+<span>{{ _('Game Improvement') }}</span>
+</a>
+</div>

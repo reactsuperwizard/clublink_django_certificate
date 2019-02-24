@@ -1,0 +1,27 @@
+{% extends 'clubs/my-account/update-profile.jinja' %}
+
+{% macro address_form(form) %}
+  <div class="two-columns padded-top">
+    {{ form_field(form.address1) }}
+    {{ form_field(form.address2) }}
+    {{ form_field(form.city) }}
+    {{ form_field(form.country) }}
+    {{ form_field(form.state) }}
+    {{ form_field(form.postal_code) }}
+    {{ form_field(form.phone) }}
+    {{ form_field(form.cell_phone) }}
+  </div>
+{% endmacro %}
+
+{% block main_form %}
+  <div class="wrapper">
+    {% for address_type in address_types %}
+      <h4>{{ address_labels[address_type] }}</h4>
+      {{ address_form(forms[address_type]) }}
+    {% endfor %}
+  </div>
+
+  <div class="wrapper">
+    <input type="submit" value="{{ _('Save') }}" />
+  </div>
+{% endblock %}

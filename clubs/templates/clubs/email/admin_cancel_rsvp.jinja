@@ -1,0 +1,60 @@
+<p>
+  A reservation has been cancelled{% if bywhom %} by {{bywhom.first_name}} {{bywhom.last_name}} {% endif %}.
+</p>
+
+<p>
+  <span style="text-decoration: underline">EVENT INFORMATION:</span>
+  <br />Event: <strong>{{ rsvp.event.name }}</strong>
+  <br />Date: <strong>{{ rsvp.event.date }}</strong>
+  <br />Member Name: <strong>{{ rsvp.user.get_full_name() }}</strong>
+  <br />Adults: <strong>{{ rsvp.number_of_adults }}</strong>
+  <br />Children: <strong>{{ rsvp.number_of_children }}</strong>
+</p>
+
+{% if rsvp.guest_data or rsvp.children.exists() %}
+
+  <p>
+    In addition, the following guests have been cancelled:
+  </p>
+
+  {% if rsvp.guest_data %}
+  <p>
+    <strong>Non-members</strong>
+    {% for guest in rsvp.guest_data %}
+    <div>{{guest.name}}</div>
+    {% endfor %}
+  </p>
+  {% endif %}
+
+  <strong>Note that guests, who are ClubLink members, will also have received cancellation emails.</strong>
+
+  {% if rsvp.children.exists() %}
+  <p>
+    <strong>Members</strong>
+    <div>Members will each receive individual emails.</div>
+    {% for child in rsvp.children.all() %}
+    <div>{{child.user.first_name}} {{child.user.last_name}} ({{child.user.membership_number}})</div>
+    {% endfor %}
+  </p>
+
+  {% endif %} 
+  
+  {% endif %}
+
+<p>
+  {% if rsvp.event.custom_question_1 %}
+    <br />{{ rsvp.event.custom_question_1 }}: <strong>{{ rsvp.custom_answer_1 }}</strong>
+  {% endif %}
+  {% if rsvp.event.custom_question_2 %}
+    <br />{{ rsvp.event.custom_question_2 }}: <strong>{{ rsvp.custom_answer_2 }}</strong>
+  {% endif %}
+  {% if rsvp.event.custom_question_3 %}
+    <br />{{ rsvp.event.custom_question_3 }}: <strong>{{ rsvp.custom_answer_3 }}</strong>
+  {% endif %}
+  {% if rsvp.event.custom_question_4 %}
+    <br />{{ rsvp.event.custom_question_4 }}: <strong>{{ rsvp.custom_answer_4 }}</strong>
+  {% endif %}
+  {% if rsvp.event.custom_question_5 %}
+    <br />{{ rsvp.event.custom_question_5 }}: <strong>{{ rsvp.custom_answer_5 }}</strong>
+  {% endif %}
+</p>

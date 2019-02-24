@@ -1,0 +1,29 @@
+{% extends base_template %}
+
+{% block header %}
+  {{ page_header(image=static('generic-header.jpg'), headline=_('Forgotten Password')) }}
+{% endblock %}
+
+{% block main %}
+  <div class="wrapper">
+    <h2>{{ _('Unable to process request') }}</h2>
+
+    <p class="centered">
+      {% trans %}
+        You do not have a valid email address associated with your account.
+      {% endtrans %}
+    </p>
+
+    <p>
+      {% trans %}
+        Please contact Member Services at
+        <a href="mailto:memberservices@clublink.ca">memberservices@clublink.ca</a> or
+        <span class="no-wrap">1-800-273-5113</span>.
+      {% endtrans %}
+    </p>
+
+    <div class="centered">
+      <a class="button" href="{{ url('login') }}">← {{ _('Back to Login') }}</a>
+    </div>
+  </div>
+{% endblock %}

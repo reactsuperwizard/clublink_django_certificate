@@ -1,0 +1,37 @@
+{% from 'cms/macros.jinja' import shorttext_snippet_inhereted_no_alias, image_selector with context %}
+
+{% macro page_header(page=None, image=None, headline=None) %}
+  {% if image %}
+    {% set header_image = image %}
+  {% else %}
+    {% set header_image = page.get_image('header', inhereted=True, ignore_alias=True) %}
+  {% endif %}
+  <header style="{% if header_image %}background-image: url('{{ header_image }}');{% endif %}">
+    {% if not image %}
+      {{ image_selector(page, 'header') }}
+    {% endif %}
+
+    {% if not page.use_corp_styles and (page.club and not page.club.use_corp_styles) %}
+      <a href="{{ url('home') }}" class="banner">
+        {% if request.club.svg_logo %}
+          {% set logo = request.club.svg_logo %}
+        {% else %}
+          {% set logo = request.club.logo %}
+        {% endif %}
+        <span class="logo" style="{% if logo %}background-image: url('{{ logo.url }}');{% endif %}">
+          {{ request.club.name }}
+        </span>
+      </a>
+    {% endif %}
+
+    {% if page.use_corp_styles or (page.club and page.club.use_corp_styles) %}
+      <a class="{% if request.LANGUAGE_CODE == 'fr' %}cl-logo-fr {% endif %} cl-logo iefix-bgcontain" href="{{ url('home') }}">ClubLink</a>
+    {% endif %}    
+
+    {% if headline %}
+      <h1>{{ headline }}</h1>
+    {% else %}
+      {{ shorttext_snippet_inhereted_no_alias(page, 'headline', 'h1') }}
+    {% endif %}
+  </header>
+{% endmacro %}

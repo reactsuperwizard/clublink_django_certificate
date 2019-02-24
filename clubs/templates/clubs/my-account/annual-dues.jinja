@@ -1,0 +1,18 @@
+{% extends 'clubs/my-account/base.jinja' %}
+
+{% block main %}
+    <div class="wrapper">
+      <h2>{{ _('Annual Dues') }}</h2>
+      {% if request.member.membership_number %}
+        <iframe
+            id="statement_iframe"
+            src="//statements.clublinkprojects.ca/annual-dues/?member={{ request.member.encrypted_membership_number|quote_plus }}"
+            height="100%"
+            frameborder="0"
+            width="100%"
+        ></iframe>
+        <script src="//hire.simplicant.com/iframeResizer.min.js"></script>
+        <script>iFrameResize({log:true}, '#statement_iframe')</script>
+      {% endif %}
+    </div>
+{% endblock %}

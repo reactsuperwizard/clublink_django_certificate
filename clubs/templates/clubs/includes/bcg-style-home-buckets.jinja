@@ -1,0 +1,13 @@
+    <div style="{% if page.get_image('about-bg') %}background-image: url('{{ page.get_image('about-bg') }}');{% endif %}">
+      <a href="{{ url('membership.inquiry') }}">
+        <span>{{ _('Request Information') }}</span>
+      </a>
+      {{ image_selector(page, 'about-bg') }}
+    </div>    
+    
+    <div style="{% if page.get_image('mp-club-bg') %}background-image: url('{{ page.get_image('mp-club-bg') }}');{% endif %}">
+      <a href="{{ corp_url('about.our-clubs') }}" target="_blank">
+        <span>{{ _('Our Clubs') }}</span>
+      </a>
+      {{ image_selector(page, 'mp-club-bg') }}
+    </div>

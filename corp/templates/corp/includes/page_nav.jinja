@@ -1,0 +1,13 @@
+{% if page.show_page_nav %}
+  <div class="wrapper">
+    <ul class="page-nav"><!--
+      {% for item in menu %}
+        --><li class="{% if item[0] == full_path %}active{% endif %}">
+          <a href="{{ item[0] }}" {% if item[2] %}target="{{ item[2] }}"{% endif %}>
+            {{ item[1] }}
+          </a>
+        </li><!--
+      {% endfor %}
+    --></ul>
+  </div>
+{% endif %}

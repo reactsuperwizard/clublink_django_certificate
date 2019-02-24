@@ -1,0 +1,55 @@
+<div class="item">
+    <a href="{{ url('home') }}">{{ _('Dashboard') }}</a>
+</div>
+
+<div class="item">
+    <a class="title">
+        <i class="dropdown icon"></i>
+        {{ _('Assets') }}
+    </a>
+    <div class="content menu">
+        <a class="item">{{ _('Images') }}</a>
+    </div>
+</div>
+
+<div class="item">
+    <a class="title">
+        <i class="dropdown icon"></i>
+        {{ _('Corporate Site') }}
+    </a>
+    <div class="content menu">
+        <a class="item">{{ _('Pages') }}</a>
+        <a class="item">{{ _('Galleries') }}</a>
+    </div>
+</div>
+
+<div class="item">
+    <a class="title">
+        <i class="dropdown icon"></i>
+        {{ _('Club Site') }}
+    </a>
+    <div class="content menu">
+        <a class="item">{{ _('Pages') }}</a>
+        <a class="item">{{ _('Galleries') }}</a>
+        <a class="item">{{ _('Team Members') }}</a>
+    </div>
+</div>
+
+<div class="item">
+    <a href="{{ url('clubs') }}">{{ _('Clubs') }}</a>
+</div>
+
+<div class="item">
+    <a href="{{ url('departments') }}">{{ _('Departments') }}</a>
+</div>
+
+<div class="item">
+    <a class="title">
+        <i class="dropdown icon"></i>
+        {{ _('Users') }}
+    </a>
+    <div class="content menu">
+        <a href="{{ url('users') }}" class="item">{{ _('User Accounts') }}</a>
+        <a href="{{ url('users.impersonate') }}" class="item">{{ _('Impersonate a User') }}</a>
+    </div>
+</div>

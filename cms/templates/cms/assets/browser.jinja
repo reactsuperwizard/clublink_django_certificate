@@ -1,0 +1,102 @@
+{% extends 'cms/assets/base.jinja' %}
+
+{% block main %}
+  <h3>{{ _('File Browser') }}</h3>
+
+  {% if folder %}
+    <div class="uk-margin">
+      <div>
+        {% if folder.parent %}
+          {% set up_url = url('assets.browser', folder_pk=folder.parent.pk) %}
+        {% else %}
+          {% set up_url = url('assets.browser') %}
+        {% endif %}
+        <a href="{{ up_url }}">{{ _('Return to previous folder') }}</a>
+      </div>
+      <div>
+        <strong>{{ _('Current folder:') }}</strong>
+        {{ folder.full_path }}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="uk-padding-small uk-background-muted">
+    {% if folder %}
+      {% set new_folder_url = url('assets.browser.new-folder', folder_pk=folder.pk) %}
+    {% else %}
+      {% set new_folder_url = url('assets.browser.new-folder') %}
+    {% endif %}
+    <a class="uk-button uk-button-primary" href="{{ new_folder_url }}">
+      {{ _('New Folder') }}
+    </a>
+
+    {% if folder %}
+      {% set new_file_url = url('assets.browser.new-file', folder_pk=folder.pk) %}
+    {% else %}
+      {% set new_file_url = url('assets.browser.new-file') %}
+    {% endif %}
+    <a class="uk-button uk-button-primary" href="{{ new_file_url }}">
+      {{ _('New File') }}
+    </a>
+  </div>
+
+  <table class="uk-table uk-table-small">
+    <thead>
+      <tr>
+        <th style="width: 24px;"></th>
+        <th>{{ _('Name') }}</th>
+        <th class="uk-text-right">{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for dir in folders %}
+        <tr>
+          <td><span data-uk-icon="icon: folder"></span></td>
+          <td>
+            <a href="{{ url('assets.browser', folder_pk=dir.pk) }}">{{ dir.name }}</a>
+          </td>
+          <td class="uk-text-right">
+            <a
+              class="uk-margin-small-left"
+              data-uk-icon="icon: trash"
+              href="{{ url('assets.browser.folder-delete', folder_pk=dir.pk) }}"
+            ></a>
+          </td>
+        </tr>
+      {% endfor %}
+      {% for file in files %}
+        <tr>
+          <td><span data-uk-icon="icon: file"></span></td>
+          <td>
+            <a href="#">{{ file.name }}</a>
+          </td>
+          <td class="uk-text-right">
+            <a
+              class="uk-margin-small-left"
+              data-uk-icon="icon: link"
+              href="{{ file.file.url }}"
+              target="_blank"
+            ></a>
+            {% if file.folder %}
+              {% set delete_file_url = url('assets.browser.file-delete', file_pk=file.pk, folder_pk=file.folder.pk) %}
+            {% else %}
+              {% set delete_file_url = url('assets.browser.file-delete', file_pk=file.pk) %}
+            {% endif %}
+            <a
+              class="uk-margin-small-left"
+              data-uk-icon="icon: trash"
+              href="{{ delete_file_url }}"
+            ></a>
+          </td>
+        </tr>
+      {% endfor %}
+      {% if not folders.count() and not files.count() %}
+        <tr>
+          <td></td>
+          <td>{{ _('empty folder') }}</td>
+          <td></td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,312 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% block main %}
+  <h3>{{ _('Registration') }}</h3>
+
+    <div uk-grid>       
+        <div class="uk-width-1-3">
+            <h3>{{event.name}}</h3>
+            <ul class="legend">
+                {% if event.type == event.MEMBER_EVENT %}
+                <li class="member-event">{{ _('Member Event') }}</li>
+                {% elif event.type == event.NOTICE %}
+                <li class="notice">{{ _('Notice') }}</li>
+                {% elif event.type == event.OUTSIDE_EVENT %}
+                <li class="outside-event">{{ _('Outside Event') }}</li>
+                {% endif %}
+            </ul>
+            <div class="meta-detail">
+                {{ _('Registrants:
+                <strong>{total_registrants}</strong>').format(total_registrants=event.total_registrants_count) }}
+            </div>
+            <div class="meta-detail">
+                {% if event.all_day %} {{ _('All Day') }} {% elif event.instant %} {{ _('Event time:
+                <strong>{date} at {time}</strong>').format(date=event.start_date.strftime('%B %-d'), time=event.start_time.strftime('%-I:%M%p'))
+                }} {% else %} {{ _('Starts:
+                <strong>{date} at {time}</strong>').format(date=event.start_date.strftime('%B %-d'), time=event.start_time.strftime('%-I:%M%p'))
+                }}
+                <br />{{ _('Ends:
+                <strong>{date} at {time}</strong>').format(date=event.end_date.strftime('%B %-d'), time=event.end_time.strftime('%-I:%M%p'))
+                }} {% endif %}
+            </div>
+            <script>
+
+                var resetIframe = function(clubslug, sitedomain, eventid){
+                    let urlstring = `//${clubslug}.${sitedomain}/my-club/calendar/${eventid}/?mode=edit`
+                    $('#iframe').attr('src', urlstring)
+                }
+                
+                var changeIframe = function(clubslug, sitedomain, eventid, behalf) {
+                    let urlstring = `//${clubslug}.${sitedomain}/my-club/calendar/${eventid}/?mode=edit&behalf=${behalf}`
+                    $('#iframe').attr('src', urlstring)
+                }
+            </script>
+            <br>
+            <div class="meta-detail">
+                <button class="uk-button uk-button-primary"
+                    onclick="resetIframe('{{event.club.slug}}', '{{request.site.domain}}', {{event.id}})"
+                >New RSVP</button>
+            </div>
+
+            <br />
+
+
+            <div>
+                {% for rsvp in parent_rsvps %}
+                    <div class="uk-card uk-card-default uk-card-body uk-margin-small-bottom uk-padding-small">
+                        <div>
+                            <strong style="display: inline-block">
+                                 {{rsvp.user.first_name}} {{rsvp.user.last_name}} ({{rsvp.number_of_adults}})
+                            </strong>
+                            
+                            <a style="display: inline-block; float: right;" data-id="{{rsvp.user.id}}" class="uk-icon-link uk-margin-small-right" uk-icon="file-edit" onclick="changeIframe('{{event.club.slug}}', '{{request.site.domain}}', {{event.id}}, {{rsvp.user.id}})"></a>
+
+                        </div>
+                        
+                        {% if rsvp.children.exists() %}
+                            <em>Member</em>
+                            <ul style="margin: 5px; padding-left: 10px; list-style: none;">
+                                {% for rsvp in rsvp.children.all() %}
+                                    <li>{{rsvp.user.first_name}} {{rsvp.user.last_name}} <br>
+                                        <div style="font-style: italic; color: grey;">
+                                            ({{rsvp.user.option_club.name}})
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if rsvp.guest_data %}
+                            <em>External</em>
+                            <ul style="margin: 5px; padding-left: 10px; list-style: none;">
+                                {% for g in rsvp.guest_data %}
+                                    <li>{{g.name}}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if rsvp.notes %}
+                        <hr>
+                        <em>Notes</em>                        
+                            <p>
+                                {{rsvp.notes}}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>  
+
+        {# 
+        <div>
+            <div class="uk-background-muted uk-padding">
+                <div class="uk-text-bold">{{event.name}}</div>
+                <div class="uk-text-small">{{event.club.name}}</div>
+                <em class="uk-text-small">Max guests per RSVP: {{event.max_guests_per_rsvp}}</em><br><br>
+        
+                <div uk-icon="icon: users; ratio: 2"></div>
+                <div>{{event.total_registrants_count}} Registrants</div>  
+                {% if event.total_registrants_count %}    
+                <br>
+                <a href="mailto:?subject={{event.club.name}}: {{event.name}}&bcc={% for r in event.rsvps.all() %}{{r.user.email}}{% if not loop.last%},{% endif %}{% endfor %}" class="uk-button uk-button-primary" target="_blank">
+                    <span uk-icon="icon: mail"></span>
+                    Email
+                    </a>    
+                    <hr>
+                {% endif %}      
+
+                {% for r in event.rsvps.order_by('user__last_name') %}
+                    <div uk-toggle="target: #info-{{r.user.id}}" style="cursor: pointer">                
+                        <div>                                      
+                            <span class="uk-text-bold">{{r.user.first_name}} {{r.user.last_name}}</span> 
+                            <div class="uk-icon" uk-icon="icon: info"></div>              
+                            <br>
+                            <span class="uk-text-small">
+                            ({{r.user.membership_number}} - {{r.user.option_club.name}})
+                            </span>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div id="info-{{r.user.id}}" uk-modal>
+                        <div class="uk-modal-dialog uk-modal-body">
+                            <h2 class="uk-modal-title">{{r.user.first_name}} {{r.user.last_name}}</h2>
+                            Adults: {{r.number_of_adults}}<br>
+                            Children: {{r.number_of_children}}           
+                            <hr>                 
+                            <div class="uk-float-right">
+                                <form method="POST" action="{{url('club-site.calendar-event-rsvp-delete', club_pk=club.pk, event_pk=event.pk, rsvp_pk=r.pk)}}">
+                                    {% csrf_token %}
+                                    <button class="uk-button uk-button-danger" type="submit">Delete</button>
+                                    <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                {% endfor %}
+
+            </div>
+        </div>
+        #}
+
+        <div class="uk-width-2-3" style="overflow:hidden">
+            <iframe id="iframe" src="//{{event.club.slug}}.{{request.site.domain}}/my-club/calendar/{{event.id}}/?mode=edit" style="overflow:hidden;height:100%;width:100%;min-height:1200px" height="100%" width="100%"></iframe>
+        </div>
+
+
+        {# <div class="uk-width-3-5">
+            <form method="GET">
+                <div class="uk-inline" style="width: 100%">
+                    <span class="uk-form-icon" uk-icon="icon: search"></span>
+                    <input id="q" class="uk-input" type="text" type="submit" name="q" placeholder="Search by first, last, membership #, club ...">  
+                </div>
+            </form>            
+        
+            <div style="padding-top: 10px" >
+                {% if q %}
+                <em>Your search for "{{q}}" yielded {{query.count()}} results</em>
+                {% endif %}  
+
+                <table class="uk-table uk-table-hover uk-table-divider" id="querytable">
+                    <tbody>
+                    {% for u in query %}
+                        <tr>
+                            <td>
+                                {% if event.is_rsvped(u) %}
+                                    <button class="uk-button uk-button-default uk-button-small" disabled>Registered</button>
+                                {% else %}
+                                    <a class="uk-button uk-button-primary uk-button-small" href="#modal-{{u.id}}" uk-toggle>Register</a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="uk-text-bold">
+                                    {{u.first_name}} {{u.last_name}}
+                                </span><br>
+                                <span class="uk-text-small">
+                                    ({{u.membership_number}} - {{u.option_club.name}})
+                                </span>
+                            </td>
+                        </tr>
+
+                        {% if not event.is_rsvped(u) %}
+                        <div id="modal-{{u.id}}" uk-modal="bg-close: false">
+                            <form method="POST" style="inline-block">
+                            {% csrf_token %}
+                            <div class="uk-modal-dialog">
+                                <button class="uk-modal-close-default" type="button" uk-close></button>
+                                <div class="uk-modal-header">
+                                    <div class="uk-column-1-1">
+                                        <div class="uk-text-lead">
+                                            {{event.name}}
+                                        </div>
+                                        <div class="uk-text-meta">
+                                            <div class="uk-icon" uk-icon="icon: location"></div>{{event.club.name}}
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="uk-column-1-2">
+                                        <div>
+                                            Start: 
+                                            <div class="uk-text-meta">
+                                                {{ event.start_datetime.strftime('%B %-d, %-I:%M%p') }}
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            End: 
+                                            <div class="uk-text-meta">
+                                                {{ event.end_datetime.strftime('%B %-d, %-I:%M%p') }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="uk-modal-body">
+                                    <div class="uk-grid">
+                                        <div class="uk-width-1-1">
+                                            <span class="uk-text-lead">
+                                                {{u.first_name}} {{u.last_name}}
+                                            </span>
+                                            <div class="uk-text-meta">
+                                                {{u.membership_number}}
+                                            </div>
+                                            <div class=
+                                            "uk-text-small">
+                                                {{u.option_club.name}}
+                                            </div>     
+
+                                            <input type=
+                                            "hidden" name="registrant" value="{{u.id}}">
+
+                                            <br>
+                                            
+                                            <div class="uk-grid">
+                                                <div class="uk-width-1-2">
+                                                    <label class="uk-form-label" for="adults-{{u.id}}">Adults</label>
+                                                    <input id="adults-{{u.id}}" class="uk-input" type="number" name="adults" value=1 min=0 max={{event.max_guests_per_rsvp}}>
+                                                </div>
+                                                <div class="uk-width-1-2">
+                                                    <label class="uk-form-label" for="children-{{u.id}}">Children</label>
+                                                    <input id="children-{{u.id}}" class="uk-input" type="number" name="children" value=0 min=0 max={{event.max_guests_per_rsvp}}>
+                                                </div>
+                                            </div>
+                                            {% if event.custom_question_1 %}
+                                            <br>
+                                                <div class="uk-width-1-1">
+                                                    <label class="uk-form-label" for="custom_question_1-{{u.id}}">{{event.custom_question_1}}</label>
+                                                    <input id="custom_question_1-{{u.id}}" class="uk-input" type="text" name="custom_question_1">
+                                                </div>                                                
+                                            {% endif %}
+                                            {% if event.custom_question_2 %}
+                                            <br>
+                                                <div class="uk-width-1-1">
+                                                    <label class="uk-form-label" for="custom_question_2-{{u.id}}">{{event.custom_question_2}}</label>
+                                                    <input id="custom_question_2-{{u.id}}" class="uk-input" type="text" name="custom_question_2">
+                                                </div>                                                
+                                            {% endif %}            
+                                            {% if event.custom_question_3 %}
+                                            <br>
+                                                <div class="uk-width-1-1">
+                                                    <label class="uk-form-label" for="custom_question_3-{{u.id}}">{{event.custom_question_3}}</label>
+                                                    <input id="custom_question_3-{{u.id}}" class="uk-input" type="text" name="custom_question_3">
+                                                </div>                                                
+                                            {% endif %}                                                                          
+                                            {% if event.custom_question_4 %}
+                                            <br>
+                                                <div class="uk-width-1-1">
+                                                    <label class="uk-form-label" for="custom_question_4-{{u.id}}">{{event.custom_question_4}}</label>
+                                                    <input id="custom_question_4-{{u.id}}" class="uk-input" type="text" name="custom_question_4">
+                                                </div>                                                
+                                            {% endif %}  
+                                            {% if event.custom_question_5 %}
+                                            <br>
+                                                <div class="uk-width-1-1">
+                                                    <label class="uk-form-label" for="custom_question_5-{{u.id}}">{{event.custom_question_5}}</label>
+                                                    <input id="custom_question_5-{{u.id}}" class="uk-input" type="text" name="custom_question_5">
+                                                </div>                                                
+                                            {% endif %}                                              
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="uk-modal-footer">
+                                    <div class="uk-text-right">
+                                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                                        <button class="uk-button uk-button-primary" type="submit">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>                    
+                        {% endif %}    
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>#}
+    </div>
+
+{% endblock %}

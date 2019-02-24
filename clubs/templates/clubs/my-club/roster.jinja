@@ -1,0 +1,57 @@
+{% extends 'clubs/my-club/base.jinja' %}
+
+{% set bundles = ('fancybox',) %}
+
+{% block main %}
+  <div class="wrapper">
+    <h2>{{ _('Roster') }}</h2>
+
+    <form method="get" class="no-padding">
+      <ul class="page-nav"><!--
+        {% for letter in letters %}
+          --><li class="{% if letter == filter_letter %}active{% endif %}">
+            <button name="letter" value="{{ letter }}" type="submit">
+              {{ letter }}
+            </button>
+          </li><!--
+        {% endfor %}
+      --></ul>
+    </form>
+
+    <div class="roster">
+      <div class="roster-letter">
+        {{ filter_letter }}
+      </div>
+
+      <ul class="roster-list">
+        {% for m in members %}
+          <li data-fancybox data-src="#hidden-content-{{m.id}}" href="javascript:;" style="cursor: pointer">{{ m.last_name }}, {{ m.first_name }}</li>
+
+          <div style="display: none;" id="hidden-content-{{m.id}}">
+            <h2>{{m.first_name}} {{m.last_name}}</h2>
+
+            {% if m.profile.show_in_roster %}
+              {% if m.get_roster_email() %}
+                <p><i class="fa fa-envelope-o"></i> {{m.get_roster_email()}}</p>
+              {% endif %}
+
+              {% if m.get_roster_phone() %}            
+                <p><i class="fa fa-phone"></i> {{m.get_roster_phone()}}</p>
+              {% endif %}
+
+              {% if m.get_roster_cell() %}
+                <p><i class="fa fa-mobile"></i> {{m.get_roster_cell()}}</p>
+              {% endif %}            
+            {% endif %}
+
+          </div>
+
+        {% endfor %}
+        {% if members.count() == 0 %}
+          <li>{{ _('No members found.') }}</li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+
+{% endblock %}

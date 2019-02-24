@@ -1,0 +1,66 @@
+{% extends 'corp/base.jinja' %}
+
+{% set bundles = ('corp_home',) %}
+
+{% from 'cms/macros.jinja' import shorttext_snippet, image_selector with context %}
+
+{% block body_class %}home{% endblock %}
+
+{% block main %}
+  <div class="corporate-links">
+    <a href="{{ url('employment') }}">{{ _('Jobs') }}</a><!--
+    --><a href="{{ url('news') }}">{{ _('News') }}</a><!--
+    --><a href="{{ url('shop') }}">{{ _('Shop') }}</a>
+  </div>
+  <div class="splash" style="{% if page.get_image('splash') %}background-image: url('{{ page.get_image('splash') }}');{% endif %}">
+    {{ image_selector(page, 'splash') }}
+    <a class="{% if request.LANGUAGE_CODE == 'fr' %}cl-logo-fr {% endif %} cl-logo iefix-bgcontain" href="{{ url('home') }}">ClubLink</a>
+    <div class="cta">
+      {{ shorttext_snippet(page, 'headline', 'div') }}
+      <a class="white button" href="{{ url('news-item', slug='noannualdues') }}">
+        {{ _('Discover The Possibilities') }}
+      </a>
+    </div>
+    <div class="scroll-text">
+      {{ _('Scroll Down') }}
+    </div>
+  </div>
+  <div class="quarters">
+    <div style="{% if page.get_image('membership') %}background-image: url('{{ page.get_image('membership') }}');{% endif %}">
+      <a href="{{ url('membership') }}">
+        <span>{{ _('Membership') }}</span>
+      </a>
+      {{ image_selector(page, 'membership') }}
+    </div>
+    <div style="{% if page.get_image('our-clubs-bg') %}background-image: url('{{ page.get_image('our-clubs-bg') }}');{% endif %}">
+      <a href="{{ url('membership.clubs') }}">
+        <span>{{ _('Our Clubs') }}</span>
+      </a>
+      {{ image_selector(page, 'our-clubs-bg') }}
+    </div>
+    <div style="{% if page.get_image('weddings-bg') %}background-image: url('{{ page.get_image('weddings-bg') }}');{% endif %}">
+      <a href="{{ url('events.weddings') }}">
+        <span>{{ _('Weddings & Banquets') }}</span>
+      </a>
+      {{ image_selector(page, 'weddings-bg') }}
+    </div>
+    <div style="{% if page.get_image('tournaments-bg') %}background-image: url('{{ page.get_image('tournaments-bg') }}');{% endif %}">
+      <a href="{{ url('events.golf-tournaments') }}">
+        <span>{{ _('Golf Tournaments') }}</span>
+      </a>
+      {{ image_selector(page, 'tournaments-bg') }}
+    </div>
+    <div style="{% if page.get_image('daily-fee-bg') %}background-image: url('{{ page.get_image('daily-fee-bg') }}');{% endif %}">
+      <a href="{{ url('daily-fee-golf') }}">
+        <span>{{ _('Daily Fee Golf') }}</span>
+      </a>
+      {{ image_selector(page, 'daily-fee-bg') }}
+    </div>
+    <div style="{% if page.get_image('resorts-bg') %}background-image: url('{{ page.get_image('resorts-bg') }}');{% endif %}">
+      <a href="{{ url('resorts') }}">
+        {{ image_selector(page, 'resorts-bg') }}
+        <span>{{ _('Resorts') }}</span>
+      </a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{%- if club -%}
+Club Website: {{ club.name }}
+{%- endif %}
+
+Name: {{ data['first_name'] }} {{ data['last_name'] }}
+
+Email: {{ data['email'] }}
+
+Phone: {{ data['phone'] }}
+
+Subscribe: {{ 'Yes' if data['subscribe'] else 'No'  }}
+
+Comments/Questions:
+{{ data['additional_info'] }}

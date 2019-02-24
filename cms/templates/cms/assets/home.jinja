@@ -1,0 +1,11 @@
+{% extends 'cms/assets/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_tile %}
+
+{% block panel %}
+  <h2>{{ _('Assets Manager') }}</h2>
+
+  <div data-uk-grid class="uk-padding-small uk-padding-remove-left uk-padding-remove-right">
+    {{ render_tile(_('File Browser'), 'folder', url('assets.browser')) }}
+  </div>
+{% endblock %}

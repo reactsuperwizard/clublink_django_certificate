@@ -1,0 +1,25 @@
+{% extends 'clubs/generic/default.jinja' %}
+
+{% set bundles = ('clubs_contact',) %}
+
+{% block before_main %}
+  {% include 'clubs/includes/map.jinja' %}
+
+  <div class="wrapper">
+      {% if request.club.city and request.club.state and request.club.postal_code %}
+        <h4>{{ request.club.name }}</h4>
+        <h4>
+          {{ request.club.address }}
+          <br/>{{ request.club.city }}, {{ request.club.state }},
+          <br/>{{ request.club.postal_code }},
+          {% endif %}
+          {% if request.club.phone %}
+          <br/>{{ _('Phone: {phone_number}').format(phone_number=request.club.phone) }}
+        </h4>
+      {% endif %}
+  </div>
+{% endblock %}
+
+{% block extra_scripts %}
+    {% include 'stubs/gmaps.jinja' %}
+{% endblock %}

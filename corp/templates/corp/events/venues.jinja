@@ -1,0 +1,27 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% set bundles = ('corp_clubs',) %}
+
+{% block after_main %}
+  <div class="wrapper">
+    <ul class="page-nav"><!--
+      {% for r in regions %}
+        --><li class="{% if r == region %}active{% endif %}">
+          <a href="{{ url('events.weddings.venues', slug=r.slug) }}">{{ r.name }}</a>
+        </li><!--
+      {% endfor %}
+    --></ul>
+  </div>
+{% endblock %}
+
+{% block page_footer %}
+  {% if region %}
+    {% for club in region.clubs.all() if not club.no_weddings %}
+      <a href="{{ club_url(club, 'events.weddings') }}" class="image-block club-listing" style="{% if club.listing_image %}background-image: url('{{ club.listing_image.url }}');{% endif %}">
+        <div class="name">{{ club.name }}</div>
+        <div class="location">{{ club.city }}, {{ club.state }}</div>
+        <div class="hover-text">{{ _('Go to club') }}</div>
+      </a>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,54 @@
+Dear {{ rsvp.user.first_name}},
+
+An online reservation for you has been cancelled{% if bywhom %}
+   by {{bywhom.first_name}} {{bywhom.last_name}}
+  {% endif %}.
+
+{% if rsvp.guest_data or rsvp.children.exists() %}
+
+In addition, the following guests have been cancelled:
+
+{% if rsvp.guest_data %}
+Non-members:
+  {% for g in rsvp.guest_data %}
+    {{g.name}}
+  {% endfor %}
+{% endif %}
+
+Note that your guests, who are ClubLink members, will also have received cancellation emails.
+
+{% if rsvp.children.exists() %}
+
+Members - members will each receive individual emails:
+  {% for child in rsvp.children.all() %}
+    {{child.user.first_name}} {{child.user.last_name}} ({{child.user.membership_number}})
+  {% endfor %}
+
+{% endif %}
+
+{% endif %}  
+
+EVENT INFORMATION:
+-----------------------------
+Event: {{ rsvp.event.name }}
+Date: {{ rsvp.event.date }}
+Adults: {{ rsvp.number_of_adults }}
+Children: {{ rsvp.number_of_children }}
+{%- if rsvp.event.custom_question_1 %}
+{{ rsvp.event.custom_question_1 }}: {{ rsvp.custom_answer_1 }}
+{%- endif %}
+{%- if rsvp.event.custom_question_2 %}
+{{ rsvp.event.custom_question_2 }}: {{ rsvp.custom_answer_2 }}
+{%- endif %}
+{%- if rsvp.event.custom_question_3 %}
+{{ rsvp.event.custom_question_3 }}: {{ rsvp.custom_answer_3 }}
+{%- endif %}
+{%- if rsvp.event.custom_question_4 %}
+{{ rsvp.event.custom_question_4 }}: {{ rsvp.custom_answer_4 }}
+{%- endif %}
+{%- if rsvp.event.custom_question_5 %}
+{{ rsvp.event.custom_question_5 }}: {{ rsvp.custom_answer_5 }}
+{%- endif %}
+
+Thank you for your interest,
+{{ rsvp.event.club.name }} Staff

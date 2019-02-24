@@ -1,0 +1,52 @@
+{% macro form_field(field, extra_class='') %}
+  <div 
+  class="field {{ extra_class }} {% if field.errors %}error{% endif %}">
+    {{ field }}
+    <label>{{ field.label }}</label>
+    <div style="font-style: italic">{{field.help_text}}</div>
+    {{ field.errors }}
+  </div>
+{% endmacro %}
+
+{% macro fixed_label_field(field, extra_class='') %}
+  <div class="field fixed-label {{ extra_class }} {% if field.errors %}error{% endif %}">
+    <label>{{ field.label }}</label>
+    {{ field }}
+    {{ field.errors }}
+  </div>
+{% endmacro %}
+
+{% macro checkbox(field) %}
+  <div class="checkbox {% if field.errors %}error{% endif %}"">
+  <label>{{ field }} {{ field.label }}</label>
+  {{ field.errors }}
+  </div>
+{% endmacro %}
+
+{% macro textarea(field) %}
+  {{ form_field(field, 'textarea') }}
+{% endmacro %}
+
+{% macro directions_search(address) %}
+  <div data-directions-search data-address="{{ address|escape }}">
+    <div class="title">{{ _('Find Us') }}</div>
+    <div>
+      <input type="text" name="postal-code" placeholder="{{ _('Enter your postal code') }}" />
+    </div>
+    <div>
+      <button class="button">{{ _('View on Map') }}</button>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro usa_directions_search(address) %}
+  <div data-directions-search data-address="{{ address|escape }}">
+    <div class="title">{{ _('Find Us') }}</div>
+    <div>
+      <input type="text" name="postal-code" placeholder="{{ _('Enter your zip code') }}" />
+    </div>
+    <div>
+      <button class="button">{{ _('View on Map') }}</button>
+    </div>
+  </div>
+{% endmacro %}

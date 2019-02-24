@@ -1,0 +1,7 @@
+{% macro form_field(field, extra_class=None) %}
+    <div class="field {% if extra_class %}{{ extra_class }}{% endif %} {% if field.errors %}error{% endif %}">
+        {{ field }}
+        <label>{{ field.label }}</label>
+        {{ field.errors }}
+    </div>
+{% endmacro %}

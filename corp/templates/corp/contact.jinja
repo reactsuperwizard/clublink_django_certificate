@@ -1,0 +1,19 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block after_main %}
+  <div class="wrapper">
+    <dl class="accordion">
+      <dt>{{ _('Member & Player Services') }}</dt>
+      <dd>{{ richtext_snippet(page, 'mps-details') }}</dd>
+
+      <dt>{{ _('Muskoka Resorts') }}</dt>
+      <dd>{{ richtext_snippet(page, 'muskoka-details') }}</dd>
+
+      <dt>{{ _('Golf Tournaments') }}</dt>
+      <dd>{{ richtext_snippet(page, 'tournament-details') }}</dd>
+
+      <dt>{{ _('Corporate Services') }}</dt>
+      <dd>{{ richtext_snippet(page, 'corporate-details') }}</dd>
+    </dl>
+  </div>
+{% endblock %}

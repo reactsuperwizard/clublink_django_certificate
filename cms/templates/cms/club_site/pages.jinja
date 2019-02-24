@@ -1,0 +1,34 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% block main %}
+  <h3>{{ _('Club Site Pages') }}</h3>
+
+  <div class="uk-padding-small uk-background-muted">
+    <a class="uk-button uk-button-primary" href="{{ url('club-site.pages-add', club_pk=club.pk) }}">
+      {{ _('Add New') }}
+    </a>
+    <a
+        class="uk-align-right uk-button uk-button-secondary"
+        href="{{ url('club-site.pages-reorder', club_pk=club.pk) }}"
+    >
+      {{ _('Manage Order') }}
+    </a>
+  </div>
+
+  <table class="uk-table uk-table-small">
+    <thead>
+      <tr>
+        <th>{{ _('Name') }}</th>
+        <th>{{_('Visibility') }}</th>
+        <th>{{ _('URL') }}</th>
+        <th>{{ _('System page') }}</th>
+        <th class="uk-text-right">{{ _('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for page in pages %}
+        {% include 'cms/club_site/includes/pagerow.jinja' %}
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

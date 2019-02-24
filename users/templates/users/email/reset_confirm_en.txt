@@ -1,0 +1,14 @@
+Dear {{ user.first_name }},
+
+The password on your account has been changed.
+
+If you did not make this change, please contact a Member Services Associate at 1-800-273-5113 or memberservices@clublink.ca.
+
+Thank you,
+
+ClubLink Member Services
+15675 Dufferin Street
+King City, ON, L7B 1K5
+1-800-273-5113
+memberservices@clublink.ca
+www.clublink.ca

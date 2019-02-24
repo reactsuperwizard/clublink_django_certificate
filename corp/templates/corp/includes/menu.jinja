@@ -1,0 +1,64 @@
+<div class="menu noprint">
+  <div class="container">
+    <div class="header">
+      {% if request.user.is_authenticated and request.member.home_club %}
+        <a href="{{ club_url(request.member.home_club, 'my-account') }}" class="white button">{{ _('My Account') }}</a>
+      {% else %}
+        <a href="{{ url('membership.inquiry') }}" class="white button">{{ _('Become a Member') }}</a>
+      {% endif %}
+      <div>
+        {% if request.user.is_authenticated %}
+          <a href="{{ url('logout') }}" class="white flat-button">{{ _('Sign Out') }}</a>
+        {% else %}
+          <a href="{{ url('login') }}" class="white flat-button">{{ _('Sign In') }}</a>
+        {% endif %}
+      </div>
+      <div class="{% if request.LANGUAGE_CODE == 'fr' %}cl-logo-fr {% endif %} cl-logo iefix-bgcontain"></div>
+    </div>
+
+    <ul class="nav">
+      {% for p in corp_pages %}
+        {% if p.show_in_main_menu %}
+          <li>
+            <a href="{{ p.url }}" {% if p.target %}target="{{ p.target }}"{% endif %}>
+              {{ p.name }}
+            </a>
+            <ul>
+              {% if p.list_in_main_menu_subnav %}
+                <li>
+                  <a href="{{ p.url }}" {% if p.target %}target="{{ p.target }}"{% endif %}>
+                    {{ p.name_in_main_menu_subnav }}
+                  </a>
+                </li>
+              {% endif %}
+              {% for c in p.children.filter(site=request.site) %}
+                {% if c.show_in_main_menu %}
+                  <li>
+                    <a href="{{ c.url }}" {% if c.target %}target="{{ p.target }}"{% endif %}>
+                      {{ c.name }}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    <div class="footer">
+      <div class="club-switcher">
+        {{ _('Visit club:') }}
+        <select class="not-selectize" data-goto-url>
+          <option>{{ _('Select a club') }}</option>
+          {% for club in all_clubs %}
+              <option value="{{ club_url(club, 'home') }}">
+                {{ club.name }}
+              </option>
+          {% endfor %}
+        </select>
+      </div>
+      {% include 'corp/includes/footnote.jinja' %}
+    </div>
+  </div>
+</div>

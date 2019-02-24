@@ -1,0 +1,121 @@
+{% macro richtext_snippet(page, slug, wrapper='div', wrapper_class='') %}
+  {% set snippet = page.get_snippet(slug) %}
+  {% set can_edit = request.user.is_authenticated and request.member.is_staff %}
+  {% set id = 'edit-{}-{}'.format(page.pk, slug.replace('.', '-')) %}
+
+  {% if can_edit or snippet %}
+    <{{ wrapper }} class="{{ wrapper_class }}">
+      <div class="{% if can_edit %}editable-block{% endif %} {% if not snippet %}empty{% endif %}">
+        {% if can_edit %}
+          <button class="button" data-show="#{{ id }}">{{ _('Edit') }}</button>
+        {% endif %}
+        {{ snippet|safe }}
+      </div>
+      {% if can_edit %}
+        <div class="modal" id="{{ id }}">
+          <div class="modal-content">
+            <form method="post" action="{{ url('cms.richtext_snippet') }}">
+              <h3>{{ _('Edit Snippet') }}</h3>
+              {{ csrf_input(csrf_token) }}
+              <input type="hidden" name="page" value="{{ page.pk }}" />
+              <input type="hidden" name="locale" value="{{ request.LANGUAGE_CODE }}" />
+              <input type="hidden" name="slug" value="{{ slug }}" />
+              <input type="hidden" name="next" value="{{ request.path }}" />
+
+              <label>{{ _('Content:') }}</label>
+              <textarea data-widget="tinymce" name="content">
+                            {{ page.get_snippet(slug, fallback=False) }}
+                        </textarea>
+
+              <label>{{ _('Locale:') }} <strong>{{ request.LANGUAGE_CODE }}</strong></label>
+
+              <input type="submit" value="{{ _('Save') }}" />
+            </form>
+          </div>
+        </div>
+      {% endif %}
+    </{{ wrapper }}>
+  {% endif %}
+{% endmacro %}
+
+{% macro render_shorttext_snippet(snippet, page, slug, wrapper='div', wrapper_class='', href='') %}
+  {% set can_edit = request.user.is_authenticated and request.member.is_staff %}
+  {% set id = 'edit-{}-{}'.format(page.pk, slug.replace('.', '-')) %}
+
+  {% if can_edit or snippet %}
+    <{{ wrapper }} class="{{ wrapper_class }}" href="{{href}}">
+      <span class="{% if can_edit %}editable-block{% endif %} {% if not snippet %}empty{% endif %}">
+        {% if can_edit %}
+          <button class="button" data-show="#{{ id }}">{{ _('Edit') }}</button>
+        {% endif %}
+        {{ snippet|safe }}
+      </span>
+
+      {% if can_edit %}
+        <div class="modal" id="{{ id }}">
+          <div class="modal-content">
+            <form method="post" action="{{ url('cms.richtext_snippet') }}">
+              <h3>{{ _('Edit Snippet') }}</h3>
+              {{ csrf_input(csrf_token) }}
+              <input type="hidden" name="page" value="{{ page.pk }}" />
+              <input type="hidden" name="locale" value="{{ request.LANGUAGE_CODE }}" />
+              <input type="hidden" name="slug" value="{{ slug }}" />
+              <input type="hidden" name="next" value="{{ request.path }}" />
+
+              <label>{{ _('Content:') }}</label>
+              <p>
+                <input type="text" name="content" value="{{ page.get_snippet(slug, fallback=False) }}" />
+              </p>
+
+              <label>{{ _('Locale:') }} <strong>{{ request.LANGUAGE_CODE }}</strong></label>
+
+              <input type="submit" value="{{ _('Save') }}" />
+            </form>
+          </div>
+        </div>
+      {% endif %}
+    </{{ wrapper }}>
+  {% endif %}
+{% endmacro %}
+
+{% macro shorttext_snippet(page, slug, wrapper='div', wrapper_class='', href='') %}
+  {% set snippet = page.get_snippet(slug) %}
+  {{ render_shorttext_snippet(snippet, page, slug, wrapper, wrapper_class, href) }}
+{% endmacro %}
+
+{% macro shorttext_snippet_inhereted(page, slug, wrapper='div', wrapper_class='') %}
+  {% set snippet = page.get_snippet(slug, inhereted=True) %}
+  {{ render_shorttext_snippet(snippet, page, slug, wrapper, wrapper_class='') }}
+{% endmacro %}
+
+{% macro shorttext_snippet_inhereted_no_alias(page, slug, wrapper='div', wrapper_class='') %}
+  {% set snippet = page.get_snippet(slug, inhereted=True, ignore_alias=True) %}
+  {{ render_shorttext_snippet(snippet, page, slug, wrapper, wrapper_class='') }}
+{% endmacro %}
+
+{% macro image_selector(page, slug) %}
+  {% set can_edit = request.user.is_authenticated and request.member.is_staff %}
+  {% set id = 'edit-{}-{}'.format(page.pk, slug.replace('.', '-')) %}
+  {% if can_edit %}
+    <button class="image-edit button" data-show="#{{ id }}">{{ _('Edit Image') }}</button>
+    <div class="modal" id="{{ id }}">
+      <div class="modal-content">
+        <form method="post" action="{{ url('cms.image') }}" enctype="multipart/form-data">
+          <h3>{{ _('Edit Image') }}</h3>
+          {{ csrf_input(csrf_token) }}
+          <input type="hidden" name="page" value="{{ page.pk }}" />
+          <input type="hidden" name="slug" value="{{ slug }}" />
+          <input type="hidden" name="next" value="{{ request.path }}" />
+
+          <label>{{ _('Upload Image:') }}</label>
+          <p><input type="file" name="image" /></p>
+
+          <input type="submit" value="{{ _('Save') }}" />
+          {% if page.get_image(slug, skip_corp=True) %}
+            <input type="submit" name="delete" value="{{ _('Delete Existing') }}" />
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  {% endif %}
+{% endmacro %}

@@ -1,0 +1,14 @@
+<div class="social-bar noprint">
+    {% if request.club.youtube_url %}
+        <a href="{{ request.club.youtube_url }}" class="social-icon youtube" target="_blank"></a>
+    {% endif %}
+    {% if request.club.twitter_url %}
+        <a href="{{ request.club.twitter_url }}" class="social-icon twitter" target="_blank"></a>
+    {% endif %}
+    {% if request.club.facebook_url %}
+        <a href="{{ request.club.facebook_url }}" class="social-icon facebook" target="_blank"></a>
+    {% endif %}
+    {% if request.club.instagram_url %}
+        <a href="{{ request.club.instagram_url }}" class="social-icon instagram" target="_blank"></a>
+    {% endif %}
+</div>

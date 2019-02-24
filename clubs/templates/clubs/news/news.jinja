@@ -1,0 +1,56 @@
+{% extends 'clubs/news/base.jinja' %}
+
+{% block after_main %}
+  <div class="wrapper">
+    <form class="filter-form">
+      <div class="field">
+        <select data-goto-url>
+          <option value="?">{{ _('All News') }}</option>
+          {% for club in all_clubs %}
+            {% if not club.is_us_club %}
+              <option value="?filter_club={{ club.pk }}" {% if request.GET.get('filter_club') == '{}'.format(club.pk) %}selected{% endif %}>
+                {{ club.name }}
+              </option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <label>{{ _('Filter by Club') }}</label>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block page_footer %}
+  <div class="news-listing">
+    <div class="quarters">
+      {% for news_item in news %}
+        <div class="featured-news" style="background-image: url('{{ news_item.photo.url }}');">
+          <a href="{{ url('news-item', slug=news_item.slug) }}">
+            <div class="date">{{ news_item.publish_date.strftime('%d %b %Y').upper() }}</div>
+            <div class="details">
+              <div class="headline">{{ news_item.headline }}</div>
+              <div class="summary">{{ news_item.summary }}</div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    <ul class="news-list">
+      {% for news_item in news[2:] %}
+        <li>
+          <a href="{{ url('news-item', slug=news_item.slug) }}">
+            <span class="photo" style="background-image: url('{{ news_item.photo.url }}');"></span>
+            <span class="details">
+              <span class="date">
+                {{ news_item.publish_date.strftime('%d %b %Y').upper() }}
+              </span>
+              <span class="headline">{{ news_item.headline }}</span>
+              <span class="summary">{{ news_item.summary }}</span>
+            </span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends base_template %}
+
+{% block header %}
+  {{ page_header(image=static('generic-header.jpg'), headline=_('Registration')) }}
+{% endblock %}
+
+{% block main %}
+  <div class="wrapper">
+    <h2></h2>
+    <p class="centered">
+      {% trans %}
+        You have not yet set up your account on the new member portal.
+      {% endtrans %}
+    </p>
+    <p class="centered">
+      {% trans %}
+        Please confirm the following details to continue.
+      {% endtrans %}
+    </p>
+    <p class="centered">
+      {% trans %}
+        If you experience any difficulties please contact Member Services at
+        <a href="mailto:memberservices@clublink.ca">memberservices@clublink.ca</a> or
+        <span class="no-wrap">1-800-273-5113</span>.
+      {% endtrans %}
+    </p>
+    <form action="" method="post" novalidate>
+      {{ form.non_field_errors() }}
+      {{ csrf_input(csrf_token) }}
+      {{ form_field(form.last_name) }}
+      {{ form_field(form.postal_code) }}
+      <input type="submit" value="{{ _('Submit') }}" />
+    </form>
+    <div class="centered">
+      <a href="{{ url('login') }}">← {{ _('Back to Login') }}</a>
+    </div>
+  </div>
+{% endblock %}

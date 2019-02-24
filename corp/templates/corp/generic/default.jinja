@@ -1,0 +1,55 @@
+{% extends 'corp/base.jinja' %}
+
+{% from 'cms/macros.jinja' import richtext_snippet, shorttext_snippet, image_selector with context %}
+{% from 'corp/includes/header.jinja' import page_header with context %}
+
+{% block head %}
+{{super()}}
+{% if news_item %}
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{{news_item.headline_en}}" />
+<meta property="og:description" content="{{news_item.summary_en}}." />
+<meta property="og:image" content="{{news_item.photo.url}}" />
+{% else %}
+<meta property="og:type" content="website" />
+  {% if page %}
+  <meta property="og:title" content="{{page.title}}" />
+  {% endif %}
+{% endif %}
+
+{% endblock head %}
+
+{% block header %}
+  {% block main_header %}
+    {{ page_header(page) }}
+  {% endblock %}
+  {% block page_nav %}
+    {% include 'corp/includes/page_nav.jinja' %}
+  {% endblock %}
+{% endblock %}
+
+{% block main %}
+  {% block before_main %}{% endblock %}
+
+  <div class="wrapper">
+    {{ shorttext_snippet(page, 'heading_1', 'h2') }}
+    
+    {{ richtext_snippet(page, 'copy_1') }}
+
+    {{ shorttext_snippet(page, 'heading_2', 'h2') }}
+    {{ richtext_snippet(page, 'copy_2') }}
+
+    {{ shorttext_snippet(page, 'heading_3', 'h2') }}
+    {{ richtext_snippet(page, 'copy_3') }}
+  </div>
+
+  {% block after_main %}{% endblock %}
+{% endblock %}
+
+{% block page_footer %}
+  {% if page.get_image('footer-image') or (request.user.is_authenticated and request.member.is_staff) %}
+    <div class="image-block" style="{% if page.get_image('footer-image') %}background-image: url('{{ page.get_image('footer-image') }}');{% endif %}">
+      {{ image_selector(page, 'footer-image') }}
+    </div>
+  {% endif %}
+{% endblock %}

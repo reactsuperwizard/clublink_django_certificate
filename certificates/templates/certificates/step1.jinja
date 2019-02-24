@@ -1,0 +1,67 @@
+{% extends 'certificates/base.jinja' %}
+
+{% from 'certificates/macros.jinja' import form_field %}
+
+{% block main %}
+    <ul class="step-indicator">
+        <li><a class="button active" href="#">{{ _('Step 1') }}</a></li>
+        <li><a class="button" href="{{ url('step2') }}">{{ _('Step 2') }}</a></li>
+    </ul>
+    {% if messages %}
+        <ul class="messagelist">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>{{ _('Enter Recipient') }}</h2>
+    <form method="post" action="" novalidate>
+        <div style="display: none"><input type="submit" /></div>
+        {{ form.non_field_errors() }}
+        {{ csrf_input(csrf_token) }}
+        <div class="two-column">
+            {{ form_field(form.language) }}
+            {{ form_field(form.department, 'department') }}
+            {{ form_field(form.account_number) }}
+            {{ form_field(form.account_name) }}
+            {% if users and users.count() > 1 %}
+              <div class="lookup-title">
+                {{ _('There were multiple accounts found:') }}
+              </div>
+              <ul class="lookup-results">
+                <li>
+                  <div>
+                    <span>{{ _('Membership Number') }}</span>
+                    <span>{{ _('Name') }}</span>
+                    <span>{{ _('Home Club') }}</span>
+                  </div>
+                </li>
+                {% for user in users %}
+                  <li>
+                    <button type="submit" name="select_user" value="{{ user.id }}">
+                      <span>{{ user.membership_number }}</span>
+                      <span>{{ user.get_full_name() }}</span>
+                      <span>{{ user.home_club }}</span>
+                    </button>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            {{ form_field(form.recipient_name) }}
+            {{ form_field(form.recipient_email) }}
+            {{ form_field(form.email_signature) }}
+            <div class="field">
+                <button type="submit" name="lookup" class="search-link">
+                  {{ _('Database Lookup') }}
+                </button>
+            </div>
+        </div>
+        <div class="buttons">
+          <input type="submit" name="reset" value="{{ _('Reset') }}" />
+          <input type="submit" value="{{ _('Submit') }}" />
+        </div>
+        <div style="display: none;">
+          <button type="submit" name="reload"></button>
+        </div>
+    </form>
+{% endblock %}

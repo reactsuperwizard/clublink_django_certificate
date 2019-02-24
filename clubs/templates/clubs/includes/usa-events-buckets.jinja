@@ -1,0 +1,9 @@
+    {% for item in tiles %}
+      {% set slug = 'tile_{}'.format(loop.index) %}
+      <div style="{% if page.get_image(slug) %}background-image: url('{{ page.get_image(slug) }}');{% endif %} {% if loop.last %} width: 100%;{% endif %}">
+        <a href="{{ item[0] }}" {% if item[2] %}target="_blank"{% endif %}>
+          <span>{{ item[1] }}</span>
+        </a>
+        {{ image_selector(page, slug) }}
+      </div>
+    {% endfor %}

@@ -1,0 +1,17 @@
+{% extends 'clubs/my-account/update-profile.jinja' %}
+
+{% block main_form %}
+  <div class="wrapper">
+    <h4>{{ _('Communications') }}</h4>
+
+    {{ checkbox(subscription_form.email_dues_notice) }}
+    {{ checkbox(subscription_form.email_statement) }}
+    {{ checkbox(subscription_form.subscribe_clublink_info) }}
+    {{ checkbox(subscription_form.subscribe_club_info) }}
+    {{ checkbox(subscription_form.subscribe_score) }}
+  </div>
+
+  <div class="wrapper">
+    <input type="submit" value="{{ _('Save') }}" />
+  </div>
+{% endblock %}

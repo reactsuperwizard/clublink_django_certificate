@@ -1,0 +1,36 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block page_footer %}
+  <div class="news-listing">
+    <div class="quarters">
+      {% for news_item in news %}
+        <div class="featured-news" style="background-image: url('{{ news_item.get_photo() }}');">
+          <a href="{{ url('news-item', slug=news_item.slug) }}">
+            <div class="date">{{ news_item.publish_date.strftime('%d %b %Y').upper() }}</div>
+            <div class="details">
+              <div class="headline">{{ news_item.headline }}</div>
+              <div class="summary">{{ news_item.summary }}</div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    <ul class="news-list">
+      {% for news_item in news[2:] %}
+        <li>
+          <a href="{{ url('news-item', slug=news_item.slug) }}">
+            <span class="photo" style="background-image: url('{{ news_item.get_photo() }}');"></span>
+            <span class="details">
+              <span class="date">
+                {{ news_item.publish_date.strftime('%d %b %Y').upper() }}
+              </span>
+              <span class="headline">{{ news_item.headline }}</span>
+              <span class="summary">{{ news_item.summary }}</span>
+            </span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

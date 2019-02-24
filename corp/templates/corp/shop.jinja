@@ -1,0 +1,24 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block page_footer %}
+  <div class="quarters">
+    <div style="{% if page.get_image('golf-merchandise-bg') %}background-image: url('{{ page.get_image('golf-merchandise-bg') }}');{% endif %}">
+      <a target="_blank" href="https://www.shopclublink.ca/">
+        <span>{{ _('Online Store') }}</span>
+      </a>
+      {{ image_selector(page, 'golf-merchandise-bg') }}
+    </div>
+    <div style="{% if page.get_image('gift-cards-bg') %}background-image: url('{{ page.get_image('gift-cards-bg') }}');{% endif %}">
+      <a target="_blank" href="https://giftcards.clublink.ca/">
+        <span>{{ _('eGift Cards') }}</span>
+      </a>
+      {{ image_selector(page, 'gift-cards-bg') }}
+    </div>
+  </div>
+  <div class="image-block link-banner" style="{% if page.get_image('players-club-bg') %}background-image: url('{{ page.get_image('players-club-bg') }}');{% endif %}">
+    {{ image_selector(page, 'players-club-bg') }}
+    <a target="_blank" href="https://playersclub.clublink.ca/">
+      {{ _('Players Club') }}
+    </a>
+  </div>
+{% endblock %}

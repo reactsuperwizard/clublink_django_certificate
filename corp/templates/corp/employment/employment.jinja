@@ -1,0 +1,15 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block page_footer %}
+  <div class="quarters">
+    {% for item in page.children.all()[:4] %}
+      {% set slug = 'tile_{}'.format(loop.index) %}
+      <div style="{% if page.get_image(slug) %}background-image: url('{{ page.get_image(slug) }}');{% endif %}">
+        <a href="{{ item.url }}">
+          <span>{{ item.name }}</span>
+        </a>
+        {{ image_selector(page, slug) }}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

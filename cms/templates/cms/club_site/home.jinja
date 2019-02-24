@@ -1,0 +1,15 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_tile %}
+
+{% block main %}
+  <h2>{{ _('Club Site Manager') }}</h2>
+
+  <div data-uk-grid class="uk-padding-small uk-padding-remove-left uk-padding-remove-right">
+    {{ render_tile(_('Pages'), 'file-edit', url('club-site.pages', club_pk=club.pk)) }}
+    {{ render_tile(_('Gallery'), 'image', url('club-site.gallery', club_pk=club.pk)) }}
+    {{ render_tile(_('Team Members'), 'user', url('club-site.team-members', club_pk=club.pk)) }}
+    {{ render_tile(_('News'), 'rss', url('club-site.news', club_pk=club.pk)) }}
+    {{ render_tile(_('Calendar'), 'calendar', url('club-site.calendar', club_pk=club.pk)) }}
+  </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'clubs/members/base-home-buckets.jinja' %}
+
+{% block first_bucket %}
+  <div style="{% if page.get_image('mp-renewal-options-bg') %}background-image: url('{{ page.get_image('mp-renewal-options-bg') }}');{% endif %}">
+    <a href="https://playersclub.clublink.ca/renew-2019/" target="_blank">
+      <span>{{ _('Renewal Options') }}</span>
+    </a>
+    {{ image_selector(page, 'mp-renewal-options-bg') }}
+  </div>
+{% endblock %}
+
+{% block second_bucket %}
+  <div style="{% if page.get_image('mp-linkline-bg') %}background-image: url('{{ page.get_image('mp-linkline-bg') }}');{% endif %}">
+    <a href="{{ url('linkline') }}" target="_blank">
+      <span>{{ _('LinkLine Online') }}</span>
+    </a>
+    {{ image_selector(page, 'mp-linkline-bg') }}
+  </div>
+{% endblock %}
+
+{% block fourth_bucket %}
+  <div style="{% if page.get_image('mp-host-event-bg') %}background-image: url('{{ page.get_image('mp-host-event-bg') }}');{% endif %}">
+    <a href="{{ corp_url('events.weddings') }}" target="_blank">
+      <span>{{ _('Host My Event') }}</span>
+    </a>
+    {{ image_selector(page, 'mp-host-event-bg') }}
+  </div>
+{% endblock %}

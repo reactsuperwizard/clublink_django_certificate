@@ -1,0 +1,13 @@
+Hi {{name}},
+
+This is your ClubLink certificate(s) confirmation. Your certificate(s) are available to download here:
+{{download_url}}
+
+Please print the PDF file attachment and bring it with you at the time of redemption.
+
+The specific booking instructions and terms and conditions are on each certificate. The certificate(s) should be treated like cash and safeguarded accordingly.
+
+If you have any questions please contact us at the number below.
+
+Thank you,
+{{signature.plaintext}}

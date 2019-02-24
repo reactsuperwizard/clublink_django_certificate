@@ -1,0 +1,36 @@
+<div style="{% if page.get_image('membership') %}background-image: url('{{ page.get_image('membership') }}');{% endif %}">
+  <a href="{{ url('membership') }}">
+    <span>{{ _('Membership') }}</span>
+  </a>
+  {{ image_selector(page, 'membership') }}
+</div>
+<div style="{% if page.get_image('our-clubs-bg') %}background-image: url('{{ page.get_image('our-clubs-bg') }}');{% endif %}">
+  <a href="{{ url('membership.clubs') }}">
+    <span>{{ _('Our Clubs') }}</span>
+  </a>
+  {{ image_selector(page, 'our-clubs-bg') }}
+</div>
+<div style="{% if page.get_image('weddings-bg') %}background-image: url('{{ page.get_image('weddings-bg') }}');{% endif %}">
+  <a href="{{ url('events.weddings') }}">
+    <span>{{ _('Weddings & Banquets') }}</span>
+  </a>
+  {{ image_selector(page, 'weddings-bg') }}
+</div>
+<div style="{% if page.get_image('tournaments-bg') %}background-image: url('{{ page.get_image('tournaments-bg') }}');{% endif %}">
+  <a href="{{ url('events.golf-tournaments') }}">
+    <span>{{ _('Golf Tournaments') }}</span>
+  </a>
+  {{ image_selector(page, 'tournaments-bg') }}
+</div>
+<div style="{% if page.get_image('daily-fee-bg') %}background-image: url('{{ page.get_image('daily-fee-bg') }}');{% endif %}">
+  <a href="{{ url('daily-fee-golf') }}">
+    <span>{{ _('Daily Fee Golf') }}</span>
+  </a>
+  {{ image_selector(page, 'daily-fee-bg') }}
+</div>
+<div style="{% if page.get_image('resorts-bg') %}background-image: url('{{ page.get_image('resorts-bg') }}');{% endif %}">
+  <a href="{{ url('resorts') }}">
+    {{ image_selector(page, 'resorts-bg') }}
+    <span>{{ _('Resorts') }}</span>
+  </a>
+</div>

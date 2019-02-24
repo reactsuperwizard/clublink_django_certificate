@@ -1,0 +1,14 @@
+{% extends 'certificates/base.jinja' %}
+
+{% from 'certificates/macros.jinja' import form_field %}
+
+{% block main %}
+    <h1>{{ _('Login') }}</h1>
+    {{ form.non_field_errors() }}
+    <form method="post" action="">
+        {{ csrf_input(csrf_token) }}
+        {{ form_field(form.username) }}
+        {{ form_field(form.password) }}
+        <input type="submit" value="{{ _('Submit') }}" />
+    </form>
+{% endblock %}

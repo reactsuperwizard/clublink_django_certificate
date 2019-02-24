@@ -1,0 +1,9 @@
+{% extends 'clubs/linkline/base.jinja' %}
+
+{% block after_main %}
+  {% if request.webres_member_token %}
+    <div class="wrapper">
+      <iframe class="daily-fee-iframe" src="{{ booking_url }}"></iframe>
+    </div>
+  {% endif %}
+{% endblock %}

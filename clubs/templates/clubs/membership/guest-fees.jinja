@@ -1,0 +1,17 @@
+{% extends 'clubs/generic/boxed.jinja' %}
+
+{% block before_main %}
+  <form class="filter-form">
+    <div class="field">
+      <select data-goto-url>
+        <option value="{{ curr_url(request, filter_club=None) }}">{{ request.club.name }}</option>
+        {% for club in all_clubs.filter(site=request.site, is_resort=False).exclude(pk=request.club.pk) %}
+            <option value="{{ curr_url(request, filter_club=club.pk) }}" {% if request.GET.get('filter_club') == '{}'.format(club.pk) %}selected{% endif %}>
+              {{ club.name }}
+            </option>
+        {% endfor %}
+      </select>
+      <label>{{ _('Filter by Club') }}</label>
+    </div>
+  </form>
+{% endblock %}

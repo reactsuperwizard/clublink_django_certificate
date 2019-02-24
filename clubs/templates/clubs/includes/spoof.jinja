@@ -1,0 +1,9 @@
+{% if request.is_user_spoofed %}
+  <div class="spoof-notifier">
+    {{ _('You are viewing this page as:') }}
+    <a href="{{ admin_url('users.impersonate') }}">
+      <strong>{{ request.member }} ({{request.member.first_name}} {{request.member.last_name}})</strong>
+    </a>
+    <span class="close" data-hide=".spoof-notifier"></span>
+  </div>
+{% endif %}

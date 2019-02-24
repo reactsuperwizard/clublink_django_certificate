@@ -1,0 +1,14 @@
+{% extends 'cms/corp_site/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_tile %}
+
+{% block panel %}
+  <h2>{{ _('Corporate Site Manager') }}</h2>
+
+  <div data-uk-grid class="uk-padding-small uk-padding-remove-left uk-padding-remove-right">
+    {{ render_tile(_('Pages'), 'file-edit', url('corp-site.pages')) }}
+    {{ render_tile(_('Events Galleries'), 'image', url('corp-site.events-gallery')) }}
+    {{ render_tile(_('News'), 'rss', url('corp-site.news')) }}
+    {{ render_tile(_('GiftCardExchanger'), 'rss', url('corp-site.golfforlife')) }}
+  </div>
+{% endblock %}

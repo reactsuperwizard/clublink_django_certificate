@@ -1,0 +1,21 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% from 'corp/includes/header.jinja' import page_header with context %}
+
+{% block body_class %}news-item-page{% endblock %}
+
+{% block main %}
+  <div class="wrapper">
+    <h2>{{ news_item.headline }}</h2>
+    <p class="centered">
+      <strong>{{ news_item.publish_date.strftime('%d %b %Y').upper() }}</strong>
+    </p>
+    <p class="centered">
+      <img class="news-photo" src="{{ news_item.photo.url }}" alt="" title="" />
+    </p>
+    {{ news_item.content|safe }}
+  </div>
+{% endblock %}
+
+{% block page_footer %}
+{% endblock %}

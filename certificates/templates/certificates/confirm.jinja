@@ -1,0 +1,41 @@
+{% extends 'certificates/base.jinja' %}
+
+{% block main %}
+  {% if not status %}
+    <ul class="step-indicator">
+      <li><a class="button" href="{{ url('step1') }}">{{ _('Step 1') }}</a></li>
+      <li><a class="button" href="{{ url('step2') }}">{{ _('Step 2') }}</a></li>
+    </ul>
+    {% if messages %}
+      <ul class="messagelist">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <h2>{{ _('Something went wrong!') }}</h2>
+    <div class="success-message">
+      <p>{{ _('Please go back and fix any issues.') }}</p>
+      <a href="{{ url('step1') }}" class="button">
+        {{ _('Return to Step 1') }}
+      </a>
+      <p><i class="arrow-left"></i></p>
+    </div>
+  {% elif not email%}
+    <h1>{{ _('Unable to send email!') }}</h1>
+    <div class="success-message">
+      <p>{{ _('Your certificates were successfully created, but there was a problem sending the email.') }}</p>
+      <p>{{ _('Ask your administrator to resend the email for batch #{}').format(batch_id) }}</p>
+    </div>
+  {% else %}
+    <h1>{{ _('Success!') }}</h1>
+    <div class="success-message">
+      <p>{{ _('The gift certificates were sent to,') }}</p>
+      <p>{{ email }}</p>
+      <a href="{{ url('step1') }}" class="button">
+        {{ _('Return to Step 1') }}
+      </a>
+      <p><i class="arrow-left"></i></p>
+    </div>
+  {% endif %}
+{% endblock %}

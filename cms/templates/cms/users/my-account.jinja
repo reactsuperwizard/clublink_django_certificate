@@ -1,0 +1,26 @@
+{% extends 'cms/users/base.jinja' %}
+
+{% from 'cms/includes/forms.jinja' import render_field %}
+
+{% block main %}
+  <h3>{{ _('My Account') }}</h3>
+
+  <form method="post" action="" class="uk-form-stacked" novalidate>
+    {{ csrf_input(csrf_token) }}
+
+    <div data-uk-grid>
+      <div class="uk-width-1-2">{{ render_field(form.first_name) }}</div>
+      <div class="uk-width-1-2">{{ render_field(form.middle_name) }}</div>
+
+      <div class="uk-width-1-2">{{ render_field(form.last_name) }}</div>
+      <div class="uk-width-1-2">{{ render_field(form.email) }}</div>
+
+      <div class="uk-width-1-2">{{ render_field(form.password) }}</div>
+      <div class="uk-width-1-2">{{ render_field(form.preferred_language) }}</div>
+    </div>
+
+    <div class="uk-margin-medium-top">
+      <input type="submit" class="uk-button uk-button-primary" value="{{ _('Save') }}" />
+    </div>
+  </form>
+{% endblock %}

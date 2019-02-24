@@ -1,0 +1,144 @@
+{% extends 'clubs/base.jinja' %}
+
+{% set bundles = ('clubs_home',) %}
+
+{% from 'cms/macros.jinja' import shorttext_snippet, image_selector with context %}
+
+    {% block description %}
+      <meta name="description" content="{{request.club.pages.get(name_en__icontains="home").get_snippet('description', fallback=False, locale=request.LANGUAGE_CODE)}}">
+    {% endblock description %}
+
+{% block body_class %}home{% endblock %}
+
+{% block left_nav %}
+  {% if request.member_portal %}
+    <div class="sign-out-button">
+      <a href="{{ url('logout') }}" class="button white small">{{ _('Sign Out') }}</a>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block right_nav %}
+  {% include 'clubs/includes/social-bar.jinja' %}
+{% endblock %}
+
+{% block main %}
+
+  {# These are the links on the left. #}
+
+  {% if not request.club.bcg_style %}
+  <div class="corporate-links">
+    <a href="{{ corp_url('employment') }}">{{ _('Jobs') }}</a>
+    <a href="{{ corp_url('news') }}" target="_blank">{{ _('News') }}</a>
+    {% if request.site.id == 1 %}
+    <a href="{{ corp_url('shop') }}">{{ _('Shop') }}</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+
+  <div class="splash" style="{% if page.get_image('splash') %}background-image: url('{{ page.get_image('splash') }}');{% endif %}">
+
+    {# This is the main hero background. #}
+    {{ image_selector(page, 'splash') }}
+    {% if not page.use_corp_styles and not page.club.use_corp_styles %}
+      <a href="{{ url('home') }}" class="banner">
+        {% if request.club.svg_logo %}
+          {% set logo = request.club.svg_logo %}
+        {% else %}
+          {% set logo = request.club.logo %}
+        {% endif %}
+ 
+        <div class="logo" style="{% if logo %}background-image: url('{{ logo.url }}');{% endif %}"></div>
+      </a>
+    {% endif %}
+
+    {% if page.use_corp_styles or page.club.use_corp_styles %}
+
+      {% if "concierge" in subdomain %}
+        <a class="corp-style iefix-bgcontain cl-logo" href="{{ url('home') }}" style=" background-image: url('{{page.club.thumbor_svg_logo}}')">ClubLink - Business Golf Concierge</a>
+      {% else %}      
+        <a class="{% if request.LANGUAGE_CODE == 'fr' %}cl-logo-fr {% endif %} cl-logo corp-style iefix-bgcontain" href="{{ url('home') }}">ClubLink</a>
+      {% endif %}
+      
+    {% endif %}
+    
+    {% if request.club.bcg_style %}
+    {# For the BCG style templates, we add the 2 lines here. #}
+    <div class="cta bcg-cta" style="position:relative">
+      <br>
+        <br>
+          {{ shorttext_snippet(page, 'tagline_1', 'h2') }}
+          {{ shorttext_snippet(page, 'tagline_2', 'h2') }}
+          <br>
+        <a class="white-fixed button" href="{{ url('membership') }}">
+            {{ _('Find Out More') }}
+        </a>
+    </div>
+    {% endif %}
+
+    {% if request.member_portal %}
+      <div class="member-welcome">
+        <span>
+          {% if request.member.first_name %}
+            {{ _('Welcome, {name}').format(name=request.member.first_name) }}
+          {% else %}
+            {{ _('Welcome!') }}
+          {% endif %}
+        </span>
+
+        {% if request.club.slug == 'playersclub' %}
+        <div style="clearfix: all; padding-bottom: 20px;">
+          <a class="button white" href="{{request.member.legacy_renewal_link}}" target="_blank">Renew Membership</a>
+        </div>
+        {% endif %}
+
+        <div class="member-buttons">
+          <a class="button white" href="{{ url('my-account') }}">{{ _('My Account') }}</a><!--
+          --><a class="button white" href="{{ url('linkline.book-a-tee-time') }}" target="_blank">{{ _('Book a Tee Time') }}</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="cta noprint" style="position:relative">
+        <!--
+        {% if not request.member.is_authenticated %}
+          --><a class="white-fixed button {% if request.club.bcg_style %}desktop-hidden{% endif %}" href="{{ url('login') }}">{{ _('Member Sign In') }}</a><!--
+        {% endif %}
+        {% if request.club.daily_fee_location %}
+          --><a class="white button" href="{{ url('daily-fee-golf.book') }}">{{ _('Daily Fee Golf') }}</a><!--
+        {% endif %}
+        -->
+      </div>
+    {% endif %}
+
+    <div class="scroll-text">
+      {{ _('Scroll Down') }}
+    </div>
+  </div>
+
+  <div class="quarters">
+      {% include bucket_template_name %}
+  </div>
+
+  {% if request.member_portal %}
+    <div class="wrapper">
+      <div
+          data-weather
+          data-lat="{{ request.club.latitude }}"
+          data-lng="{{ request.club.longitude }}"
+          data-city="{{ request.club.city }}"
+          {% if request.site.id == 1 %}
+            data-units="ca"
+          {% else %}
+            data-units="us"
+          {% endif %}
+      ></div>
+    </div>
+  {% elif not request.club.bcg_style %}
+      {% include 'clubs/includes/map.jinja' %}
+  {% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+    <!-- {% include 'stubs/gmaps.jinja' %} -->
+{% endblock %}

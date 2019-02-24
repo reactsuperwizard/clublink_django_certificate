@@ -1,0 +1,20 @@
+{% macro render_field(field, image=None) %}
+  <div class="uk-margin">
+      <label class="uk-form-label">{{ field.label }}</label>
+      <div class="uk-form-controls {% if field.errors %}uk-form-danger{% endif %}">
+        {{ field }}
+        {% if image %}
+          <div class="uk-width-small uk-margin-top">
+            <div class="tm-square-image-contained" style="background-image: url('{{ image.url }}');"></div>
+          </div>
+        {% endif %}
+      </div>
+      {% if field.errors %}
+        <div class="uk-margin-small uk-text-small uk-text-danger">
+          {% for error in field.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+{% endmacro %}

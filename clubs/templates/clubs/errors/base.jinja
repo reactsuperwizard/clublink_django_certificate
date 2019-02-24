@@ -1,0 +1,7 @@
+{% extends 'clubs/base.jinja' %}
+
+{% from 'clubs/includes/header.jinja' import page_header with context %}
+
+{% block header %}
+  {{ page_header(image=static('new-banner.jpg'), headline='Oops...') }}
+{% endblock %}

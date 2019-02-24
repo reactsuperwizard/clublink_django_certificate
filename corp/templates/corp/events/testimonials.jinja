@@ -1,0 +1,12 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block after_main %}
+  <div class="wrapper"></div>
+
+{% if request.site != 1 %}
+  <script type="text/javascript" src="//wwcdn.weddingwire.com/js/widgets/myReviews.js"></script><div id="ww-widget-reviews" class="ww-reset ww-reviews-widget" style="margin: 0 auto"><div class="ww-reviews-placeholder">Read all of our <a target="_new" href="https://www.weddingwire.com/biz/club-renaissance-at-sun-city-center-sun-city-center/4fca705c0ff33ba4.html">Wedding Sites & Locations, Rehearsal Dinner Venues Reviews</a> at <a target="_new" href="https://www.weddingwire.com"><img src="//wwcdn.weddingwire.com/images/logo/WWlogo-83x19.gif" alt="Weddings, Wedding Cakes, Wedding Planning, Wedding Checklists, Free Wedding Websites, Wedding Dresses, Wedding Ideas & more"/></a></div></div><script type="text/javascript"><!--
+  WeddingWire.createReview({"vendorId":"4fca705c0ff33ba4", "id":"ww-widget-reviews"});
+  --></script>  
+{% endif %}
+
+{% endblock %}

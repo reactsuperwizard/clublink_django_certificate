@@ -1,0 +1,204 @@
+{% extends 'clubs/my-club/base.jinja' %} {% set bundles = ('fancybox',) %} {% from 'clubs/includes/macros.jinja' import fixed_label_field,
+form_field %} {% block main %}
+<div class="wrapper event-details-page">
+  <h2>{{ _('Calendar') }}</h2>
+  
+  {% if editmode %}
+  <style>
+    header, footer, .address-bar, .image-block, body > div.page > div.main > div > p, body > div.page > div.main > div > h2, .menu-toggler {
+      display: none !important;
+    }
+    html, body {
+      background: none;
+    }
+  </style>
+  {% endif %}
+
+  <p class="centered">
+    <a href="{{ return_url }}" class="button">
+      ← {{ _('Return to Event Listing') }}
+    </a>
+  </p>
+   
+  <div class="event-listing">
+     {% if not editmode %}
+    <h4 class="event-title">{{ event.name }}</h4>
+
+    <ul class="legend">
+      {% if event.type == event.MEMBER_EVENT %}
+      <li class="member-event">{{ _('Member Event') }}</li>
+      {% elif event.type == event.NOTICE %}
+      <li class="notice">{{ _('Notice') }}</li>
+      {% elif event.type == event.OUTSIDE_EVENT %}
+      <li class="outside-event">{{ _('Outside Event') }}</li>
+      {% endif %}
+    </ul>
+
+    {% if event.total_registrants_count %}
+    <div class="meta-detail">
+      {{ _('Registrants:
+      <strong>{total_registrants}</strong>').format(total_registrants=event.total_registrants_count) }}
+    </div>
+    {% endif %} {% if event.visible_registrants %}
+    <div class="button" data-fancybox data-src="#hidden-content" href="javascript:;" style="cursor: pointer">
+      See who's attending
+    </div>
+    {% endif %}
+
+    <div style="display: none; width: 50vh; height: 50vh;" id="hidden-content" }>
+      {% for u in event.visible_registrants.order_by('last_name') %}
+      <div>
+        <strong>{{u.first_name}} {{u.last_name}}</strong>
+        <div>{{u.option_club.name}}</div>
+      </div>
+      <br> {% endfor %}
+    </div>
+
+    <div class="meta-detail">
+      {% if event.all_day %} {{ _('All Day') }} {% elif event.instant %} {{ _('Event time:
+      <strong>{date} at {time}</strong>').format(date=event.start_date.strftime('%B %-d'), time=event.start_time.strftime('%-I:%M%p'))
+      }} {% else %} {{ _('Starts:
+      <strong>{date} at {time}</strong>').format(date=event.start_date.strftime('%B %-d'), time=event.start_time.strftime('%-I:%M%p'))
+      }}
+      <br />{{ _('Ends:
+      <strong>{date} at {time}</strong>').format(date=event.end_date.strftime('%B %-d'), time=event.end_time.strftime('%-I:%M%p'))
+      }} {% endif %}
+    </div>
+
+    <div class="meta-detail">
+      {{ _('Location:') }}
+      <strong>{{ event.club.name }}</strong>
+    </div>
+
+    <div class="description">
+      {{ event.description|safe }}
+    </div>
+  {% endif %}
+
+
+
+    {% if event.is_registration_open %}
+    <div class="rsvp-form" id="rsvp">
+      <h4>{{ _('RSVP') }}</h4>
+
+      {% for message in messages %}
+      <div class="message">{{ message }}</div>
+      {% endfor %} 
+    
+
+        <form method="post" class="no-padding" action="#rsvp" id="rsvp-form" data-event="{{event.id}}" novalidate>
+          {{ csrf_input(csrf_token) }}
+
+          {% if editmode %}
+            <h3>You are currently viewing this page as an admin in edit mode.</h3>
+            <h3>You may register on behalf of others.</h3> 
+          {% else %}
+            {% set registered = event.is_rsvped(request.member) %}
+            {% if registered %}
+            <div style="margin-bottom: 50px;">
+            <h3> You are already registered</h3>
+            <input type="submit" name="cancel" value="{{ _('Cancel Reservation') }}" /> 
+            </div>
+            <h3>You may alter your existing reservation below.</h3>
+            {% endif %}
+          {% endif %}
+
+          {{ form_field(rsvp_form.number_of_adults, "unset") }} 
+
+          <div class="fieldset" style="display: flex; margin: 0 auto;">
+          
+            <div class="field col-1-4" style="flex: 1 1 25%;">
+              {{ rsvp_form.host_type }}
+            </div>
+          
+            <div class="col-3-4 field hostinput-wrapper">
+              {{ rsvp_form.host_name }}
+            </div>
+          
+          </div>
+
+          {#
+          This is where the magic happens.
+          Since there is no way to group fieldsets and the Django ticket for
+          this was dismissed 3 years ago, we have to dynamically come up with 
+          the grouping, multiplied by the number of guests that are permitted, 
+          which in turn is related ot the number event rsvp max.
+
+          Here, we set the variable name somewhat dynamically, and then call 
+          that with Jinja's version of a getattr.
+          #} 
+
+          {% for x in range(2, event.max_guests_per_rsvp +1) %}
+
+            {% set hiddencount = rsvp_form.number_of_adults.value()|int %}
+
+            <div class="fieldset {% if hiddencount and hiddencount < x %}hidden{% endif %}" style="display: flex; margin: 0 auto;">
+              
+              {% set var1 = 'guest_{}_type'.format(x) %}
+              <div class="field col-1-4" style="flex: 1 1 25%;">
+                {{ rsvp_form[var1] }}
+              </div>
+  
+              {% set var2 = 'guest_{}_input'.format(x) %}
+              <div class="col-3-4 field guestinput-wrapper guestinput-{{x}}-wrapper" {% if rsvp_form[var1].value() == 'Member' %}style="display:none"{% endif %}>
+                {{ rsvp_form[var2] }}
+              </div>
+  
+              {% set var3 = 'guest_{}_dropdown'.format(x) %}
+              <div class="col-3-4 field guestdropdown-wrapper guestdropdown-{{x}}-wrapper" {% if rsvp_form[var1].value() == 'Guest' %}style="display:none"{% endif %}>
+                {{ rsvp_form[var3] }}
+              </div>
+
+            </div>
+
+          {% endfor %}
+
+          <br/>
+           
+          {% if event.custom_question_1 %} 
+            {{ fixed_label_field(rsvp_form.custom_answer_1) }}
+          {% endif %} 
+          
+          {% if event.custom_question_2 %} 
+            {{ fixed_label_field(rsvp_form.custom_answer_2) }} 
+          {% endif %} 
+          
+          {% if event.custom_question_3 %}
+            {{ fixed_label_field(rsvp_form.custom_answer_3) }} 
+          {% endif %} 
+          
+          {% if event.custom_question_4 %} 
+            {{ fixed_label_field(rsvp_form.custom_answer_4) }} 
+          {% endif %} 
+          
+          {% if event.custom_question_5 %} 
+            {{ fixed_label_field(rsvp_form.custom_answer_5) }} 
+          {% endif %}
+
+          {{ fixed_label_field(rsvp_form.notes) }}
+
+          <input type="submit" name="rsvp"
+          {% if registered or behalf %}
+          value="{{ _('Edit RSVP') }}"
+          {% else %}
+          value="{{ _('RSVP') }}" 
+          {% endif %}
+          />
+
+          {% if behalf and editmode %}
+            <input type="submit" name="cancel" value="{{ _('Cancel Reservation') }}" />
+          {% endif %}
+
+        </form>
+
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="calendar-wrapper">
+    {% if event.photo %}
+    <div class="event-photo" style="background-image: url('{{ event.photo.url }}');"></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

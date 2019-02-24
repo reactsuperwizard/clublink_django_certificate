@@ -1,0 +1,45 @@
+{% block first_bucket %}
+    <div style="{% if page.get_image('mp-club-bg') %}background-image: url('{{ page.get_image('mp-club-bg') }}');{% endif %}">
+      <a href="{{ url('my-club') }}">
+        <span>{{ _('My Club') }}</span>
+      </a>
+      {{ image_selector(page, 'mp-club-bg') }}
+    </div>
+{% endblock %}
+
+{% block second_bucket %}
+  <div style="{% if page.get_image('mp-host-event-bg') %}background-image: url('{{ page.get_image('mp-host-event-bg') }}');{% endif %}">
+    <a href="{{ url('events') }}">
+      <span>{{ _('Host My Event') }}</span>
+    </a>
+    {{ image_selector(page, 'mp-host-event-bg') }}
+  </div>
+{% endblock %}
+
+{% block third_bucket %}
+    <div style="{% if page.get_image('mp-account-bg') %}background-image: url('{{ page.get_image('mp-account-bg') }}');{% endif %}">
+    <a href="{{ url('my-account') }}">
+      <span>{{ _('My Account') }}</span>
+    </a>
+    {{ image_selector(page, 'mp-account-bg') }}
+  </div>
+{% endblock %}
+
+
+{% block fourth_bucket %}
+  {% if request.site.id != 1 %}
+    <div style="{% if page.get_image('game-improvement-bg') %}background-image: url('{{ page.get_image('game-improvement-bg') }}');{% endif %}">
+      <a href="{{ url('game-improvement') }}">
+        {{ image_selector(page, 'game-improvement-bg') }}
+        <span>{{ _('Game Improvement') }}</span>
+      </a>
+    </div>
+  {% else %}
+    <div style="{% if page.get_image('mp-news-bg') %}background-image: url('{{ page.get_image('mp-news-bg') }}');{% endif %}">
+      <a href="{{ url('news') }}">
+        {{ image_selector(page, 'mp-news-bg') }}
+        <span>{{ _('My News') }}</span>
+      </a>
+    </div>
+  {% endif %}
+{% endblock %}

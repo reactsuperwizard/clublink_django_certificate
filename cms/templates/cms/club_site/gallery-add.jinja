@@ -1,0 +1,16 @@
+{% extends 'cms/club_site/base.jinja' %}
+
+{% from 'cms/includes/forms.jinja' import render_field %}
+
+{% block main %}
+  <h3>{{ _('Add a New Gallery') }}</h3>
+
+  <form method="post" action="" class="uk-form-stacked" novalidate>
+    {{ csrf_input(csrf_token) }}
+
+    {{ render_field(form.name) }}
+    {{ render_field(form.slug) }}
+
+    <input type="submit" class="uk-button uk-button-primary" value="{{ _('Save') }}" />
+  </form>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% set bundles = ('corp_clubs',) %}
+
+{% block after_main %}
+  <div class="wrapper">
+    <ul class="page-nav">
+      {% for r in regions %}
+        <li class="{% if r == region %}active{% endif %}">
+          <a href="{{ url('membership.clubs', slug=r.slug) }}">{{ r.name }}</a>
+        </li>
+      {% endfor %}
+        <li class="">
+          <a target="_blank" href="https://www.google.com/maps/d/u/0/viewer?ll=43.62220385528204%2C-79.73079330859377&hl=en&z=8&mid=12o1yUKvlaQTeTpMOfckPQ1mDoNQ">{{ _( 'Club Map' ) }}</a>
+        </li>      
+    </ul>
+  </div>
+{% endblock %}
+
+{% block page_footer %}
+  {% if regions %}
+    {% for club in region.clubs.filter(site=request.site) %}
+      <a href="{{ club_url(club, 'home') }}" class="image-block club-listing" style="{% if club.listing_image %}background-image: url('{{ club.listing_image.url }}');{% endif %}">
+        <div class="name">{{ club.name }}</div>
+        <div class="location">{{ club.city }}, {{ club.state }}</div>
+        {% if club.tier %}        
+        <div class="tier">{{club.get_tier_display()}} Level</div>
+        {% endif %}
+        <div class="hover-text">{{ _('Go to club') }}</div>
+      </a>
+    {% endfor %}
+
+  {% else %}
+    {% for club in request.site.clubs.all() %}
+      <a href="{{ club_url(club, 'home') }}" class="image-block club-listing" style="{% if club.listing_image %}background-image: url('{{ club.listing_image.url }}');{% endif %}">
+        <div class="name">{{ club.name }}</div>
+        <div class="location">{{ club.city }}, {{ club.state }}</div>
+        <div class="tier">{{club.get_tier_display()}} Level</div>
+        <div class="hover-text">{{ _('Go to club') }}</div>
+      </a>
+    {% endfor %}
+
+
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'clubs/errors/base.jinja' %}
+
+{% block main %}
+  <div class="wrapper">
+    <h2>{{ _('Permission denied!') }}</h2>
+    <p class="centered">
+       {{ _('You do not have access to this page.') }}
+    </p>
+{% if request.sentry and request.sentry.id %}
+<br>
+<p class="centered">If you need assistance, you may reference this error as
+  <strong>{{ request.sentry.id }}</strong>.</p>
+
+  <script src="https://cdn.ravenjs.com/2.3.0/raven.min.js"></script>
+  <script>
+    Raven.showReportDialog({
+      eventId: '{{ request.sentry.id }}',
+
+      // use the public DSN (dont include your secret!)
+      dsn: 'https://3b3bd45f5afb443a8cd82ab5a34941c4@sentry.io/250675'
+    });
+  </script>
+
+{% endif %}
+  </div>
+{% endblock %}

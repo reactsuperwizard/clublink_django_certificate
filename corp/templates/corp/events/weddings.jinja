@@ -1,0 +1,17 @@
+{% extends 'corp/generic/default.jinja' %}
+
+{% block page_footer %}
+  <div class="image-block link-banner" style="{% if page.get_image('weddings_bg') %}background-image: url('{{ page.get_image('weddings_bg') }}');{% endif %}">
+    {{ image_selector(page, 'weddings_bg') }}
+    <a href="{{ url('events.weddings.venues') }}">
+      {{ _('Weddings') }}
+    </a>
+  </div>
+  
+  <div class="image-block link-banner" style="{% if page.get_image('meetings_bg') %}background-image: url('{{ page.get_image('meetings_bg') }}');{% endif %}">
+    {{ image_selector(page, 'meetings_bg') }}
+    <a href="{{ url('events.meetings') }}">
+      {{ _('Meetings & Banquets') }}
+    </a>
+  </div>
+{% endblock %}

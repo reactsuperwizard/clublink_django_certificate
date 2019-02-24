@@ -1,0 +1,26 @@
+{% extends base_template %}
+
+{% block header %}
+  {{ page_header(image=static('new-banner.jpg'), headline=_('Login')) }}
+{% endblock %}
+
+{% block pageclub %}{% endblock %}
+
+{% block main %}
+  <div class="wrapper login-page">
+    <form action="" method="post" novalidate>
+      {% for message in messages %}
+        <div class="message">{{ message }}</div>
+      {% endfor %}
+
+      {{ form.non_field_errors() }}
+      {{ csrf_input(csrf_token) }}
+      {{ form_field(form.username) }}
+      {{ form_field(form.password) }}
+      <input type="submit" value="{{ _('Submit') }}" />
+    </form>
+    <div class="centered">
+      <a href="{{ url('login.forgot') }}">{{ _('Forgot your password?') }}</a>
+    </div>
+  </div>
+{% endblock %}

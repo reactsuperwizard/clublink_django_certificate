@@ -1,0 +1,17 @@
+{% extends 'cms/users/base.jinja' %}
+
+{% from 'cms/includes/macros.jinja' import render_tile %}
+
+{% block panel %}
+  <h2>{{ _('User Management') }}</h2>
+
+  <div data-uk-grid class="uk-padding-small uk-padding-remove-left uk-padding-remove-right">
+    {{ render_tile(_('My Account'), 'cog', url('users.my-account')) }}
+    {% if request.user.is_superuser %}
+      {{ render_tile(_('User Accounts'), 'users', url('users.accounts')) }}
+    {% endif %}
+    {% if request.user.permits('can_impersonate_user') %}
+      {{ render_tile(_('Impersonate User'), 'git-fork', url('users.impersonate')) }}
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% if club %}
+  <p>
+    <strong>Club Website:</strong>
+    {{ club.name }}
+  </p>
+{% endif %}
+
+<p>
+  <strong>Name:</strong>
+  {{ data['first_name'] }} {{ data['last_name'] }}
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <a href="mailto:{{ data['email'] }}">{{ data['email'] }}</a>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  {{ data['phone'] }}
+</p>
+
+<p>
+  <strong>Subscribe:</strong>
+  {{ 'Yes' if data['subscribe'] else 'No'  }}
+</p>
+
+<p>
+  <strong>Comments/Questions:</strong>
+  <div>{{ data['additional_info'] }}</div>
+</p>

@@ -1,0 +1,10 @@
+{% extends 'clubs/members/base-home-buckets.jinja' %}
+
+{% block second_bucket %}
+  <div style="{% if page.get_image('mp-host-event-bg') %}background-image: url('{{ page.get_image('mp-host-event-bg') }}');{% endif %}">
+    <a href="{{ corp_url('events.weddings') }}" target="_blank">
+      <span>{{ _('Host My Event') }}</span>
+    </a>
+    {{ image_selector(page, 'mp-host-event-bg') }}
+  </div>
+{% endblock %}

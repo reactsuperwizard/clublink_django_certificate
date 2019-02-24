@@ -1,0 +1,19 @@
+<span class="locale-switch">
+
+    {% if request.site.id == 1 %}
+        <a href="https://www.clublink.com/" target="_blank">{{ _('U.S. Clubs') }}</a><!--
+        {% if request.club.bilingual %}
+        --><a href="?lang=en">EN</a>|<a href="?lang=fr">FR</a><!--
+        {% endif %}-->
+    {% else %}
+       <a href="https://www.clublink.ca/" target="_blank">{{ _('Canadian Clubs') }}</a><!--
+        {% if request.club.bilingual %}
+        --><a href="https://www.clublink.ca?lang=en">EN</a>|<a href="https://www.clublink.ca?lang=fr">FR</a><!--
+        {% endif %}-->
+    {% endif %}
+
+
+
+
+</span>
+{% include 'cms/includes/footer.jinja' %}

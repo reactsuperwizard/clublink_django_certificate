@@ -1,0 +1,33 @@
+{% extends 'email/base.jinja' %}
+
+{% block body %}
+  <p>
+    Bonjour {{name}},
+  </p>
+
+  <p>
+    Ceci est votre confirmation de réception de bon(s)-cadeau(x), que vous pouvez télécharger ici:
+    <br /><a href="{{download_url}}">{{ download_url }}</a>
+  </p>
+
+  <p>
+    <strong>
+      Veuillez imprimer le fichier PDF ci-joint et l’apporter au club pour l’échanger contre sa
+      valeur.
+    </strong>
+  </p>
+
+  <p>
+    Le mode d’emploi, y compris les conditions d’utilisation, est imprimé sur chaque bon-cadeau.
+    Les bons-cadeaux ont une grande valeur, veuillez les protéger en conséquence.
+  </p>
+
+  <p>
+    Si vous avez des questions à ce sujet, veuillez communiquer avec nous au numéro ci-dessous.
+  </p>
+
+  <p>
+    Au plaisir!
+    <br />{{signature.plaintext_fr}}
+  </p>
+{% endblock %}

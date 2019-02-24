@@ -1,0 +1,39 @@
+{% extends 'clubs/events/base.jinja' %}
+
+{% block main %}
+  <div class="wrapper">
+    {{ shorttext_snippet(page, 'heading_1', 'h2') }}
+    {{ richtext_snippet(page, 'copy_1') }}
+
+    {{ shorttext_snippet(page, 'heading_2', 'h2') }}
+    {{ richtext_snippet(page, 'copy_2') }}
+
+    {{ shorttext_snippet(page, 'heading_3', 'h2') }}
+    <div class="float-left">
+      {{ richtext_snippet(page, 'copy_3') }}
+    </div>
+
+    <div class="righted">
+      <a href="{{ url('events.meetings.inquiry') }}" class="button">{{ _('Inquiry Form') }}</a>
+
+      {% if request.LANGUAGE_CODE == 'en' and request.club.banquet_menu %}
+
+        {% set menu_url = request.club.banquet_menu.url %}
+      
+      {% elif request.LANGUAGE_CODE == 'fr' and request.club.banquet_menu_fr %}
+
+         {% set menu_url = request.club.banquet_menu_fr.url %}
+      
+      {% endif %}
+
+        {% if menu_url %}
+        <p>
+          <a href="{{ menu_url }}" target="_blank" class="button">
+            {{ _('View Our Menu') }}
+          </a>
+        </p>
+        {% endif %}
+
+    </div>
+  </div>
+{% endblock %}

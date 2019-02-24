@@ -1,0 +1,79 @@
+{% extends 'cms/base.jinja' %} 
+
+{% from 'cms/includes/macros.jinja' import render_breadcrumbs %} 
+{% from 'cms/includes/forms.jinja' import render_field %}
+
+{% block left_sidebar %}
+<ul class="uk-nav uk-text-small">
+    <li class="uk-nav-header">{{ _('User Management') }}</li>
+    <li>
+        <a class="uk-link-muted" href="{{ url('users.my-account') }}">
+            {{ _('My Account') }}
+        </a>
+    </li>
+    {% if request.user.is_superuser %}
+    <li>
+        <a class="uk-link-muted" href="{{ url('users.accounts') }}">
+            {{ _('User Accounts') }}
+        </a>
+    </li>
+    {% endif %} {% if request.user.permits('can_impersonate_user') %}
+    <li>
+        <a class="uk-link-muted" href="{{ url('users.impersonate') }}">
+            {{ _('Impersonate User') }}
+        </a>
+    </li>
+    {% endif %}
+</ul>
+{% endblock %} 
+
+{% block main %} 
+{% block panel %}
+<h1>Inventory Lookup</h1>
+
+    <form method="get" action="" class="uk-padding uk-background-muted uk-form-stacked">
+        <div>
+            {{ render_field(form.query) }}
+        </div>
+        <div class="uk-margin-top">
+            <button class="uk-button uk-button-secondary" type="submit">{{ _('Search') }}</button>
+        </div>
+    </form>
+
+{% if groups %}
+    <h3>Results</h3>
+    
+    {% for name, items in groups %}
+        <h3>{{name}}</h3>
+        <div style="max-height: 400px; overflow: scroll; padding: 0 20px 20px 20px;">
+            <table class="uk-table uk-table-divider uk-table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Item #</th>
+                        <th style="width: 55%">Name</th>
+                        <th style="width: 10%">Quantity</th>
+                        <th style="width: 10%">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{item.ItemNumber}}</td>
+                            <td>{{item.ItemName}}</td>
+                            <td>{{item.OnHandQuantity}}</td>
+                            <td>${{item.ItemPrice}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+
+    {% endfor %}
+
+{% endif %}
+
+
+{% endblock %} 
+
+{% endblock %}

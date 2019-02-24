@@ -1,0 +1,18 @@
+Bonjour {{ user.first_name }},
+
+Nous sommes heureux de vous annoncer le lancement des nouveaux sites Web du {{ club.name }} et de ClubLink. Ces nouveaux sites sont construits sur une plateforme entièrement interactive, facile à naviguer. Tous les outils auxquels vous êtes habitués pour administrer votre compte de membre, réserver des heures de départ, accéder au registre des membres de votre club d’attache et consulter les dernières nouvelles ainsi que le calendrier d’activités y sont facilement accessibles, également sur téléphone portable.
+
+Étant donné qu’il s’agit d’un nouveau système, vous devrez créer un nouveau mot de passe pour accéder au portail des membres. Pour ce faire, veuillez cliquer sur le lien ci-dessous:
+{{ reset_url }}
+
+Une fois que vous aurez ouvert une session, nous vous invitons à vous familiariser avec le nouveau site Web. Nous l’avons élaboré de façon qu’il soit plus convivial, suivant les commentaires reçus au fil des ans à propos de notre site précédent.
+
+Nous avons bien hâte de live vos nouveaux commentaires.
+
+Au plaisir,
+Services aux membres
+15675 Dufferin Street
+King City, ON, L7B 1K5
+1-800-273-5113
+memberservices@clublink.ca
+www.clublink.ca

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="`">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>
+    {% block title %}
+        {% if page %}
+          {% if page.seo_title(language) %}
+             {{page.seo_title(language)}} -
+          {% else %}
+             {{page.name}} - 
+          {% endif %}
+
+          {% if page.club %}
+            {{page.club.name}}
+          {% else %}
+            {{page.site.name}}
+          {% endif %}          
+
+        {% elif site %}
+          {{site.name}}
+        {% else %}
+          Clublink Corporation
+        {% endif %}
+    {% endblock %}
+    </title>
+    
+    {% if page %}
+    {% with seodescription = page.seo_description(language) %}
+    <meta name="description" content="
+      {{seodescription}}
+    ">
+    {% endwith %}
+    {% endif %}
+
+    <!-- Shared session loaders -->
+    {% shared_session_loader %}
+    <!-- end shared session loaders -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    {% if settings.SEARCH_ENGINE_INDEXING_DISABLED -%}
+      <meta name="robots" content="noindex">
+    {%- endif %}
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    {# <link rel="manifest" href="/manifest.json">#}
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7071556/7897572/css/fonts.css" />
+    {% block head %}{% endblock %}
+    <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    {% block googletagmanager_head %}
+    {% if request.club.slug == 'playersclub' %}
+      <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-WN2KD8K');</script>
+      <!-- End Google Tag Manager -->
+    {% endif %}
+    {% endblock %}
+
+  </head>
+  <body class="{% block body_class %}{% endblock %}">
+    {% block content %}{% endblock %}
+    {% block after_content %}{% endblock %}
+
+    {% if settings.GOOGLE_ANALYTICS_TRACKING_ID %}
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', '{{ settings.GOOGLE_ANALYTICS_TRACKING_ID }}', 'auto');
+
+        {% if request.user.membership_number %}
+          ga('set', 'userId', '{{ request.user.membership_number }}');
+        {% endif %}
+
+        ga('send', 'pageview');
+      </script>
+    {% endif %}
+
+    {% block extra_js %}    
+    {% endblock extra_js %}
+
+    {% block googletagmanager_footer %}
+    {% if request.club.slug == 'playersclub' %}
+      <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WN2KD8K"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    {% endif %}
+    {% endblock %}
+
+    {% block fb_pixel %}
+      {% include 'cms/includes/fb-pixel.jinja' %}
+    {% endblock %}
+
+  </body>
+</html>

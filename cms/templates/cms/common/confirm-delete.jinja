@@ -1,0 +1,16 @@
+{% if cms_module %}
+  {% extends 'cms/{}/base.jinja'.format(cms_module) %}
+{% else %}
+  {% extends 'cms/base.jinja' %}
+{% endif %}
+
+{% block main %}
+  <h3>{{ _('Confirmation') }}</h3>
+  <form method="post" action="">
+    <p>{{ confirm_message|safe }}</p>
+    <p>
+      <input type="submit" value="{{ _('Confirm') }}" class="uk-button uk-button-primary" />
+    </p>
+    {{ csrf_input(csrf_token) }}
+  </form>
+{% endblock %}
